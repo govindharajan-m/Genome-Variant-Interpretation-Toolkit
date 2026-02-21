@@ -33,7 +33,6 @@ _DBSNP_DATA   = _load_json(DBSNP_PATH)
 _CLINVAR_DATA = _load_json(CLINVAR_PATH)
 _GENE_DATA    = _load_json(GENES_PATH)
 
-
 # ═══════════════════════════════════════════════════════════════════════════════
 # dbSNP queries
 # ═══════════════════════════════════════════════════════════════════════════════
