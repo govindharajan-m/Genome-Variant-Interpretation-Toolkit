@@ -1,6 +1,6 @@
 # 🧬 GenomeVAP — Genome Variation Analysis Platform
 
-A **portfolio-grade bioinformatics web application** built with Python (Flask) + HTML5/CSS/JS.
+A **bioinformatics web application** built with Python (Flask) + HTML5/CSS/JS.
 
 Simulates a simplified version of real-world tools:
 - Ensembl Variant Effect Predictor (VEP)
@@ -190,5 +190,8 @@ To connect to real databases, replace the local JSON lookups with the correspond
 - **Reference Genome**: GRCh38 / hg38
 
 ---
+## LIVE SITE
+https://genome-variant-interpretation-toolkit-1.onrender.com/
+
 
 *Built as a B.Tech Industrial Biotechnology portfolio project demonstrating bioinformatics pipeline concepts.*
