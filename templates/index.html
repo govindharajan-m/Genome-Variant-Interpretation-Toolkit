@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- ── Hero Section ───────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-content">
+    <div class="hero-label">⬡ Bioinformatics Analysis Platform</div>
+    <h1 class="hero-title">
+      Genome <span class="gradient-text">Variation</span><br>Analysis Platform
+    </h1>
+    <p class="hero-sub">
+      A research-inspired web application for SNP annotation, CNV analysis,
+      batch rsID processing, and clinical variant interpretation — powered by
+      simulated dbSNP · ClinVar · Ensembl pipelines.
+    </p>
+    <div class="hero-actions">
+      <a href="{{ url_for('single_variant_page') }}" class="btn btn-primary">Start SNP Analysis →</a>
+      <a href="{{ url_for('batch_analysis_page') }}" class="btn btn-outline">Batch rsID Lookup</a>
+    </div>
+
+    <!-- Genome stats strip -->
+    <div class="stat-strip">
+      <div class="stat-item"><span class="stat-num">20,000+</span><span class="stat-label">Human Genes</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat-item"><span class="stat-num">3.2 Gb</span><span class="stat-label">Reference Genome</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat-item"><span class="stat-num">600M+</span><span class="stat-label">dbSNP Variants</span></div>
+      <div class="stat-divider"></div>
+      <div class="stat-item"><span class="stat-num">5</span><span class="stat-label">Consequence Types</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Feature Cards ──────────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Analysis Modules</h2>
+      <p>Choose an analysis type to begin variant interpretation</p>
+    </div>
+
+    <div class="feature-grid">
+
+      <!-- SNP -->
+      <a href="{{ url_for('single_variant_page') }}" class="feature-card">
+        <div class="feature-icon snp-icon">SNP</div>
+        <h3>Single Variant Analysis</h3>
+        <p>
+          Input chromosomal coordinates (Chr, Position, Ref, Alt) for
+          real-time SNP annotation, consequence prediction, and gene mapping.
+        </p>
+        <ul class="feature-list">
+          <li>Synonymous / Missense / Nonsense classification</li>
+          <li>Gene & pathway mapping</li>
+          <li>SIFT & PolyPhen-2 predictions</li>
+        </ul>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <!-- CNV -->
+      <a href="{{ url_for('cnv_analysis_page') }}" class="feature-card">
+        <div class="feature-icon cnv-icon">CNV</div>
+        <h3>CNV Analysis</h3>
+        <p>
+          Analyse Copy Number Variants — deletions and duplications across
+          genomic regions with dosage effect prediction.
+        </p>
+        <ul class="feature-list">
+          <li>Duplication / Deletion detection</li>
+          <li>Haploinsufficiency prediction</li>
+          <li>Region size classification</li>
+        </ul>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <!-- Batch -->
+      <a href="{{ url_for('batch_analysis_page') }}" class="feature-card">
+        <div class="feature-icon batch-icon">RS</div>
+        <h3>Batch rsID Analysis</h3>
+        <p>
+          Process multiple rsIDs simultaneously via text input or file upload.
+          Export annotated results as a downloadable CSV report.
+        </p>
+        <ul class="feature-list">
+          <li>Up to 200 rsIDs per batch</li>
+          <li>ClinVar significance lookup</li>
+          <li>CSV export</li>
+        </ul>
+        <span class="card-arrow">→</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Pipeline Overview ──────────────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <h2>Analysis Pipeline</h2>
+      <p>Inspired by real-world tools: Ensembl VEP · ANNOVAR · ClinVar pipelines</p>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <div class="pipeline-num">01</div>
+        <div class="pipeline-body">
+          <h4>Variant Input</h4>
+          <p>Chromosomal coordinates (Chr:Pos:Ref:Alt) or rsID identifiers</p>
+        </div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">02</div>
+        <div class="pipeline-body">
+          <h4>Classification</h4>
+          <p>SNP vs CNV · Transition vs Transversion · Indel detection</p>
+        </div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">03</div>
+        <div class="pipeline-body">
+          <h4>Annotation</h4>
+          <p>dbSNP lookup · Gene mapping · HGVS nomenclature</p>
+        </div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">04</div>
+        <div class="pipeline-body">
+          <h4>Impact Prediction</h4>
+          <p>Functional consequence · SIFT · PolyPhen-2 · Impact level</p>
+        </div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">05</div>
+        <div class="pipeline-body">
+          <h4>Clinical Report</h4>
+          <p>ClinVar significance · Disease association · Interpretation</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Demo rsIDs ─────────────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Try These Variants</h2>
+      <p>Click any rsID to view its full annotation report</p>
+    </div>
+
+    <div class="demo-rsid-grid">
+      {% for rsid in demo_rsids %}
+      <a href="{{ url_for('report_page', rsid=rsid) }}" class="demo-rsid-card">
+        <span class="rsid-tag">{{ rsid }}</span>
+        <span class="demo-arrow">→</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

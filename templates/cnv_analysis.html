@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% block title %}CNV Analysis{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <div class="page-header-inner">
+      <div>
+        <div class="page-label">⬡ Copy Number Variant Analysis</div>
+        <h1>CNV Analysis</h1>
+        <p>Analyse genomic duplications and deletions with dosage effect prediction</p>
+      </div>
+      <div class="genome-badge">GRCh38 · hg38</div>
+    </div>
+  </div>
+</div>
+
+<div class="container two-col-layout">
+
+  <!-- Input Panel -->
+  <div class="input-panel card">
+    <h2 class="card-title">CNV Input</h2>
+    <p class="card-subtitle">
+      Specify the genomic coordinates and type of copy number event.
+    </p>
+
+    <form id="cnvForm">
+
+      <div class="form-group">
+        <label for="cnv-chromosome">Chromosome</label>
+        <select id="cnv-chromosome" class="form-control" required>
+          <option value="">Select Chr…</option>
+          {% for c in ['1','2','3','4','5','6','7','8','9','10',
+                       '11','12','13','14','15','16','17','18',
+                       '19','20','21','22','X','Y'] %}
+          <option value="{{ c }}">Chr {{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cnv-start">Start Position</label>
+          <input type="number" id="cnv-start" class="form-control" placeholder="e.g. 43044295" min="1" required />
+        </div>
+        <div class="form-group">
+          <label for="cnv-end">End Position</label>
+          <input type="number" id="cnv-end" class="form-control" placeholder="e.g. 43125483" min="1" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>CNV Type</label>
+        <div class="cnv-type-toggle">
+          <button type="button" class="cnv-toggle active" data-type="Deletion">
+            <span class="toggle-icon">▼</span> Deletion
+          </button>
+          <button type="button" class="cnv-toggle" data-type="Duplication">
+            <span class="toggle-icon">▲</span> Duplication
+          </button>
+        </div>
+        <input type="hidden" id="cnv-type" value="Deletion" />
+      </div>
+
+      <div class="form-group">
+        <label for="cnv-copies">Copy Number (optional)</label>
+        <input type="number" id="cnv-copies" class="form-control"
+               placeholder="e.g. 1 (het del) or 0 (hom del) or 3 (dup)"
+               min="0" max="10" />
+        <small class="form-hint">Normal = 2; Heterozygous deletion = 1; Homozygous deletion = 0; Duplication = 3+</small>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-full" id="cnvBtn">
+        <span id="cnvBtnText">Analyze CNV</span>
+        <span id="cnvBtnSpinner" class="spinner hidden"></span>
+      </button>
+    </form>
+
+    <!-- Quick fill examples -->
+    <div class="quick-examples">
+      <span class="example-label">Quick examples:</span>
+      <button class="cnv-example-btn"
+              data-chr="17" data-start="43044295" data-end="43125483"
+              data-type="Deletion" data-copies="1">BRCA1 het del</button>
+      <button class="cnv-example-btn"
+              data-chr="7"  data-start="117465784" data-end="117715971"
+              data-type="Duplication" data-copies="3">CFTR dup</button>
+    </div>
+  </div>
+
+  <!-- Results Panel -->
+  <div id="cnvResultPanel" class="result-panel hidden">
+
+    <!-- Overview Card -->
+    <div class="card result-card">
+      <div class="result-header">
+        <div>
+          <div class="result-label">CNV Classification</div>
+          <h2 id="cr-title" class="result-title mono">—</h2>
+        </div>
+        <div id="cr-type-badge" class="type-badge type-cnv">CNV</div>
+      </div>
+      <div class="result-meta-grid">
+        <div class="meta-item"><span class="meta-label">Chromosome</span><span class="meta-val mono" id="cr-chr">—</span></div>
+        <div class="meta-item"><span class="meta-label">Region</span><span class="meta-val mono" id="cr-region">—</span></div>
+        <div class="meta-item"><span class="meta-label">Size</span><span class="meta-val" id="cr-size">—</span></div>
+        <div class="meta-item"><span class="meta-label">Size Class</span><span class="meta-val" id="cr-size-class">—</span></div>
+      </div>
+    </div>
+
+    <!-- Dosage Effect Card -->
+    <div class="card result-card">
+      <h3 class="card-title">Gene Dosage Effect</h3>
+      <div class="impact-row">
+        <div class="impact-badge-wrap">
+          <div id="cr-dosage-badge" class="impact-badge">—</div>
+          <div class="impact-label">Dosage Impact</div>
+        </div>
+        <div class="impact-details">
+          <p id="cr-dosage-text" style="margin:0; color: var(--text-primary);"></p>
+        </div>
+      </div>
+
+      <!-- Gene found inside CNV -->
+      <div id="cr-gene-section" class="hidden" style="margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+        <div class="result-meta-grid">
+          <div class="meta-item"><span class="meta-label">Affected Gene</span><span class="meta-val mono" id="cr-gene">—</span></div>
+          <div class="meta-item"><span class="meta-label">OMIM</span><span class="meta-val" id="cr-omim">—</span></div>
+        </div>
+        <div class="gene-description" id="cr-gene-desc"></div>
+        <div class="gene-pathway"><span class="pill">Pathway</span> <span id="cr-pathway">—</span></div>
+      </div>
+    </div>
+
+    <!-- Clinical Note Card -->
+    <div class="card result-card">
+      <h3 class="card-title">Clinical Interpretation Note</h3>
+      <p id="cr-clinical-note" class="interpretation-text"></p>
+      <div class="info-box">
+        <strong>Note:</strong> CNV pathogenicity assessment requires integration with
+        ClinGen dosage sensitivity data, population CNV databases (gnomAD-SV, DGV),
+        and clinical phenotypic correlation. This report is for educational/portfolio
+        demonstration only.
+      </div>
+    </div>
+
+  </div><!-- /cnvResultPanel -->
+
+  <div id="cnvEmptyState" class="empty-state">
+    <div class="empty-icon">🔬</div>
+    <h3>Enter a CNV Region to Analyze</h3>
+    <p>Specify chromosomal start/end coordinates and CNV type. The platform
+       will predict dosage effects, map affected genes, and generate a
+       clinical interpretation note.</p>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// CNV Type Toggle
+document.querySelectorAll(".cnv-toggle").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".cnv-toggle").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("cnv-type").value = btn.dataset.type;
+  });
+});
+
+// Quick fill
+document.querySelectorAll(".cnv-example-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.getElementById("cnv-chromosome").value = btn.dataset.chr;
+    document.getElementById("cnv-start").value      = btn.dataset.start;
+    document.getElementById("cnv-end").value        = btn.dataset.end;
+    document.getElementById("cnv-copies").value     = btn.dataset.copies;
+    document.getElementById("cnv-type").value       = btn.dataset.type;
+    document.querySelectorAll(".cnv-toggle").forEach(b => {
+      b.classList.toggle("active", b.dataset.type === btn.dataset.type);
+    });
+  });
+});
+
+// Form submit
+document.getElementById("cnvForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn  = document.getElementById("cnvBtn");
+  const text = document.getElementById("cnvBtnText");
+  const spin = document.getElementById("cnvBtnSpinner");
+  text.textContent = "Analyzing…";
+  spin.classList.remove("hidden");
+  btn.disabled = true;
+
+  const copiesVal = document.getElementById("cnv-copies").value;
+  const payload = {
+    chromosome:  document.getElementById("cnv-chromosome").value,
+    start:       parseInt(document.getElementById("cnv-start").value),
+    end:         parseInt(document.getElementById("cnv-end").value),
+    cnv_type:    document.getElementById("cnv-type").value,
+    copy_number: copiesVal !== "" ? parseInt(copiesVal) : null,
+  };
+
+  try {
+    const res  = await fetch("/api/analyze-cnv", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (data.error) { alert("⚠ " + data.error); }
+    else { renderCNVResult(data); }
+  } catch(err) {
+    alert("Network error.");
+  } finally {
+    text.textContent = "Analyze CNV";
+    spin.classList.add("hidden");
+    btn.disabled = false;
+  }
+});
+
+function renderCNVResult(d) {
+  document.getElementById("cnvEmptyState").classList.add("hidden");
+  const panel = document.getElementById("cnvResultPanel");
+  panel.classList.remove("hidden");
+
+  const inp = d.input;
+  document.getElementById("cr-title").textContent =
+    `Chr${inp.chromosome}: ${inp.start.toLocaleString()}–${inp.end.toLocaleString()} (${inp.cnv_type})`;
+  document.getElementById("cr-chr").textContent    = "Chr " + inp.chromosome;
+  document.getElementById("cr-region").textContent =
+    `${inp.start.toLocaleString()} – ${inp.end.toLocaleString()}`;
+  document.getElementById("cr-size").textContent      = d.region_size_bp.toLocaleString() + " bp";
+  document.getElementById("cr-size-class").textContent= d.size_class;
+
+  const badge = document.getElementById("cr-dosage-badge");
+  badge.textContent = d.dosage_class;
+  badge.className   = "impact-badge impact-" + d.dosage_class;
+  document.getElementById("cr-dosage-text").textContent = d.dosage_effect;
+
+  if (d.gene) {
+    document.getElementById("cr-gene-section").classList.remove("hidden");
+    document.getElementById("cr-gene").textContent     = d.gene.gene;
+    document.getElementById("cr-omim").textContent     = d.gene.omim || "—";
+    document.getElementById("cr-gene-desc").textContent= d.gene.description || "";
+    document.getElementById("cr-pathway").textContent  = d.gene.pathway || "—";
+  } else {
+    document.getElementById("cr-gene-section").classList.add("hidden");
+  }
+
+  document.getElementById("cr-clinical-note").textContent = d.clinical_note;
+  panel.scrollIntoView({behavior:"smooth"});
+}
+</script>
+{% endblock %}

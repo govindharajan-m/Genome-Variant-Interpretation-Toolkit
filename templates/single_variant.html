@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+{% block title %}SNP Analysis{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <div class="page-header-inner">
+      <div>
+        <div class="page-label">⬡ Single Variant Analysis</div>
+        <h1>SNP / Indel Annotation</h1>
+        <p>Enter chromosomal coordinates to annotate a single nucleotide polymorphism</p>
+      </div>
+      <div class="genome-badge">GRCh38 · hg38</div>
+    </div>
+  </div>
+</div>
+
+<div class="container two-col-layout">
+
+  <!-- ── Input Panel ──────────────────────────────────────────────────────── -->
+  <div class="input-panel card">
+    <h2 class="card-title">Variant Input</h2>
+    <p class="card-subtitle">
+      Provide the chromosomal location and nucleotide change in VCF-style format.
+    </p>
+
+    <form id="snpForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="chromosome">Chromosome</label>
+          <select id="chromosome" name="chromosome" class="form-control" required>
+            <option value="">Select Chr…</option>
+            {% for c in ['1','2','3','4','5','6','7','8','9','10',
+                         '11','12','13','14','15','16','17','18',
+                         '19','20','21','22','X','Y'] %}
+            <option value="{{ c }}">Chr {{ c }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="position">Genomic Position (GRCh38)</label>
+          <input type="number" id="position" name="position" class="form-control"
+                 placeholder="e.g. 7676154" min="1" required />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ref">Reference Allele</label>
+          <input type="text" id="ref" name="ref" class="form-control mono"
+                 placeholder="e.g. C" maxlength="10" required
+                 pattern="[ACGTNacgtn]+" />
+        </div>
+        <div class="form-group">
+          <label for="alt">Alternate Allele</label>
+          <input type="text" id="alt" name="alt" class="form-control mono"
+                 placeholder="e.g. G" maxlength="10" required
+                 pattern="[ACGTNacgtn]+" />
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-full" id="analyzeBtn">
+        <span id="btnText">Analyze Variant</span>
+        <span id="btnSpinner" class="spinner hidden"></span>
+      </button>
+    </form>
+
+    <!-- Quick-fill examples -->
+    <div class="quick-examples">
+      <span class="example-label">Quick examples:</span>
+      <button class="example-btn" data-chr="17" data-pos="7676154" data-ref="C" data-alt="G">TP53</button>
+      <button class="example-btn" data-chr="11" data-pos="5227002" data-ref="A" data-alt="T">HBB (Sickle Cell)</button>
+      <button class="example-btn" data-chr="7"  data-pos="140453136" data-ref="A" data-alt="T">BRAF V600E</button>
+    </div>
+  </div>
+
+  <!-- ── Results Panel ─────────────────────────────────────────────────────── -->
+  <div id="resultPanel" class="result-panel hidden">
+
+    <!-- Variant Overview Card -->
+    <div class="card result-card">
+      <div class="result-header">
+        <div>
+          <div class="result-label">Variant Classification</div>
+          <h2 id="r-variant-title" class="result-title mono">—</h2>
+        </div>
+        <div id="r-type-badge" class="type-badge">—</div>
+      </div>
+
+      <div class="result-meta-grid">
+        <div class="meta-item"><span class="meta-label">Chromosome</span><span class="meta-val mono" id="r-chr">—</span></div>
+        <div class="meta-item"><span class="meta-label">Position</span><span class="meta-val mono" id="r-pos">—</span></div>
+        <div class="meta-item"><span class="meta-label">Ref → Alt</span><span class="meta-val mono" id="r-alleles">—</span></div>
+        <div class="meta-item"><span class="meta-label">Subtype</span><span class="meta-val" id="r-subtype">—</span></div>
+      </div>
+    </div>
+
+    <!-- Gene Annotation Card -->
+    <div class="card result-card" id="geneCard">
+      <h3 class="card-title">Gene Annotation</h3>
+      <div class="result-meta-grid">
+        <div class="meta-item"><span class="meta-label">Gene Symbol</span><span class="meta-val mono" id="r-gene">—</span></div>
+        <div class="meta-item"><span class="meta-label">Biotype</span><span class="meta-val" id="r-biotype">—</span></div>
+        <div class="meta-item"><span class="meta-label">Strand</span><span class="meta-val mono" id="r-strand">—</span></div>
+        <div class="meta-item"><span class="meta-label">Genomic Coordinates</span><span class="meta-val mono" id="r-coords">—</span></div>
+      </div>
+      <div class="gene-description" id="r-gene-desc"></div>
+      <div class="gene-pathway"><span class="pill">Pathway</span> <span id="r-pathway">—</span></div>
+    </div>
+
+    <!-- Functional Impact Card -->
+    <div class="card result-card">
+      <h3 class="card-title">Functional Impact Prediction</h3>
+      <div class="impact-row">
+        <div class="impact-badge-wrap">
+          <div id="r-impact-badge" class="impact-badge">—</div>
+          <div class="impact-label">Impact Level</div>
+        </div>
+        <div class="impact-details">
+          <div class="consequence-tag" id="r-consequence">—</div>
+          <div class="impact-tools">
+            <span class="tool-pred">SIFT: <strong id="r-sift">—</strong></span>
+            <span class="tool-pred">PolyPhen-2: <strong id="r-polyphen">—</strong></span>
+          </div>
+        </div>
+      </div>
+      <div class="impact-description" id="r-impact-desc"></div>
+    </div>
+
+    <!-- No gene found note (hidden by default) -->
+    <div class="card result-card info-card hidden" id="noGeneCard">
+      <h3 class="card-title">📍 Intergenic Region</h3>
+      <p>This position does not overlap any gene in our local annotation dataset.
+         It may be located in an intergenic, intronic, or non-coding region.
+         Use Ensembl's browser to explore the locus further.</p>
+    </div>
+
+  </div><!-- /resultPanel -->
+
+  <!-- ── Empty state (shown before first search) ───────────────────────── -->
+  <div id="emptyState" class="empty-state">
+    <div class="empty-icon">🧬</div>
+    <h3>Enter a Variant to Analyze</h3>
+    <p>Fill in the coordinates on the left and click <strong>Analyze Variant</strong>
+       to get instant functional annotation, gene mapping, and impact prediction.</p>
+  </div>
+
+</div><!-- /two-col-layout -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Quick-fill buttons
+document.querySelectorAll(".example-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.getElementById("chromosome").value = btn.dataset.chr;
+    document.getElementById("position").value   = btn.dataset.pos;
+    document.getElementById("ref").value        = btn.dataset.ref;
+    document.getElementById("alt").value        = btn.dataset.alt;
+  });
+});
+
+// Form submit → call API
+document.getElementById("snpForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn  = document.getElementById("analyzeBtn");
+  const text = document.getElementById("btnText");
+  const spin = document.getElementById("btnSpinner");
+
+  text.textContent = "Analyzing…";
+  spin.classList.remove("hidden");
+  btn.disabled = true;
+
+  const payload = {
+    chromosome: document.getElementById("chromosome").value,
+    position:   parseInt(document.getElementById("position").value),
+    ref:        document.getElementById("ref").value.toUpperCase(),
+    alt:        document.getElementById("alt").value.toUpperCase(),
+  };
+
+  try {
+    const res  = await fetch("/api/analyze-snp", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+
+    if (data.error) {
+      showError(data.error);
+    } else {
+      renderSNPResult(data);
+    }
+  } catch (err) {
+    showError("Network error — is the server running?");
+  } finally {
+    text.textContent = "Analyze Variant";
+    spin.classList.add("hidden");
+    btn.disabled = false;
+  }
+});
+
+function renderSNPResult(d) {
+  document.getElementById("emptyState").classList.add("hidden");
+  const panel = document.getElementById("resultPanel");
+  panel.classList.remove("hidden");
+
+  // Header
+  const chr = d.input.chromosome, pos = d.input.position;
+  document.getElementById("r-variant-title").textContent =
+    `Chr${chr}:${pos} ${d.input.ref}>${d.input.alt}`;
+  document.getElementById("r-type-badge").textContent =
+    d.classification.type;
+  document.getElementById("r-type-badge").className =
+    "type-badge type-" + d.classification.type.toLowerCase();
+
+  // Meta
+  document.getElementById("r-chr").textContent    = "Chr " + chr;
+  document.getElementById("r-pos").textContent    = pos.toLocaleString();
+  document.getElementById("r-alleles").textContent= d.input.ref + " → " + d.input.alt;
+  document.getElementById("r-subtype").textContent= d.classification.subtype || "—";
+
+  // Gene
+  if (d.gene) {
+    document.getElementById("geneCard").classList.remove("hidden");
+    document.getElementById("noGeneCard").classList.add("hidden");
+    document.getElementById("r-gene").textContent   = d.gene.gene;
+    document.getElementById("r-biotype").textContent= d.gene_info?.biotype || "protein_coding";
+    document.getElementById("r-strand").textContent = d.gene.strand === "+" ? "+ (sense)" : "− (antisense)";
+    document.getElementById("r-coords").textContent =
+      `${d.gene.start.toLocaleString()} – ${d.gene.end.toLocaleString()}`;
+    document.getElementById("r-gene-desc").textContent = d.gene_info?.description || "";
+    document.getElementById("r-pathway").textContent   = d.gene_info?.pathway || "—";
+  } else {
+    document.getElementById("geneCard").classList.add("hidden");
+    document.getElementById("noGeneCard").classList.remove("hidden");
+  }
+
+  // Impact
+  const imp = d.impact;
+  const impBadge = document.getElementById("r-impact-badge");
+  impBadge.textContent  = imp.impact_level;
+  impBadge.className    = "impact-badge impact-" + imp.impact_level;
+  document.getElementById("r-consequence").textContent =
+    imp.consequence.replace(/_/g, " ");
+  document.getElementById("r-sift").textContent    = imp.sift_pred || "—";
+  document.getElementById("r-polyphen").textContent= imp.polyphen_pred || "—";
+  document.getElementById("r-impact-desc").textContent = imp.description;
+
+  panel.scrollIntoView({behavior:"smooth"});
+}
+
+function showError(msg) {
+  alert("⚠ " + msg);
+}
+</script>
+{% endblock %}

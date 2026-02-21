@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block title %}Report: {{ rsid }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <div class="page-header-inner">
+      <div>
+        <div class="page-label">⬡ Variant Report</div>
+        <h1 class="mono">{{ rsid | upper }}</h1>
+        <p>Full annotation report generated from dbSNP + ClinVar + Ensembl data</p>
+      </div>
+      {% if report.found %}
+      <div class="sig-badge-large" style="background: {{ report.sig_colour }}22; border: 1px solid {{ report.sig_colour }}; color: {{ report.sig_colour }};">
+        {{ report.clinical_significance }}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+{% if not report.found %}
+  <div class="card" style="text-align:center; padding: 3rem;">
+    <div style="font-size:3rem; margin-bottom:1rem;">🔍</div>
+    <h2>Variant Not Found</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+      <strong>{{ rsid }}</strong> was not found in the local mock database.
+      In a production system this query would be forwarded to NCBI E-utilities.
+    </p>
+    <a href="{{ url_for('batch_analysis_page') }}" class="btn btn-primary">Try Batch Analysis</a>
+  </div>
+
+{% else %}
+
+<div class="report-grid">
+
+  <!-- ── Left column ───────────────────────────────────────────────────────── -->
+  <div class="report-left">
+
+    <!-- Variant Overview -->
+    <div class="card result-card">
+      <div class="result-header">
+        <div>
+          <div class="result-label">Variant Overview</div>
+          <h2 class="result-title mono">{{ report.snp.hgvs or rsid }}</h2>
+        </div>
+        <span class="type-badge type-snp">{{ report.classification.type }}</span>
+      </div>
+      <div class="result-meta-grid">
+        <div class="meta-item"><span class="meta-label">rsID</span><span class="meta-val mono">{{ rsid }}</span></div>
+        <div class="meta-item"><span class="meta-label">Chromosome</span><span class="meta-val mono">Chr {{ report.snp.chromosome }}</span></div>
+        <div class="meta-item"><span class="meta-label">Position (GRCh38)</span><span class="meta-val mono">{{ "{:,}".format(report.snp.position) }}</span></div>
+        <div class="meta-item"><span class="meta-label">Ref → Alt</span><span class="meta-val mono">{{ report.snp.ref }} → {{ report.snp.alt }}</span></div>
+        <div class="meta-item"><span class="meta-label">Variant Type</span><span class="meta-val">{{ report.classification.subtype }}</span></div>
+        <div class="meta-item"><span class="meta-label">Allele Frequency</span>
+          <span class="meta-val">
+            {% if report.snp.allele_frequency %}
+              {{ "%.4f"|format(report.snp.allele_frequency) }} ({{ "%.2f"|format(report.snp.allele_frequency * 100) }}%)
+            {% else %}—{% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Functional Impact -->
+    <div class="card result-card">
+      <h3 class="card-title">Functional Consequence</h3>
+      <div class="impact-row">
+        <div class="impact-badge-wrap">
+          <div class="impact-badge impact-{{ report.impact.impact_level }}">{{ report.impact.impact_level }}</div>
+          <div class="impact-label">Impact Level</div>
+        </div>
+        <div class="impact-details">
+          <div class="consequence-tag">{{ (report.impact.consequence or "—").replace("_"," ") }}</div>
+          {% if report.snp.protein_change %}
+          <div class="protein-change">
+            <span class="pill">Protein</span> {{ report.snp.protein_change }}
+          </div>
+          {% endif %}
+          <div class="impact-tools">
+            <span class="tool-pred">SIFT: <strong>{{ report.impact.sift_pred or "—" }}</strong></span>
+            <span class="tool-pred">PolyPhen-2: <strong>{{ report.impact.polyphen_pred or "—" }}</strong></span>
+          </div>
+        </div>
+      </div>
+      <div class="impact-description">{{ report.impact.description }}</div>
+    </div>
+
+  </div><!-- /report-left -->
+
+  <!-- ── Right column ──────────────────────────────────────────────────────── -->
+  <div class="report-right">
+
+    <!-- Clinical Significance -->
+    {% if report.clinvar %}
+    <div class="card result-card">
+      <h3 class="card-title">ClinVar Annotation</h3>
+      <div class="clinvar-sig" style="border-left: 4px solid {{ report.sig_colour }}; padding-left: 1rem; margin-bottom: 1rem;">
+        <div style="font-size: 1.3rem; font-weight: 700; color: {{ report.sig_colour }};">
+          {{ report.clinical_significance }}
+        </div>
+        <div style="color: var(--text-secondary); font-size: 0.875rem;">{{ report.clinvar.review_status.replace("_"," ") }}</div>
+      </div>
+      <div class="result-meta-grid">
+        <div class="meta-item"><span class="meta-label">Associated Condition</span><span class="meta-val">{{ report.clinvar.condition }}</span></div>
+        <div class="meta-item"><span class="meta-label">ClinVar Accession</span><span class="meta-val mono">{{ report.clinvar.accession }}</span></div>
+        <div class="meta-item"><span class="meta-label">Inheritance</span><span class="meta-val">{{ report.clinvar.inheritance }}</span></div>
+        <div class="meta-item"><span class="meta-label">Last Evaluated</span><span class="meta-val">{{ report.clinvar.last_evaluated }}</span></div>
+      </div>
+      <div class="impact-description" style="margin-top: 0.75rem;">
+        <strong>Functional consequence: </strong>{{ report.clinvar.functional_consequence }}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Gene Information -->
+    {% if report.gene_info %}
+    <div class="card result-card">
+      <h3 class="card-title">Gene: {{ report.gene_info.gene }}</h3>
+      <div class="result-meta-grid">
+        <div class="meta-item"><span class="meta-label">Biotype</span><span class="meta-val">{{ report.gene_info.biotype }}</span></div>
+        <div class="meta-item"><span class="meta-label">Strand</span><span class="meta-val mono">{{ report.gene_info.strand }}</span></div>
+        <div class="meta-item"><span class="meta-label">Genomic Locus</span>
+          <span class="meta-val mono">Chr{{ report.gene_info.chromosome }}:{{ "{:,}".format(report.gene_info.start) }}–{{ "{:,}".format(report.gene_info.end) }}</span>
+        </div>
+        <div class="meta-item"><span class="meta-label">OMIM</span>
+          <span class="meta-val"><a href="https://omim.org/entry/{{ report.gene_info.omim }}" target="_blank" class="ext-link">{{ report.gene_info.omim }}</a></span>
+        </div>
+      </div>
+      <div class="gene-description">{{ report.gene_info.description }}</div>
+      <div class="gene-pathway"><span class="pill">Pathway</span> {{ report.gene_info.pathway }}</div>
+    </div>
+    {% endif %}
+
+  </div><!-- /report-right -->
+
+</div><!-- /report-grid -->
+
+<!-- ── Full Interpretation Summary ───────────────────────────────────────── -->
+<div class="card result-card" style="margin-top: 1.5rem;">
+  <h3 class="card-title">🧬 Scientific Interpretation Summary</h3>
+  <div class="interpretation-box">
+    <p class="interpretation-text">{{ report.interpretation }}</p>
+  </div>
+  <div class="info-box" style="margin-top: 1rem;">
+    <strong>Disclaimer:</strong> This report is generated by a mock annotation pipeline
+    for portfolio / educational purposes. Clinical decisions should only be based on
+    validated assays and certified clinical genomics laboratories.
+  </div>
+</div>
+
+<!-- ── Action Buttons ────────────────────────────────────────────────────── -->
+<div class="report-actions">
+  <a href="{{ url_for('batch_analysis_page') }}" class="btn btn-outline">← Back to Batch Analysis</a>
+  <a href="{{ url_for('single_variant_page') }}" class="btn btn-outline">New SNP Analysis</a>
+  <button class="btn btn-primary" onclick="window.print()">🖨 Print Report</button>
+</div>
+
+{% endif %}
+</div>
+{% endblock %}
