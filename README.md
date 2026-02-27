@@ -1,4 +1,4 @@
-# 🧬 GenomeVAP — Genome Variation Analysis Platform
+# GenomeVAP — Genome Variation Analysis Platform
 
 A **bioinformatics web application** built with Python (Flask) + HTML5/CSS/JS.
 
@@ -9,7 +9,7 @@ Simulates a simplified version of real-world tools:
 
 ---
 
-## 📸 Features
+## Features
 
 | Module | Description |
 |--------|-------------|
@@ -20,7 +20,7 @@ Simulates a simplified version of real-world tools:
 
 ---
 
-## 🗂 Project Structure
+## Project Structure
 
 ```
 genome_variant_platform/
@@ -47,7 +47,7 @@ genome_variant_platform/
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Clone / Download the project
 
@@ -79,7 +79,7 @@ Open **http://localhost:5000** in your browser.
 
 ---
 
-## 🧪 Demo Variants (included in mock dataset)
+## Demo Variants (included in mock dataset)
 
 | rsID | Gene | Consequence | Clinical Significance |
 |------|------|-------------|----------------------|
@@ -101,7 +101,7 @@ Open **http://localhost:5000** in your browser.
 
 ---
 
-## 🔌 API Endpoints
+## API Endpoints
 
 ### Single SNP Annotation
 ```http
@@ -155,7 +155,7 @@ Content-Type: application/json
 
 ---
 
-## 🧬 Bioinformatics Concepts Demonstrated
+##  Bioinformatics Concepts Demonstrated
 
 - **SNP Classification**: Transition vs. Transversion based on nucleotide change
 - **Functional Consequence Prediction**: Using codon table simulation (synonymous / missense / nonsense)
@@ -167,7 +167,7 @@ Content-Type: application/json
 
 ---
 
-## 🔧 Extending to Real APIs
+## Extending to Real APIs
 
 Each function in `db_handler.py` has a comment with the real API equivalent:
 
@@ -181,7 +181,7 @@ To connect to real databases, replace the local JSON lookups with the correspond
 
 ---
 
-## 📚 Technologies
+## Technologies
 
 - **Backend**: Python 3.11+, Flask 3.x
 - **Frontend**: HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript
