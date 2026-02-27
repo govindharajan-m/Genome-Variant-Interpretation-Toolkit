@@ -1,0 +1,167 @@
+{
+  "rs699": {
+    "rsid": "rs699",
+    "clinical_significance": "Benign",
+    "review_status": "criteria_provided_multiple_submitters",
+    "condition": "Hypertension susceptibility",
+    "condition_id": "MedGen:C0020538",
+    "last_evaluated": "2022-03-15",
+    "accession": "RCV000001234",
+    "functional_consequence": "affects protein folding",
+    "inheritance": "Autosomal dominant"
+  },
+  "rs1799971": {
+    "rsid": "rs1799971",
+    "clinical_significance": "Benign",
+    "review_status": "reviewed_by_expert_panel",
+    "condition": "Alcohol dependence / Opioid sensitivity",
+    "condition_id": "MedGen:C0001973",
+    "last_evaluated": "2021-11-20",
+    "accession": "RCV000005678",
+    "functional_consequence": "altered receptor binding",
+    "inheritance": "Autosomal recessive"
+  },
+  "rs334": {
+    "rsid": "rs334",
+    "clinical_significance": "Pathogenic",
+    "review_status": "reviewed_by_expert_panel",
+    "condition": "Sickle cell disease",
+    "condition_id": "MedGen:C0002895",
+    "last_evaluated": "2023-01-10",
+    "accession": "RCV000007890",
+    "functional_consequence": "altered hemoglobin structure",
+    "inheritance": "Autosomal recessive"
+  },
+  "rs1805007": {
+    "rsid": "rs1805007",
+    "clinical_significance": "Likely_pathogenic",
+    "review_status": "criteria_provided_single_submitter",
+    "condition": "Melanoma susceptibility; Red hair phenotype",
+    "condition_id": "MedGen:C0025202",
+    "last_evaluated": "2022-08-05",
+    "accession": "RCV000012345",
+    "functional_consequence": "altered pigmentation signaling",
+    "inheritance": "Autosomal recessive"
+  },
+  "rs28897696": {
+    "rsid": "rs28897696",
+    "clinical_significance": "Pathogenic",
+    "review_status": "reviewed_by_expert_panel",
+    "condition": "Cystic fibrosis",
+    "condition_id": "MedGen:C0010674",
+    "last_evaluated": "2023-05-22",
+    "accession": "RCV000023456",
+    "functional_consequence": "loss of CFTR function",
+    "inheritance": "Autosomal recessive"
+  },
+  "rs7412": {
+    "rsid": "rs7412",
+    "clinical_significance": "Likely_pathogenic",
+    "review_status": "criteria_provided_multiple_submitters",
+    "condition": "Alzheimer disease; Lipoprotein metabolism disorder",
+    "condition_id": "MedGen:C0002395",
+    "last_evaluated": "2023-02-14",
+    "accession": "RCV000034567",
+    "functional_consequence": "altered lipoprotein binding",
+    "inheritance": "Autosomal dominant"
+  },
+  "rs429358": {
+    "rsid": "rs429358",
+    "clinical_significance": "Risk_factor",
+    "review_status": "reviewed_by_expert_panel",
+    "condition": "Alzheimer disease type 2",
+    "condition_id": "MedGen:C0494463",
+    "last_evaluated": "2023-02-14",
+    "accession": "RCV000045678",
+    "functional_consequence": "APOE4 allele formation",
+    "inheritance": "Autosomal dominant"
+  },
+  "rs1800562": {
+    "rsid": "rs1800562",
+    "clinical_significance": "Pathogenic",
+    "review_status": "reviewed_by_expert_panel",
+    "condition": "Hereditary hemochromatosis",
+    "condition_id": "MedGen:C0018997",
+    "last_evaluated": "2022-12-01",
+    "accession": "RCV000056789",
+    "functional_consequence": "impaired HFE-transferrin receptor interaction",
+    "inheritance": "Autosomal recessive"
+  },
+  "rs1042522": {
+    "rsid": "rs1042522",
+    "clinical_significance": "Benign",
+    "review_status": "criteria_provided_multiple_submitters",
+    "condition": "Cancer susceptibility modifier",
+    "condition_id": "MedGen:C0027651",
+    "last_evaluated": "2022-06-30",
+    "accession": "RCV000067890",
+    "functional_consequence": "altered p53 apoptotic activity",
+    "inheritance": "Complex"
+  },
+  "rs113488022": {
+    "rsid": "rs113488022",
+    "clinical_significance": "Pathogenic",
+    "review_status": "reviewed_by_expert_panel",
+    "condition": "Melanoma; Colorectal cancer; Lung adenocarcinoma",
+    "condition_id": "MedGen:C0025202",
+    "last_evaluated": "2023-07-18",
+    "accession": "RCV000078901",
+    "functional_consequence": "constitutive MAPK pathway activation",
+    "inheritance": "Somatic"
+  },
+  "rs28934578": {
+    "rsid": "rs28934578",
+    "clinical_significance": "Pathogenic",
+    "review_status": "reviewed_by_expert_panel",
+    "condition": "Hereditary breast and ovarian cancer syndrome",
+    "condition_id": "MedGen:C1838457",
+    "last_evaluated": "2023-04-10",
+    "accession": "RCV000089012",
+    "functional_consequence": "loss of DNA repair function",
+    "inheritance": "Autosomal dominant"
+  },
+  "rs80357906": {
+    "rsid": "rs80357906",
+    "clinical_significance": "Pathogenic",
+    "review_status": "reviewed_by_expert_panel",
+    "condition": "Hereditary breast and ovarian cancer syndrome; Fanconi anemia",
+    "condition_id": "MedGen:C1838457",
+    "last_evaluated": "2023-04-10",
+    "accession": "RCV000090123",
+    "functional_consequence": "loss of homologous recombination repair",
+    "inheritance": "Autosomal dominant"
+  },
+  "rs2230199": {
+    "rsid": "rs2230199",
+    "clinical_significance": "Uncertain_significance",
+    "review_status": "criteria_provided_single_submitter",
+    "condition": "Age-related macular degeneration",
+    "condition_id": "MedGen:C0242383",
+    "last_evaluated": "2021-09-15",
+    "accession": "RCV000101234",
+    "functional_consequence": "altered complement activation",
+    "inheritance": "Complex"
+  },
+  "rs762551": {
+    "rsid": "rs762551",
+    "clinical_significance": "Benign",
+    "review_status": "criteria_provided_multiple_submitters",
+    "condition": "Caffeine metabolism variation",
+    "condition_id": "MedGen:C0006780",
+    "last_evaluated": "2020-04-22",
+    "accession": "RCV000112345",
+    "functional_consequence": "altered CYP1A2 enzyme activity",
+    "inheritance": "Autosomal dominant"
+  },
+  "rs9939609": {
+    "rsid": "rs9939609",
+    "clinical_significance": "Risk_factor",
+    "review_status": "criteria_provided_multiple_submitters",
+    "condition": "Obesity susceptibility; Type 2 diabetes risk",
+    "condition_id": "MedGen:C0028754",
+    "last_evaluated": "2022-11-08",
+    "accession": "RCV000123456",
+    "functional_consequence": "altered FTO regulatory function",
+    "inheritance": "Complex"
+  }
+}
