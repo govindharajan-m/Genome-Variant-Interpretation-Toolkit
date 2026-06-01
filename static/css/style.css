@@ -325,6 +325,16 @@ main.main-content { flex: 1; }
 .card-subtitle { font-family: var(--font-prose); font-size: 0.875rem; color: var(--text-2); margin-bottom: 1.25rem; }
 
 /* ── Forms ───────────────────────────────────────────────────── */
+/* Remove scroll wheels/spinners from number inputs */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 .form-group { margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.35rem; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
 label {
