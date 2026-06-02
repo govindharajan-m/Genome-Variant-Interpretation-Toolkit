@@ -21,6 +21,7 @@ from db_handler import (
     get_gene_info,
     map_position_to_gene,
     get_chromosome_info,
+    get_references,
 )
 
 # ── Codon / amino acid look-up tables ─────────────────────────────────────────
@@ -278,6 +279,7 @@ def annotate_snp(chromosome: str, position: int,
         "impact": impact,
         "chromosome_info": chrom_info,
         "source": "local_coordinates",
+        "references": get_references(gene=gene_record["gene"] if gene_record else None),
     }
 
 
@@ -361,6 +363,7 @@ def analyze_cnv(chromosome: str, start: int, end: int,
             f"({'encompassing ' + gene_record['gene'] if gene_record else 'intergenic region'}). "
             f"Copy number inferred: {copy_number if copy_number is not None else 'not specified'}."
         ),
+        "references": get_references(gene=gene_record["gene"] if gene_record else None),
     }
 
 
@@ -427,6 +430,7 @@ def batch_analyze_rsids(rsid_list: list[str]) -> list[dict]:
                     clinvar_record.get("review_status") if clinvar_record else "—"
                 ),
                 "functional_consequence_note": impact.get("description", ""),
+                "references": get_references(rsid=rsid, gene=snp_record.get("gene")),
             })
         else:
             results.append({
@@ -452,6 +456,7 @@ def batch_analyze_rsids(rsid_list: list[str]) -> list[dict]:
                     "In a production system, this query would be forwarded to "
                     "the NCBI E-utilities API."
                 ),
+                "references": get_references(rsid=rsid),
             })
 
     return results
@@ -531,4 +536,5 @@ def generate_interpretation_report(rsid: str) -> dict:
         "clinical_significance": significance,
         "sig_colour": sig_colour,
         "interpretation": interpretation,
+        "references": get_references(rsid=rsid, gene=snp_record.get("gene")),
     }

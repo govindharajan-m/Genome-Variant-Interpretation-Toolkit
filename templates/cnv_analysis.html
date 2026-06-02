@@ -144,6 +144,9 @@
       </div>
     </div>
 
+    <!-- References Container -->
+    <div id="referencesContainer"></div>
+
   </div><!-- /cnvResultPanel -->
 
   <div id="cnvEmptyState" class="empty-state">
@@ -249,6 +252,10 @@ function renderCNVResult(d) {
   }
 
   document.getElementById("cr-clinical-note").textContent = d.clinical_note;
+
+  // References
+  document.getElementById("referencesContainer").innerHTML = renderReferencesHTML(d.references);
+
   panel.scrollIntoView({behavior:"smooth"});
 }
 </script>

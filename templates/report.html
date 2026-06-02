@@ -151,6 +151,32 @@
   </div>
 </div>
 
+<!-- ── Evidence & References ─────────────────────────────────────────────── -->
+{% if report.references %}
+<div class="card result-card" style="margin-top: 1.5rem;">
+  <h3 class="card-title">Evidence & References</h3>
+  <div class="references-container" style="display: flex; flex-direction: column; gap: 1rem;">
+    {% for src in [('dbsnp', 'dbSNP'), ('clinvar', 'ClinVar'), ('pubmed', 'PubMed'), ('genecards', 'GeneCards')] %}
+      {% set items = report.references.get(src[0], []) %}
+      <div class="ref-section">
+        <div style="font-weight: 600; margin-bottom: 0.25rem; color: var(--text-primary);">{{ src[1] }}</div>
+        {% if items|length == 0 %}
+          <div style="color: var(--text-secondary); font-size: 0.875rem;">No reference available</div>
+        {% else %}
+          <ul style="list-style-type: disc; margin: 0; padding-left: 1.5rem;">
+          {% for item in items %}
+            <li style="margin-bottom: 0.25rem;">
+              <a href="{{ item.url }}" target="_blank" class="ext-link" style="color: var(--primary-colour); text-decoration: none;">{{ item.id }}</a>
+            </li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
 <!-- ── Action Buttons ────────────────────────────────────────────────────── -->
 <div class="report-actions">
   <a href="{{ url_for('batch_analysis_page') }}" class="btn btn-outline">← Back to Batch Analysis</a>

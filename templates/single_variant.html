@@ -135,6 +135,9 @@
          Use Ensembl's browser to explore the locus further.</p>
     </div>
 
+    <!-- References Container -->
+    <div id="referencesContainer"></div>
+
   </div><!-- /resultPanel -->
 
   <!-- ── Empty state (shown before first search) ───────────────────────── -->
@@ -246,6 +249,9 @@ function renderSNPResult(d) {
   document.getElementById("r-sift").textContent    = imp.sift_pred || "—";
   document.getElementById("r-polyphen").textContent= imp.polyphen_pred || "—";
   document.getElementById("r-impact-desc").textContent = imp.description;
+
+  // References
+  document.getElementById("referencesContainer").innerHTML = renderReferencesHTML(d.references);
 
   panel.scrollIntoView({behavior:"smooth"});
 }

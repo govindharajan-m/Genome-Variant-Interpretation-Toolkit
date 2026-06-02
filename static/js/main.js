@@ -53,3 +53,44 @@ document.addEventListener("DOMContentLoaded", () => {
 /* Utilities */
 function formatPos(n) { return n?.toLocaleString() ?? "—"; }
 function impactClass(l) { return "impact-" + (l || "MODIFIER"); }
+
+// ── References & Evidence HTML Generator ──────────────────────────────────────
+function renderReferencesHTML(refs) {
+  if (!refs) return "";
+  
+  let html = `<div class="card result-card" id="referencesCard">
+    <h3 class="card-title">Evidence & References</h3>
+    <div class="references-container" style="display: flex; flex-direction: column; gap: 1rem;">`;
+
+  const sources = [
+    { key: "dbsnp", label: "dbSNP" },
+    { key: "clinvar", label: "ClinVar" },
+    { key: "pubmed", label: "PubMed" },
+    { key: "genecards", label: "GeneCards" }
+  ];
+
+  for (const src of sources) {
+    const items = refs[src.key] || [];
+    html += `<div class="ref-section">
+      <div style="font-weight: 600; margin-bottom: 0.25rem; color: var(--text-primary);">${src.label}</div>`;
+    
+    if (items.length === 0) {
+      html += `<div style="color: var(--text-secondary); font-size: 0.875rem;">No reference available</div>`;
+    } else {
+      html += `<ul style="list-style-type: disc; margin: 0; padding-left: 1.5rem;">`;
+      for (const item of items) {
+        html += `<li style="margin-bottom: 0.25rem;">
+          <a href="${item.url}" target="_blank" class="ext-link" style="color: var(--primary-colour); text-decoration: none;">
+            ${item.id}
+          </a>
+        </li>`;
+      }
+      html += `</ul>`;
+    }
+    html += `</div>`;
+  }
+
+  html += `</div></div>`;
+  return html;
+}
+

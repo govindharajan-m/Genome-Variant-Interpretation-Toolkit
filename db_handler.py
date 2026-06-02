@@ -144,3 +144,68 @@ def get_chromosome_info(chromosome: str) -> dict | None:
 def get_all_known_rsids() -> list[str]:
     """Return sorted list of all rsIDs in mock dataset (for demo / autocomplete)."""
     return sorted(_DBSNP_DATA.keys())
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# References & Evidence
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def get_references(rsid: str = None, gene: str = None) -> dict:
+    """
+    Construct a structured references and evidence object for a variant or gene.
+    Returns:
+        references = {
+            "dbsnp": [],
+            "clinvar": [],
+            "pubmed": [],
+            "genecards": []
+        }
+    """
+    refs = {
+        "dbsnp": [],
+        "clinvar": [],
+        "pubmed": [],
+        "genecards": []
+    }
+
+    if rsid:
+        key = rsid.lower().strip()
+        if not key.startswith("rs"):
+            key = "rs" + key
+            
+        # Mock dbSNP reference
+        refs["dbsnp"].append({
+            "id": key,
+            "url": f"https://www.ncbi.nlm.nih.gov/snp/{key}"
+        })
+
+        # Mock ClinVar reference
+        clinvar_record = get_clinvar_record(key)
+        if clinvar_record and clinvar_record.get("accession"):
+            refs["clinvar"].append({
+                "id": f"ClinVar ID {clinvar_record['accession']}",
+                "url": f"https://www.ncbi.nlm.nih.gov/clinvar/variation/{clinvar_record['accession']}/"
+            })
+
+        # Mock PubMed references (hardcoded for demo purposes)
+        # In a real app, we'd query E-utilities with the rsID to get PMIDs
+        if key == "rs429358":
+            refs["pubmed"].append({"id": "PMID: 12345678", "url": "https://pubmed.ncbi.nlm.nih.gov/12345678/"})
+            refs["pubmed"].append({"id": "PMID: 23456789", "url": "https://pubmed.ncbi.nlm.nih.gov/23456789/"})
+        elif key == "rs334":
+            refs["pubmed"].append({"id": "PMID: 2132338", "url": "https://pubmed.ncbi.nlm.nih.gov/2132338/"})
+        else:
+            # Generate a consistent fake PMID based on hash of rsid for demo variety
+            import hashlib
+            seed = int(hashlib.md5(key.encode()).hexdigest()[:4], 16)
+            pmid = str(20000000 + seed)
+            refs["pubmed"].append({"id": f"PMID: {pmid}", "url": f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/"})
+
+    if gene and gene != "—":
+        refs["genecards"].append({
+            "id": f"{gene.upper()} GeneCards Entry",
+            "url": f"https://www.genecards.org/cgi-bin/carddisp.pl?gene={gene.upper()}"
+        })
+
+    return refs
+
