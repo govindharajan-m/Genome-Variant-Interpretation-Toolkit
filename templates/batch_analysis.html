@@ -87,6 +87,7 @@
             <th>Allele Freq</th>
             <th>Clinical Significance</th>
             <th>Condition</th>
+            <th>Evidence</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -232,6 +233,7 @@ function renderBatchTable(results) {
       <td>${freq}</td>
       <td><span class="sig-badge ${sigClass}">${r.clinical_significance || "—"}</span></td>
       <td title="${r.condition || ""}">${truncate(r.condition, 30)}</td>
+      <td>${r.evidence ? `<span style="font-weight: 600; color: ${r.evidence.evidence_strength === 'High' ? '#27ae60' : r.evidence.evidence_strength === 'Moderate' ? '#f39c12' : '#e74c3c'};">${r.evidence.evidence_strength}</span> <span style="font-size: 0.8em; color: var(--text-secondary);">(${r.evidence.evidence_score})</span>` : '—'}</td>
       <td>${r.found ? '<a href="/report/' + r.rsid + '" class="btn-mini">Report →</a>' : "—"}</td>
     `;
     tbody.appendChild(tr);

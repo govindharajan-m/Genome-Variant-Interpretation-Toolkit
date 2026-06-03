@@ -21,8 +21,8 @@ from db_handler import (
     get_gene_info,
     map_position_to_gene,
     get_chromosome_info,
-    get_references,
 )
+from evidence_manager import build_evidence_object
 
 # ── Codon / amino acid look-up tables ─────────────────────────────────────────
 # Standard genetic code: each 3-base codon → 1-letter amino acid
@@ -279,7 +279,7 @@ def annotate_snp(chromosome: str, position: int,
         "impact": impact,
         "chromosome_info": chrom_info,
         "source": "local_coordinates",
-        "references": get_references(gene=gene_record["gene"] if gene_record else None),
+        "evidence": build_evidence_object(None, gene_record["gene"] if gene_record else None),
     }
 
 
@@ -363,7 +363,7 @@ def analyze_cnv(chromosome: str, start: int, end: int,
             f"({'encompassing ' + gene_record['gene'] if gene_record else 'intergenic region'}). "
             f"Copy number inferred: {copy_number if copy_number is not None else 'not specified'}."
         ),
-        "references": get_references(gene=gene_record["gene"] if gene_record else None),
+        "evidence": build_evidence_object(None, gene_record["gene"] if gene_record else None),
     }
 
 
@@ -430,7 +430,7 @@ def batch_analyze_rsids(rsid_list: list[str]) -> list[dict]:
                     clinvar_record.get("review_status") if clinvar_record else "—"
                 ),
                 "functional_consequence_note": impact.get("description", ""),
-                "references": get_references(rsid=rsid, gene=snp_record.get("gene")),
+                "evidence": build_evidence_object(rsid, snp_record.get("gene")),
             })
         else:
             results.append({
@@ -456,7 +456,7 @@ def batch_analyze_rsids(rsid_list: list[str]) -> list[dict]:
                     "In a production system, this query would be forwarded to "
                     "the NCBI E-utilities API."
                 ),
-                "references": get_references(rsid=rsid),
+                "evidence": build_evidence_object(rsid, None),
             })
 
     return results
@@ -506,24 +506,19 @@ def generate_interpretation_report(rsid: str) -> dict:
     freq = snp_record.get("allele_frequency")
     freq_str = f"{freq:.4f} ({freq*100:.2f}%)" if freq is not None else "unknown"
 
-    interpretation = (
-        f"Variant {rsid} ({hgvs}) introduces a {classification['subtype'].lower()} "
-        f"in {gene_name}, resulting in a {consequence.replace('_', ' ')} "
-        f"({protein_change}). "
-        f"The global alternate allele frequency is {freq_str}. "
-    )
-    if clinvar_record:
-        interpretation += (
-            f"ClinVar classifies this variant as '{significance}' in the context of "
-            f"{clinvar_record.get('condition', 'unspecified condition')}. "
-            f"The functional consequence is reported as: "
-            f"{clinvar_record.get('functional_consequence', 'not described')}."
+    interpretation = {
+        "impact": impact.get("impact_level", "UNKNOWN"),
+        "impact_meaning": impact.get("description", "Meaning unknown."),
+        "clinical_significance": significance,
+        "significance_meaning": "Existing evidence suggests disease association." if significance in ["Pathogenic", "Likely_pathogenic"] else "Not enough evidence for pathogenicity." if significance == "Uncertain_significance" else "Considered non-pathogenic." if significance in ["Benign", "Likely_benign"] else "Not assessed.",
+        "general_summary": (
+            f"Variant {rsid} ({hgvs}) introduces a {classification['subtype'].lower()} "
+            f"in {gene_name}, resulting in a {consequence.replace('_', ' ')} "
+            f"({protein_change}). "
+            f"The global alternate allele frequency is {freq_str}. "
+            f"{'It participates in the ' + gene_info.get('pathway', 'unknown') + ' pathway.' if gene_info else ''}"
         )
-    if gene_info:
-        interpretation += (
-            f" {gene_name} encodes {gene_info.get('description', '')}. "
-            f"It participates in the {gene_info.get('pathway', 'unknown')} pathway."
-        )
+    }
 
     return {
         "found": True,
@@ -536,5 +531,5 @@ def generate_interpretation_report(rsid: str) -> dict:
         "clinical_significance": significance,
         "sig_colour": sig_colour,
         "interpretation": interpretation,
-        "references": get_references(rsid=rsid, gene=snp_record.get("gene")),
+        "evidence": build_evidence_object(rsid, snp_record.get("gene")),
     }
