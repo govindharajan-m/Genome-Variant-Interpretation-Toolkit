@@ -1,0 +1,2087 @@
+{
+  "found": true,
+  "rsid": "rs334",
+  "snp": {
+    "rsid": "rs334",
+    "chromosome": "11",
+    "position": 5227002,
+    "ref": "T",
+    "alt": "A",
+    "gene": "HBB",
+    "consequence": "missense_variant",
+    "hgvs": "NM_000518.5:c.20A>T",
+    "protein_change": "p.Glu7Val",
+    "allele_frequency": 0.001,
+    "strand": "-",
+    "population_frequencies": {
+      "south_asian": 0.0016,
+      "european": 0.0007,
+      "east_asian": 0.0018,
+      "african": 0.0018,
+      "american": 0.0001,
+      "global": 0.001
+    },
+    "frequency_source": "Local dbSNP Curated Dataset",
+    "gwas_associations": [
+      {
+        "p_value": 1e-323,
+        "beta": 2.241,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": "Hereditary hemolytic anemias (PheCode 282)",
+        "study": "Diversity and scale: Genetic architecture of 2068 traits in the VA Million Veteran Program.",
+        "pmid": "39024449"
+      },
+      {
+        "p_value": 9e-131,
+        "beta": 0.2578,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2.9999999999999997e-118,
+        "beta": 0.2615,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-113,
+        "beta": 0.2276,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-103,
+        "beta": 0.2308,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-88,
+        "beta": 0.2169,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 9e-85,
+        "beta": 0.2399,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 8e-83,
+        "beta": 0.2546,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 5e-80,
+        "beta": 0.2415,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 5.9999999999999994e-80,
+        "beta": 0.1853,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 8e-78,
+        "beta": 0.2141,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 8e-76,
+        "beta": 0.1883,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-73,
+        "beta": 0.2356,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 8.999999999999999e-72,
+        "beta": 0.2565,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4e-69,
+        "beta": 1.572,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-68,
+        "beta": 0.2435,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4e-68,
+        "beta": 0.1844,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-67,
+        "beta": 1.385,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 5e-66,
+        "beta": 0.23,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2.9999999999999996e-65,
+        "beta": 0.2108,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-63,
+        "beta": 0.1837,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-61,
+        "beta": 0.2302,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-59,
+        "beta": 0.1785,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-55,
+        "beta": 1.106,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-55,
+        "beta": 0.2069,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-54,
+        "beta": 0.1703,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4e-53,
+        "beta": 0.206,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-52,
+        "beta": 0.1753,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-52,
+        "beta": 0.2061,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-51,
+        "beta": 0.2316,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-51,
+        "beta": 0.208,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 3e-51,
+        "beta": 0.2245,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-49,
+        "beta": 0.1677,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-49,
+        "beta": 0.1813,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2.9999999999999996e-49,
+        "beta": 0.2043,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4e-49,
+        "beta": 0.2095,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 5e-48,
+        "beta": 0.2403,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-46,
+        "beta": 0.2319,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 6.0000000000000005e-46,
+        "beta": 0.2099,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 8e-43,
+        "beta": 0.1778,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 9e-40,
+        "beta": 0.1352,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2.9999999999999996e-39,
+        "beta": 0.305,
+        "odds_ratio": null,
+        "beta_unit": "%",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4e-39,
+        "beta": 0.142,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 8.999999999999999e-39,
+        "beta": 0.1261,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 3e-38,
+        "beta": 0.43,
+        "odds_ratio": null,
+        "beta_unit": "umol/L",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-37,
+        "beta": 0.1369,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4e-37,
+        "beta": 0.1315,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-36,
+        "beta": 0.1376,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2.9999999999999998e-36,
+        "beta": 0.1372,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4.9999999999999994e-36,
+        "beta": 0.42,
+        "odds_ratio": null,
+        "beta_unit": "umol/L",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-33,
+        "beta": 0.1333,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-33,
+        "beta": 0.601,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 3e-32,
+        "beta": 0.39,
+        "odds_ratio": null,
+        "beta_unit": "umol/L",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-31,
+        "beta": 0.1376,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-31,
+        "beta": 0.1426,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-31,
+        "beta": 0.3534,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 3.0000000000000003e-31,
+        "beta": 0.1401,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4e-31,
+        "beta": 0.3479,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 7.000000000000001e-31,
+        "beta": 0.1405,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 9e-31,
+        "beta": 0.3578,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 6.0000000000000005e-30,
+        "beta": 0.139,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 9e-29,
+        "beta": 0.1208,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4e-28,
+        "beta": 0.1093,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 5e-28,
+        "beta": 0.1039,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-27,
+        "beta": 0.3327,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-27,
+        "beta": 0.3283,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 8e-27,
+        "beta": 0.8169163,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-26,
+        "beta": 0.1796,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-26,
+        "beta": 0.1738,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4e-26,
+        "beta": 0.1159,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 8e-26,
+        "beta": 0.335,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 8e-26,
+        "beta": 0.4404093,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 3.0000000000000002e-25,
+        "beta": 0.1156,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4e-25,
+        "beta": 0.2806,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-24,
+        "beta": 0.8168,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4e-23,
+        "beta": 0.1196,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4.9999999999999997e-23,
+        "beta": 0.1155,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-22,
+        "beta": 3.46,
+        "odds_ratio": null,
+        "beta_unit": "fL",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-22,
+        "beta": 0.2656,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 3e-22,
+        "beta": 0.4163,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 7e-22,
+        "beta": 0.1158,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4e-20,
+        "beta": 0.09315,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 5e-20,
+        "beta": null,
+        "odds_ratio": null,
+        "beta_unit": null,
+        "beta_direction": null,
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 5.999999999999999e-20,
+        "beta": 0.4477,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-19,
+        "beta": 0.244267,
+        "odds_ratio": null,
+        "beta_unit": "SD units",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-19,
+        "beta": 0.09632,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-19,
+        "beta": 0.2237,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-19,
+        "beta": 0.244267,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 5e-19,
+        "beta": null,
+        "odds_ratio": 2.76,
+        "beta_unit": null,
+        "beta_direction": null,
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 9e-19,
+        "beta": 0.3967,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-18,
+        "beta": null,
+        "odds_ratio": null,
+        "beta_unit": null,
+        "beta_direction": null,
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-18,
+        "beta": 0.09313,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 3.0000000000000002e-18,
+        "beta": 0.09728,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-17,
+        "beta": 0.2124,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-17,
+        "beta": 0.4348,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-17,
+        "beta": 0.5795535,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-17,
+        "beta": 0.268,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 5.0000000000000005e-17,
+        "beta": null,
+        "odds_ratio": null,
+        "beta_unit": null,
+        "beta_direction": null,
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 6e-17,
+        "beta": null,
+        "odds_ratio": null,
+        "beta_unit": null,
+        "beta_direction": null,
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-16,
+        "beta": 8.27,
+        "odds_ratio": null,
+        "beta_unit": "z score",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 3.0000000000000002e-15,
+        "beta": 0.08832,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 5.000000000000001e-15,
+        "beta": 0.2438,
+        "odds_ratio": null,
+        "beta_unit": "mg/dL",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-14,
+        "beta": 0.2471,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-14,
+        "beta": 0.08613,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 6e-14,
+        "beta": 0.2693,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-13,
+        "beta": 0.08315,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-13,
+        "beta": 0.3762,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-13,
+        "beta": 0.09059,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 3.0000000000000003e-13,
+        "beta": 0.07876,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 3.0000000000000003e-13,
+        "beta": 0.1737,
+        "odds_ratio": null,
+        "beta_unit": "cell/L",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4e-13,
+        "beta": 0.3381,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 5e-13,
+        "beta": 0.4658,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 6.000000000000001e-13,
+        "beta": 0.08947,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 7e-13,
+        "beta": 3.793,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 7e-13,
+        "beta": 0.0882,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 9e-13,
+        "beta": null,
+        "odds_ratio": 7.633588,
+        "beta_unit": null,
+        "beta_direction": null,
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-12,
+        "beta": 0.2586,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-12,
+        "beta": 0.08914,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-12,
+        "beta": 0.0794,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-12,
+        "beta": null,
+        "odds_ratio": null,
+        "beta_unit": null,
+        "beta_direction": null,
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-12,
+        "beta": 0.3798,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-12,
+        "beta": 0.08531,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 8e-12,
+        "beta": 0.44,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 9e-12,
+        "beta": 0.373,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-11,
+        "beta": 0.3517,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-11,
+        "beta": 0.362,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-11,
+        "beta": 0.3237,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4e-11,
+        "beta": 0.480959,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 8e-11,
+        "beta": 0.53,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-10,
+        "beta": 1.32,
+        "odds_ratio": null,
+        "beta_unit": "%",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 3e-10,
+        "beta": 0.5,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 4e-10,
+        "beta": 8.2,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 3.0000000000000004e-08,
+        "beta": 1.957,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 6.000000000000001e-08,
+        "beta": null,
+        "odds_ratio": null,
+        "beta_unit": null,
+        "beta_direction": null,
+        "trait": null,
+        "study": null,
+        "pmid": null
+      }
+    ],
+    "clinvar": {
+      "source": "live",
+      "clinical_significance": "Pathogenic",
+      "review_status": "criteria provided, multiple submitters, no conflicts",
+      "raw_review_status": "criteria provided, multiple submitters, no conflicts",
+      "condition": "alpha Thalassemia",
+      "accession": "VCV000015333.177",
+      "variation_id": "15333",
+      "submission_count": 71,
+      "last_evaluated": "2026/02/26 00:00",
+      "confidence_level": "Moderate",
+      "consensus_score": 93,
+      "conflicting_interpretations": false,
+      "conflict_breakdown": {
+        "Pathogenic": 66,
+        "Not provided": 4,
+        "Protective": 1
+      },
+      "assertions": [
+        {
+          "submitter": "Clinical Genetics and Genomics, Karolinska University Hospital",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Genetic Services Laboratory, University of Chicago",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Laboratory for Molecular Medicine, Mass General Brigham Personalized Medicine",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Ambry Genetics",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Mayo Clinic Laboratories, Mayo Clinic",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Victorian Clinical Genetics Services, Murdoch Childrens Research Institute",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Fulgent Genetics, Fulgent Genetics",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Department of Pathology and Laboratory Medicine, Sinai Health System",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Revvity Omics, Revvity",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "CeGaT Center for Human Genetics Tuebingen",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Division of Human Genetics, Children's Hospital of Philadelphia",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "HudsonAlpha Institute for Biotechnology, HudsonAlpha Institute for Biotechnology",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Gharavi Laboratory, Columbia University",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Mendelics",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Reproductive Health Research and Development, BGI Genomics",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Women's Health and Genetics/Laboratory Corporation of America, LabCorp",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Myriad Genetics, Inc.",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Institute for Genomic Medicine (IGM) Clinical Laboratory, Nationwide Children's Hospital",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Fulgent Genetics, Fulgent Genetics",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Diagnostic Laboratory, Department of Genetics, University Medical Center Groningen",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Joint Genome Diagnostic Labs from Nijmegen and Maastricht, Radboudumc and MUMC+",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Dubai Health Genomic Medicine Center, Dubai Health",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Laboratorio de Genetica e Diagnostico Molecular, Hospital Israelita Albert Einstein",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "H3Africa Consortium",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Johns Hopkins Genomics, Johns Hopkins University",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "OMIM",
+          "classification": "Not provided"
+        },
+        {
+          "submitter": "OMIM",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "OMIM",
+          "classification": "Protective"
+        },
+        {
+          "submitter": "Neuberg Centre For Genomic Medicine, NCGM",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "PreventionGenetics, part of Exact Sciences",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Dasa",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "GenomeConnect - Brain Gene Registry",
+          "classification": "Not provided"
+        },
+        {
+          "submitter": "MOLECULAR BIOLOGY AND HUMAN GENETICS DIVISION, THE UNIVERSITY OF BURDWAN",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Genetics and Genomic Medicine Centre, NeuroGen Healthcare, NeuroGen Healthcare",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Neuberg Centre For Genomic Medicine, NCGM",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Variantyx, Inc.",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "GenomeConnect, ClinGen",
+          "classification": "Not provided"
+        },
+        {
+          "submitter": "Natera, Inc.",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Center for Pediatric Genomic Medicine, Children's Mercy Hospital and Clinics",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Biochemical Molecular Genetic Laboratory, King Abdulaziz Medical City",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Genome Diagnostics Laboratory, University Medical Center Utrecht",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Clinical Genetics DNA and cytogenetics Diagnostics Lab, Erasmus MC, Erasmus Medical Center",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "CENTOGENE GmbH and LLC - Guiding Precision Medicine",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Baylor Genetics",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "AiLife Diagnostics, AiLife Diagnostics",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "GeneReviews",
+          "classification": "Not provided"
+        },
+        {
+          "submitter": "Greenwood Genetic Center Diagnostic Laboratories, Greenwood Genetic Center",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Genetics and Molecular Pathology, SA Pathology",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Genetics and Molecular Pathology, SA Pathology",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "GeneDx",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Baylor Genetics",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Lifecell International Pvt. Ltd",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Illumina Laboratory Services, Illumina",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Genomics And Bioinformatics Analysis Resource, Columbia University",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Rady Children's Institute for Genomic Medicine, Rady Children's Hospital San Diego",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Genomic Medicine Center of Excellence, King Faisal Specialist Hospital and Research Centre",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Clinical Genetics Laboratory, Skane University Hospital Lund",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "New York Genome Center",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Center for Genomic Medicine, Rigshospitalet, Copenhagen University Hospital",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Eurofins Ntd Llc (ga)",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Genomics Facility, Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "MGZ Medical Genetics Center",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Genomic Research Center, Shahid Beheshti University of Medical Sciences",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Daryl Scott Lab, Baylor College of Medicine",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "3billion",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Institute for Medical Genetics and Human Genetics, Charit\u00e9 - Universit\u00e4tsmedizin Berlin",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "ARUP Laboratories, Molecular Genetics and Genomics, ARUP Laboratories",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Labcorp Genetics (formerly Invitae), Labcorp",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Department of Molecular Genetics, Istishari Arab Hospital",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "OLLIN Analises Genomicas, OLLIN",
+          "classification": "Pathogenic"
+        },
+        {
+          "submitter": "Rady Children's Institute for Genomic Medicine, Rady Children's Hospital San Diego",
+          "classification": "Pathogenic"
+        }
+      ]
+    }
+  },
+  "clinvar": {
+    "source": "live",
+    "clinical_significance": "Pathogenic",
+    "review_status": "criteria provided, multiple submitters, no conflicts",
+    "raw_review_status": "criteria provided, multiple submitters, no conflicts",
+    "condition": "alpha Thalassemia",
+    "accession": "VCV000015333.177",
+    "variation_id": "15333",
+    "submission_count": 71,
+    "last_evaluated": "2026/02/26 00:00",
+    "confidence_level": "Moderate",
+    "consensus_score": 93,
+    "conflicting_interpretations": false,
+    "conflict_breakdown": {
+      "Pathogenic": 66,
+      "Not provided": 4,
+      "Protective": 1
+    },
+    "assertions": [
+      {
+        "submitter": "Clinical Genetics and Genomics, Karolinska University Hospital",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Genetic Services Laboratory, University of Chicago",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Laboratory for Molecular Medicine, Mass General Brigham Personalized Medicine",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Ambry Genetics",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Mayo Clinic Laboratories, Mayo Clinic",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Victorian Clinical Genetics Services, Murdoch Childrens Research Institute",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Fulgent Genetics, Fulgent Genetics",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Department of Pathology and Laboratory Medicine, Sinai Health System",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Revvity Omics, Revvity",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "CeGaT Center for Human Genetics Tuebingen",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Division of Human Genetics, Children's Hospital of Philadelphia",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "HudsonAlpha Institute for Biotechnology, HudsonAlpha Institute for Biotechnology",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Gharavi Laboratory, Columbia University",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Mendelics",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Reproductive Health Research and Development, BGI Genomics",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Women's Health and Genetics/Laboratory Corporation of America, LabCorp",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Myriad Genetics, Inc.",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Institute for Genomic Medicine (IGM) Clinical Laboratory, Nationwide Children's Hospital",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Fulgent Genetics, Fulgent Genetics",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Diagnostic Laboratory, Department of Genetics, University Medical Center Groningen",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Joint Genome Diagnostic Labs from Nijmegen and Maastricht, Radboudumc and MUMC+",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Dubai Health Genomic Medicine Center, Dubai Health",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Laboratorio de Genetica e Diagnostico Molecular, Hospital Israelita Albert Einstein",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "H3Africa Consortium",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Johns Hopkins Genomics, Johns Hopkins University",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "OMIM",
+        "classification": "Not provided"
+      },
+      {
+        "submitter": "OMIM",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "OMIM",
+        "classification": "Protective"
+      },
+      {
+        "submitter": "Neuberg Centre For Genomic Medicine, NCGM",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "PreventionGenetics, part of Exact Sciences",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Dasa",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "GenomeConnect - Brain Gene Registry",
+        "classification": "Not provided"
+      },
+      {
+        "submitter": "MOLECULAR BIOLOGY AND HUMAN GENETICS DIVISION, THE UNIVERSITY OF BURDWAN",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Genetics and Genomic Medicine Centre, NeuroGen Healthcare, NeuroGen Healthcare",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Neuberg Centre For Genomic Medicine, NCGM",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Variantyx, Inc.",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "GenomeConnect, ClinGen",
+        "classification": "Not provided"
+      },
+      {
+        "submitter": "Natera, Inc.",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Center for Pediatric Genomic Medicine, Children's Mercy Hospital and Clinics",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Biochemical Molecular Genetic Laboratory, King Abdulaziz Medical City",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Genome Diagnostics Laboratory, University Medical Center Utrecht",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Clinical Genetics DNA and cytogenetics Diagnostics Lab, Erasmus MC, Erasmus Medical Center",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "CENTOGENE GmbH and LLC - Guiding Precision Medicine",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Baylor Genetics",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "AiLife Diagnostics, AiLife Diagnostics",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "GeneReviews",
+        "classification": "Not provided"
+      },
+      {
+        "submitter": "Greenwood Genetic Center Diagnostic Laboratories, Greenwood Genetic Center",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Genetics and Molecular Pathology, SA Pathology",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Genetics and Molecular Pathology, SA Pathology",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "GeneDx",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Baylor Genetics",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Lifecell International Pvt. Ltd",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Illumina Laboratory Services, Illumina",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Genomics And Bioinformatics Analysis Resource, Columbia University",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Rady Children's Institute for Genomic Medicine, Rady Children's Hospital San Diego",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Genomic Medicine Center of Excellence, King Faisal Specialist Hospital and Research Centre",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Clinical Genetics Laboratory, Skane University Hospital Lund",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "New York Genome Center",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Center for Genomic Medicine, Rigshospitalet, Copenhagen University Hospital",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Eurofins Ntd Llc (ga)",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Genomics Facility, Ludwig-Maximilians-Universit\u00e4t M\u00fcnchen",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "MGZ Medical Genetics Center",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Genomic Research Center, Shahid Beheshti University of Medical Sciences",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Daryl Scott Lab, Baylor College of Medicine",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "3billion",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Institute for Medical Genetics and Human Genetics, Charit\u00e9 - Universit\u00e4tsmedizin Berlin",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "ARUP Laboratories, Molecular Genetics and Genomics, ARUP Laboratories",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Labcorp Genetics (formerly Invitae), Labcorp",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Department of Molecular Genetics, Istishari Arab Hospital",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "OLLIN Analises Genomicas, OLLIN",
+        "classification": "Pathogenic"
+      },
+      {
+        "submitter": "Rady Children's Institute for Genomic Medicine, Rady Children's Hospital San Diego",
+        "classification": "Pathogenic"
+      }
+    ]
+  },
+  "gene_info": {
+    "gene": "HBB",
+    "chromosome": "11",
+    "start": 5225464,
+    "end": 5229395,
+    "strand": "+",
+    "biotype": "protein_coding",
+    "description": "Hemoglobin subunit beta \u00e2\u20ac\u201d oxygen transport",
+    "pathway": "Hemoglobin synthesis / Oxygen transport",
+    "omim": "141900"
+  },
+  "classification": {
+    "type": "SNP",
+    "subtype": "Transversion",
+    "length": 1
+  },
+  "impact": {
+    "impact_level": "MODERATE",
+    "description": "A single nucleotide change alters one amino acid in the protein sequence. Depending on the physicochemical properties of the substitution and the residue's structural role, this may disrupt protein folding, binding, or enzymatic activity.",
+    "sift_pred": "Damaging",
+    "polyphen_pred": "Possibly_damaging",
+    "consequence": "missense_variant"
+  },
+  "clinical_significance": "Pathogenic",
+  "sig_colour": "#e74c3c",
+  "interpretation": {
+    "impact": "MODERATE",
+    "impact_meaning": "A single nucleotide change alters one amino acid in the protein sequence. Depending on the physicochemical properties of the substitution and the residue's structural role, this may disrupt protein folding, binding, or enzymatic activity.",
+    "clinical_significance": "Pathogenic",
+    "significance_meaning": "Existing evidence suggests disease association.",
+    "general_summary": "Variant rs334 (NM_000518.5:c.20A>T) introduces a transversion in HBB, resulting in a missense variant (p.Glu7Val). The global alternate allele frequency is 0.0010 (0.10%). It participates in the Hemoglobin synthesis / Oxygen transport pathway."
+  },
+  "evidence": {
+    "variant": {
+      "rsid": "rs334",
+      "gene": "HBB"
+    },
+    "dbsnp": {
+      "id": "rs334",
+      "url": "https://www.ncbi.nlm.nih.gov/snp/rs334"
+    },
+    "clinvar": {
+      "id": "ClinVar RCV000016573",
+      "url": "https://www.ncbi.nlm.nih.gov/clinvar/RCV000016573/",
+      "classification": "Pathogenic",
+      "review_status": "reviewed_by_expert_panel",
+      "disease_associations": [
+        "Sickle cell disease"
+      ]
+    },
+    "genecards": {
+      "id": "HBB GeneCards Entry",
+      "url": "https://www.genecards.org/cgi-bin/carddisp.pl?gene=HBB",
+      "gene_summary": "Hemoglobin subunit beta \u00e2\u20ac\u201d oxygen transport",
+      "biological_function": "Hemoglobin synthesis / Oxygen transport",
+      "associated_diseases": []
+    },
+    "pubmed": [
+      {
+        "pmid": "29542687",
+        "id": "PMID: 29542687",
+        "title": "Sickle cell disease.",
+        "year": 2018,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/29542687/"
+      },
+      {
+        "pmid": "28159390",
+        "id": "PMID: 28159390",
+        "title": "Sickle cell disease.",
+        "year": 2017,
+        "url": "https://pubmed.ncbi.nlm.nih.gov/28159390/"
+      }
+    ],
+    "warnings": [],
+    "evidence_score": 80,
+    "evidence_strength": "High"
+  },
+  "impact_explanation": {
+    "meaning": "Predicted to alter protein sequence or function without complete disruption.",
+    "biological_consequences": [
+      "Single amino acid substitution (may affect folding or binding)",
+      "In-frame insertion/deletion altering protein length",
+      "Altered protein-protein interaction interfaces",
+      "Changed enzymatic activity or substrate specificity"
+    ],
+    "example_variant_types": [
+      "Missense variant",
+      "In-frame deletion",
+      "In-frame insertion",
+      "Protein-altering variant"
+    ],
+    "interpretation": "MODERATE impact variants change the protein but do not destroy it. The actual effect ranges from benign (tolerated substitution in a non-critical region) to damaging (substitution at an active site or conserved residue). Computational tools like SIFT and PolyPhen-2 help distinguish tolerated from deleterious changes, but functional studies provide the strongest evidence."
+  },
+  "significance_explanation": {
+    "definition": "The variant has been determined to cause disease based on strong evidence from multiple independent sources.",
+    "interpretation": "Pathogenic variants are considered causative for the associated condition. In clinical settings, a Pathogenic classification typically triggers diagnostic confirmation, cascade family testing, and disease-specific management. This is the highest-confidence classification for disease-causing variants.",
+    "evidence_basis": [
+      "ClinVar expert panel or practice guideline review",
+      "Functional studies demonstrating deleterious effect",
+      "Segregation with disease in multiple affected families",
+      "Absence or extremely low frequency in population databases (gnomAD)",
+      "Published case-level evidence in peer-reviewed literature"
+    ],
+    "acmg_criteria": null,
+    "odds_ratio": null,
+    "beta_value": null,
+    "p_value": null,
+    "population_frequency_note": null
+  }
+}

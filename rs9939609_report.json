@@ -1,0 +1,235 @@
+{
+  "found": true,
+  "rsid": "rs9939609",
+  "snp": {
+    "rsid": "rs9939609",
+    "chromosome": "16",
+    "position": 53786615,
+    "ref": "T",
+    "alt": "A",
+    "gene": "FTO",
+    "consequence": "intron_variant",
+    "hgvs": "NM_001080432.3:c.18+6890T>A",
+    "protein_change": null,
+    "allele_frequency": 0.45,
+    "strand": "+",
+    "population_frequencies": {
+      "south_asian": 0.2345,
+      "european": 0.3745,
+      "east_asian": 0.1513,
+      "african": 0.6934,
+      "american": 0.1073,
+      "global": 0.45
+    },
+    "frequency_source": "Local dbSNP Curated Dataset",
+    "gwas_associations": [
+      {
+        "p_value": 4e-51,
+        "beta": 0.33,
+        "odds_ratio": null,
+        "beta_unit": "kg/m2",
+        "beta_direction": "increase",
+        "trait": "Body mass index",
+        "study": "Six new loci associated with body mass index highlight a neuronal influence on body weight regulation.",
+        "pmid": "19079261"
+      },
+      {
+        "p_value": 3e-35,
+        "beta": 0.36,
+        "odds_ratio": null,
+        "beta_unit": "kg/m2",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-20,
+        "beta": null,
+        "odds_ratio": 1.25,
+        "beta_unit": null,
+        "beta_direction": null,
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-17,
+        "beta": null,
+        "odds_ratio": null,
+        "beta_unit": null,
+        "beta_direction": null,
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 9e-16,
+        "beta": 0.05365296,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-14,
+        "beta": null,
+        "odds_ratio": null,
+        "beta_unit": null,
+        "beta_direction": null,
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 3e-11,
+        "beta": null,
+        "odds_ratio": null,
+        "beta_unit": null,
+        "beta_direction": null,
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 3.0000000000000004e-08,
+        "beta": 2.1,
+        "odds_ratio": null,
+        "beta_unit": "week",
+        "beta_direction": "decrease",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 3.0000000000000004e-08,
+        "beta": 0.087095,
+        "odds_ratio": null,
+        "beta_unit": "unit",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-07,
+        "beta": null,
+        "odds_ratio": 1.34,
+        "beta_unit": null,
+        "beta_direction": null,
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 2e-07,
+        "beta": 0.24,
+        "odds_ratio": null,
+        "beta_unit": "kg/m2",
+        "beta_direction": "increase",
+        "trait": null,
+        "study": null,
+        "pmid": null
+      },
+      {
+        "p_value": 1e-06,
+        "beta": null,
+        "odds_ratio": null,
+        "beta_unit": null,
+        "beta_direction": null,
+        "trait": null,
+        "study": null,
+        "pmid": null
+      }
+    ],
+    "clinvar": null
+  },
+  "clinvar": null,
+  "gene_info": {
+    "gene": "FTO",
+    "chromosome": "16",
+    "start": 53737875,
+    "end": 54148379,
+    "strand": "+",
+    "biotype": "protein_coding",
+    "description": "Fat mass and obesity-associated protein \u00e2\u20ac\u201d energy homeostasis",
+    "pathway": "Obesity / Metabolic regulation",
+    "omim": "610966"
+  },
+  "classification": {
+    "type": "SNP",
+    "subtype": "Transversion",
+    "length": 1
+  },
+  "impact": {
+    "impact_level": "MODIFIER",
+    "description": "The variant lies within an intronic region. While most intronic variants are non-coding, some affect splicing branch points, enhancers, or regulatory elements, potentially altering mRNA splicing or gene expression levels.",
+    "sift_pred": "Tolerated",
+    "polyphen_pred": "Benign",
+    "consequence": "intron_variant"
+  },
+  "clinical_significance": "Not assessed",
+  "sig_colour": "#95a5a6",
+  "interpretation": {
+    "impact": "MODIFIER",
+    "impact_meaning": "The variant lies within an intronic region. While most intronic variants are non-coding, some affect splicing branch points, enhancers, or regulatory elements, potentially altering mRNA splicing or gene expression levels.",
+    "clinical_significance": "Not assessed",
+    "significance_meaning": "Not assessed.",
+    "general_summary": "Variant rs9939609 (NM_001080432.3:c.18+6890T>A) introduces a transversion in FTO, resulting in a intron variant (N/A). The global alternate allele frequency is 0.4500 (45.00%). It participates in the Obesity / Metabolic regulation pathway."
+  },
+  "evidence": {
+    "variant": {
+      "rsid": "rs9939609",
+      "gene": "FTO"
+    },
+    "dbsnp": {
+      "id": "rs9939609",
+      "url": "https://www.ncbi.nlm.nih.gov/snp/rs9939609"
+    },
+    "clinvar": {},
+    "genecards": {
+      "id": "FTO GeneCards Entry",
+      "url": "https://www.genecards.org/cgi-bin/carddisp.pl?gene=FTO",
+      "gene_summary": "Fat mass and obesity-associated protein \u00e2\u20ac\u201d energy homeostasis",
+      "biological_function": "Obesity / Metabolic regulation",
+      "associated_diseases": []
+    },
+    "pubmed": [],
+    "warnings": [
+      "No ClinVar annotation available.",
+      "No PubMed references available."
+    ],
+    "evidence_score": 40,
+    "evidence_strength": "Moderate"
+  },
+  "impact_explanation": {
+    "meaning": "Variant in a non-coding or intergenic region with uncertain functional relevance.",
+    "biological_consequences": [
+      "No direct effect on protein-coding sequence",
+      "Possible regulatory effects on gene expression",
+      "Potential impact on enhancer, silencer, or insulator elements",
+      "May affect non-coding RNA genes in the vicinity"
+    ],
+    "example_variant_types": [
+      "Intron variant",
+      "Intergenic variant",
+      "Upstream/downstream gene variant",
+      "Non-coding transcript variant"
+    ],
+    "interpretation": "MODIFIER variants fall outside protein-coding regions and are the most common class of human genetic variation. The vast majority have no detectable phenotypic effect. However, a small subset may influence gene regulation \u2014 particularly variants in promoters, enhancers, or conserved non-coding elements identified by ENCODE or Roadmap Epigenomics data."
+  },
+  "significance_explanation": {
+    "definition": "This classification is not recognized in the standard ClinVar terminology.",
+    "interpretation": "The variant's clinical significance could not be mapped to a standard category. This may indicate a novel or non-standard annotation. Manual review is recommended.",
+    "evidence_basis": [
+      "Classification source could not be determined"
+    ],
+    "acmg_criteria": null,
+    "odds_ratio": null,
+    "beta_value": null,
+    "p_value": null,
+    "population_frequency_note": null
+  }
+}

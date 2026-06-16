@@ -1,0 +1,32 @@
+[
+  {
+    "rsid": "rs429358",
+    "comparison": {
+      "south_asian": 0.2894,
+      "european": 0.2816,
+      "absolute_difference": 0.007799999999999974,
+      "fold_difference": 1.0276988636363635,
+      "higher_in": "South Asian"
+    }
+  },
+  {
+    "rsid": "rs7412",
+    "comparison": {
+      "south_asian": 0.0185,
+      "european": 0.0767,
+      "absolute_difference": 0.0582,
+      "fold_difference": 4.145945945945947,
+      "higher_in": "European"
+    }
+  },
+  {
+    "rsid": "rs113993960",
+    "comparison": {
+      "south_asian": 0.0356,
+      "european": 0.0119,
+      "absolute_difference": 0.0237,
+      "fold_difference": 2.9915966386554618,
+      "higher_in": "South Asian"
+    }
+  }
+]

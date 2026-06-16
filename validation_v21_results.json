@@ -1,0 +1,50 @@
+[
+  {
+    "rsid": "rs429358",
+    "gene": "APOE",
+    "paper_count": 39393,
+    "evidence_level": "Strong Evidence"
+  },
+  {
+    "rsid": "rs7412",
+    "gene": "APOE",
+    "paper_count": 39382,
+    "evidence_level": "Strong Evidence"
+  },
+  {
+    "rsid": "rs334",
+    "gene": "HBB",
+    "paper_count": 2816,
+    "evidence_level": "Strong Evidence"
+  },
+  {
+    "rsid": "rs1800562",
+    "gene": "HFE",
+    "paper_count": 4557,
+    "evidence_level": "Strong Evidence"
+  },
+  {
+    "rsid": "rs6025",
+    "gene": "F5",
+    "paper_count": 5102,
+    "evidence_level": "Strong Evidence"
+  },
+  {
+    "rsid": "rs7903146",
+    "gene": "TCF7L2",
+    "paper_count": 2224,
+    "evidence_level": "Strong Evidence"
+  },
+  {
+    "rsid": "rs9939609",
+    "gene": "FTO",
+    "paper_count": 6071,
+    "evidence_level": "Strong Evidence"
+  },
+  {
+    "rsid": "rs113993960",
+    "gene": "CFTR",
+    "paper_count": 15437,
+    "evidence_level": "Strong Evidence"
+  }
+]
