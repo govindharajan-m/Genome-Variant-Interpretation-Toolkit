@@ -26,7 +26,10 @@ from flask import (
 )
 from variant_engine import (
     annotate_snp,
+    annotate_snp_from_rsid,
     analyze_cnv,
+    analyze_cnv_from_rsid,
+    analyze_cnv_from_gene,
     batch_analyze_rsids,
     generate_interpretation_report,
     predict_functional_impact,
@@ -37,6 +40,7 @@ from db_handler import get_all_known_rsids
 
 app = Flask(__name__)
 app.secret_key = "gvap_demo_secret_2024"   # change for production
+app.config["JSON_AS_ASCII"] = False
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -217,8 +221,8 @@ def api_batch():
     if not rsids:
         return jsonify({"error": "No rsIDs provided"}), 400
 
-    if len(rsids) > 200:
-        return jsonify({"error": "Maximum 200 rsIDs per batch request"}), 400
+    if len(rsids) > 50:
+        return jsonify({"error": "Maximum batch size is 50 variants. Please split larger analyses into multiple submissions."}), 400
 
     results = batch_analyze_rsids(rsids)
 
@@ -233,6 +237,78 @@ def api_report(rsid):
     """Return the full detailed report JSON for a single rsID."""
     report = generate_interpretation_report(rsid.lower())
     return jsonify(report)
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# rsID-BASED API ENDPOINTS
+# ═══════════════════════════════════════════════════════════════════════════════
+
+@app.route("/api/analyze-snp-rsid", methods=["POST"])
+def api_analyze_snp_rsid():
+    """
+    Annotate a single SNP entered by rsID.
+
+    Expected JSON body:
+        { "rsid": "rs429358" }
+
+    Returns the same JSON shape as /api/analyze-snp, enriched with
+    ClinVar clinical significance, condition, HGVS, and allele frequency.
+    """
+    data = request.get_json(force=True)
+    rsid = data.get("rsid", "").strip().lower()
+
+    if not rsid:
+        return jsonify({"error": "rsid field is required"}), 400
+    if not rsid.startswith("rs"):
+        rsid = "rs" + rsid
+
+    result = annotate_snp_from_rsid(rsid)
+    if result.get("error"):
+        return jsonify(result), 404
+    return jsonify(result)
+
+
+@app.route("/api/analyze-cnv-rsid", methods=["POST"])
+def api_analyze_cnv_rsid():
+    """
+    Analyse a CNV resolved from either an rsID or a gene symbol.
+
+    Expected JSON body (one of):
+        { "rsid": "rs80357906", "cnv_type": "Deletion",     "copy_number": 1 }
+        { "gene": "BRCA1",      "cnv_type": "Duplication",  "copy_number": 3 }
+
+    Returns the same JSON shape as /api/analyze-cnv with an extra
+    input.rsid or input.gene_symbol field indicating the lookup source.
+    """
+    data = request.get_json(force=True)
+
+    rsid        = data.get("rsid", "").strip().lower()
+    gene        = data.get("gene", "").strip().upper()
+    cnv_type    = data.get("cnv_type", "Deletion")
+    copy_number = data.get("copy_number")
+
+    if not rsid and not gene:
+        return jsonify({"error": "Either 'rsid' or 'gene' is required"}), 400
+
+    if cnv_type.lower() not in ("duplication", "deletion"):
+        return jsonify({"error": "cnv_type must be 'Duplication' or 'Deletion'"}), 400
+
+    if copy_number is not None:
+        try:
+            copy_number = int(copy_number)
+        except (ValueError, TypeError):
+            return jsonify({"error": "copy_number must be an integer"}), 400
+
+    if rsid:
+        if not rsid.startswith("rs"):
+            rsid = "rs" + rsid
+        result = analyze_cnv_from_rsid(rsid, cnv_type, copy_number)
+    else:
+        result = analyze_cnv_from_gene(gene, cnv_type, copy_number)
+
+    if result.get("error"):
+        return jsonify(result), 404
+    return jsonify(result)
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -260,11 +336,19 @@ def download_csv():
         "gene", "consequence", "hgvs", "protein_change",
         "allele_frequency", "impact_level",
         "clinical_significance", "condition", "pathway",
+        "impact_explanation_meaning",
+        "significance_explanation_definition",
     ]
     writer = csv.DictWriter(output, fieldnames=fieldnames, extrasaction="ignore")
     writer.writeheader()
     for row in results:
-        writer.writerow(row)
+        # Flatten nested explanation dicts into single strings for CSV
+        flat_row = dict(row)
+        ie = row.get("impact_explanation")
+        flat_row["impact_explanation_meaning"] = ie.get("meaning", "") if ie else ""
+        se = row.get("significance_explanation")
+        flat_row["significance_explanation_definition"] = se.get("definition", "") if se else ""
+        writer.writerow(flat_row)
 
     csv_content = output.getvalue()
 

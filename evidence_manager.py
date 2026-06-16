@@ -61,35 +61,40 @@ def build_evidence_object(rsid: str, gene: str) -> dict:
         "evidence_strength": "Limited"
     }
 
-    if not rsid:
-        return evidence
-        
-    key = rsid.lower().strip()
-    if not key.startswith("rs"):
-        key = "rs" + key
+    key = ""
+    if rsid:
+        key = rsid.lower().strip()
+        if not key.startswith("rs"):
+            key = "rs" + key
 
-    # 1. dbSNP
-    dbsnp_record = get_dbsnp_record(key)
-    if dbsnp_record:
-        evidence["dbsnp"] = {
-            "id": key,
-            "url": f"https://www.ncbi.nlm.nih.gov/snp/{key}"
-        }
-    else:
-        evidence["warnings"].append("Variant not found in dbSNP.")
+        # 1. dbSNP
+        dbsnp_record = get_dbsnp_record(key)
+        if dbsnp_record:
+            evidence["dbsnp"] = {
+                "id": key,
+                "url": f"https://www.ncbi.nlm.nih.gov/snp/{key}"
+            }
+        else:
+            evidence["warnings"].append("Variant not found in dbSNP.")
 
-    # 2. ClinVar
-    clinvar_record = get_clinvar_record(key)
-    if clinvar_record and clinvar_record.get("accession"):
-        evidence["clinvar"] = {
-            "id": f"ClinVar ID {clinvar_record['accession']}",
-            "url": f"https://www.ncbi.nlm.nih.gov/clinvar/variation/{clinvar_record['accession']}/",
-            "classification": clinvar_record.get("clinical_significance", "Unknown"),
-            "review_status": clinvar_record.get("review_status", "Unreviewed"),
-            "disease_associations": [clinvar_record.get("condition")] if clinvar_record.get("condition") else []
-        }
+        # 2. ClinVar
+        clinvar_record = get_clinvar_record(key)
+        accession = clinvar_record.get("accession") if clinvar_record else None
+        if clinvar_record and accession:
+            evidence["clinvar"] = {
+                "id": f"ClinVar {accession}",
+                "url": f"https://www.ncbi.nlm.nih.gov/clinvar/{accession}/",
+                "classification": clinvar_record.get("clinical_significance", "Unknown"),
+                "review_status": clinvar_record.get("review_status", "Unreviewed"),
+                "disease_associations": [clinvar_record.get("condition")] if clinvar_record.get("condition") else []
+            }
+        else:
+            evidence["warnings"].append("No ClinVar annotation available.")
     else:
-        evidence["warnings"].append("No ClinVar annotation available.")
+        # C06 fix: no rsID available, but we can still gather gene-level evidence
+        evidence["warnings"].append(
+            "No rsID provided — evidence limited to gene-level resources (GeneCards, PubMed)."
+        )
 
     # 3. GeneCards
     if gene and gene != "—":

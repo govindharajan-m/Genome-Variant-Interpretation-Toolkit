@@ -84,20 +84,20 @@ Open **http://localhost:5000** in your browser.
 | rsID | Gene | Consequence | Clinical Significance |
 |------|------|-------------|----------------------|
 | rs334 | HBB | Missense (p.Glu7Val) | **Pathogenic** — Sickle Cell Disease |
-| rs28897696 | CFTR | Stop gained | **Pathogenic** — Cystic Fibrosis |
-| rs1800562 | HFE | Missense | **Pathogenic** — Hereditary Hemochromatosis |
-| rs113488022 | BRAF | Missense (V600E) | **Pathogenic** — Melanoma |
-| rs28934578 | BRCA1 | Frameshift | **Pathogenic** — HBOC syndrome |
-| rs80357906 | BRCA2 | Frameshift | **Pathogenic** — HBOC syndrome |
-| rs429358 | APOE | Missense | Risk factor — Alzheimer's |
-| rs7412 | APOE | Missense | Likely pathogenic |
-| rs1042522 | TP53 | Missense (Pro72Arg) | Benign |
-| rs762551 | CYP1A2 | Synonymous | Benign — Caffeine metabolism |
-| rs9939609 | FTO | Intron | Risk factor — Obesity |
-| rs1805007 | MC1R | Missense | Likely pathogenic — Melanoma risk |
-| rs1799971 | OPRM1 | Missense | Benign — Opioid sensitivity |
-| rs699 | AGT | Missense | Benign — Hypertension susceptibility |
-| rs2230199 | C3 | Missense | VUS — AMD |
+| rs113993960 | CFTR | Inframe deletion (p.Phe508del) | **Pathogenic** — Cystic Fibrosis |
+| rs1800562 | HFE | Missense (p.Cys282Tyr) | **Pathogenic** — Hereditary Hemochromatosis |
+| rs113488022 | BRAF | Missense (p.Val600Glu) | **Pathogenic** — Melanoma / MAPK pathway |
+| rs28897743 | BRCA2 | Missense (p.Arg2336His) | **Pathogenic** — HBOC syndrome |
+| rs80357906 | BRCA1 | Frameshift (p.Gln1756fs) | **Pathogenic** — HBOC syndrome |
+| rs429358 | APOE | Missense (p.Cys130Arg) | Risk factor — Alzheimer's |
+| rs7412 | APOE | Missense (p.Arg176Cys) | Drug response — Atorvastatin / Alzheimer's |
+| rs1042522 | TP53 | Missense (p.Pro72Arg) | **Benign** — Li-Fraumeni modifier |
+| rs762551 | CYP1A2 | Intron variant (CYP1A2*1F) | Likely benign — Caffeine metabolism |
+| rs9939609 | FTO | Intron variant | Risk factor (GWAS only) — Obesity |
+| rs1805007 | MC1R | Missense (p.Arg151Cys) | Risk factor — Melanoma susceptibility |
+| rs1799971 | OPRM1 | Missense (p.Asn40Asp) | Uncertain significance — Opioid sensitivity |
+| rs699 | AGT | Missense (p.Met268Thr) | **Benign** — Hypertension susceptibility |
+| rs2230199 | C3 | Missense (p.Arg102Gly) | Benign/Likely benign — AMD / Complement |
 
 ---
 
