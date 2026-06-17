@@ -119,23 +119,30 @@
   <!-- ── Results Panel ─────────────────────────────────────────────────────── -->
   <div id="resultPanel" class="result-panel hidden">
 
-    <!-- 1. Executive Snapshot Container -->
+    <!-- 1. Report Summary Container -->
     
     <div id="dynamicReportNav" class="report-nav hidden">
-      <a href="#executiveSnapshotContainer">Executive Snapshot</a>
+      <a href="#reportSummaryContainer">Report Summary</a>
+      <a href="#acmgEvidenceContainer">ACMG Evidence Mapping</a>
       <a href="#variantOverviewAnchor">Variant Overview</a>
       <a href="#clinvarContainer">Clinical Evidence</a>
       <a href="#populationFrequenciesContainer">Population Analysis</a>
       <a href="#gwasContainer">Trait & Research</a>
-      <a href="#geneCard">Gene Context</a>
+      
+      <a href="#geneContextContainer">Gene Context</a>
+      <a href="#diseasesContainer">Associated Diseases</a>
+      <a href="#pathwaysContainer">Biological Pathways</a>
+
       <a href="#pubmedContainer">Literature Evidence</a>
     </div>
     <div id="dynamicReportTimestamp" class="report-timestamp hidden">Last Updated: <script>document.write(new Date().toISOString().replace('T', ' ').substring(0, 16));</script></div>
-    <div id="executiveSnapshotContainer"></div>
+    <div id="reportSummaryContainer"></div>
 
-    <!-- 2. Interpretation Summary Container -->
+    <!-- 2. Summary Container -->
     <div class="section-divider"></div>
-    <div id="interpretationSummaryContainer"></div>
+    <div id="summaryContainer"></div>
+    <div id="evidenceConfidenceContainer"></div>
+    <div id="researchRelevanceContainer"></div>
 
     <!-- 3. Variant Overview Card -->
     <div class="card result-card">
@@ -435,8 +442,13 @@ function renderSNPResult(d) {
   document.getElementById("r-impact-desc").textContent = imp.description;
 
   // ── Explanation cards (shared renderers from main.js)
-  document.getElementById("executiveSnapshotContainer").innerHTML = renderExecutiveSnapshotHTML(d);
+  document.getElementById("reportSummaryContainer").innerHTML = renderReportSummaryHTML(d);
   document.getElementById("gwasContainer").innerHTML = renderGWASHTML(d);
+
+  document.getElementById("geneContextContainer").innerHTML = renderGeneContextHTML(d);
+  document.getElementById("diseasesContainer").innerHTML = renderDiseasesHTML(d);
+  document.getElementById("pathwaysContainer").innerHTML = renderPathwaysHTML(d);
+
   document.getElementById("populationFrequenciesContainer").innerHTML =
     renderPopulationFrequenciesHTML(d);
   document.getElementById("impactExplanationContainer").innerHTML =
@@ -447,13 +459,19 @@ function renderSNPResult(d) {
       d.clinical_significance || ""
     );
   if (d.interpretation_summary) {
-    document.getElementById("interpretationSummaryContainer").innerHTML = 
+    document.getElementById("evidenceConfidenceContainer").innerHTML = renderEvidenceConfidenceHTML(d);
+    document.getElementById("researchRelevanceContainer").innerHTML = renderResearchRelevanceHTML(d);
+    document.getElementById("summaryContainer").innerHTML = 
       `<div class="card result-card info-card" style="border-left-color: var(--accent);">
-         <h3 class="card-title">Interpretation Summary</h3>
+         <h3 class="card-title">Summary</h3>
          <p style="font-size: 0.95rem; line-height: 1.6;">${d.interpretation_summary}</p>
        </div>`;
   } else {
-    document.getElementById("interpretationSummaryContainer").innerHTML = "";
+    document.getElementById("evidenceConfidenceContainer").innerHTML = renderEvidenceConfidenceHTML(d);
+    document.getElementById("researchRelevanceContainer").innerHTML = renderResearchRelevanceHTML(d);
+    document.getElementById("evidenceConfidenceContainer").innerHTML = "";
+    document.getElementById("researchRelevanceContainer").innerHTML = "";
+    document.getElementById("summaryContainer").innerHTML = "";
   }
 
   // ── Evidence / references
@@ -502,7 +520,11 @@ function showSNPError(msg) {
   document.getElementById("populationFrequenciesContainer").innerHTML = "";
   document.getElementById("impactExplanationContainer").innerHTML = "";
   document.getElementById("significanceExplanationContainer").innerHTML = "";
-  document.getElementById("interpretationSummaryContainer").innerHTML = "";
+  document.getElementById("evidenceConfidenceContainer").innerHTML = renderEvidenceConfidenceHTML(d);
+    document.getElementById("researchRelevanceContainer").innerHTML = renderResearchRelevanceHTML(d);
+    document.getElementById("evidenceConfidenceContainer").innerHTML = "";
+    document.getElementById("researchRelevanceContainer").innerHTML = "";
+    document.getElementById("summaryContainer").innerHTML = "";
   document.getElementById("referencesContainer").innerHTML = "";
   document.getElementById("pubmedContainer").innerHTML = "";
 

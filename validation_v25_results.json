@@ -1,0 +1,94 @@
+{
+  "rs429358": {
+    "status": "Conflicting Evidence",
+    "confidence": "High",
+    "triggers": [
+      "PS4",
+      "PP3",
+      "BA1"
+    ],
+    "success": true
+  },
+  "rs7412": {
+    "status": "Conflicting Evidence",
+    "confidence": "High",
+    "triggers": [
+      "PS4",
+      "PP3",
+      "PP5",
+      "BA1"
+    ],
+    "success": true
+  },
+  "rs334": {
+    "status": "Research Classification Available",
+    "confidence": "High",
+    "triggers": [
+      "PS4",
+      "PM2",
+      "PP3",
+      "PP5"
+    ],
+    "success": true
+  },
+  "rs1800562": {
+    "status": "Conflicting Evidence",
+    "confidence": "High",
+    "triggers": [
+      "PS4",
+      "PP3",
+      "PP5",
+      "BA1"
+    ],
+    "success": true
+  },
+  "rs1042522": {
+    "status": "Conflicting Evidence",
+    "confidence": "High",
+    "triggers": [
+      "PS4",
+      "PP3",
+      "PP5",
+      "BA1"
+    ],
+    "success": true
+  },
+  "rs6025": {
+    "status": "Research Classification Available",
+    "confidence": "High",
+    "triggers": [
+      "PS4",
+      "PP3",
+      "PP5"
+    ],
+    "success": true
+  },
+  "rs7903146": {
+    "status": "Conflicting Evidence",
+    "confidence": "High",
+    "triggers": [
+      "PS4",
+      "BA1"
+    ],
+    "success": true
+  },
+  "rs9939609": {
+    "status": "Research Classification Available",
+    "confidence": "Moderate",
+    "triggers": [
+      "BA1",
+      "BP4"
+    ],
+    "success": true
+  },
+  "rs113993960": {
+    "status": "Conflicting Evidence",
+    "confidence": "High",
+    "triggers": [
+      "PS4",
+      "PP5",
+      "BP4"
+    ],
+    "success": true
+  }
+}

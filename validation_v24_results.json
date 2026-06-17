@@ -1,0 +1,65 @@
+{
+  "rs429358": {
+    "score": 78,
+    "tier": "Critical Priority",
+    "driver": "Multiple Evidence Sources",
+    "reasons": 5,
+    "success": true
+  },
+  "rs7412": {
+    "score": 78,
+    "tier": "Critical Priority",
+    "driver": "Multiple Evidence Sources",
+    "reasons": 5,
+    "success": true
+  },
+  "rs334": {
+    "score": 89,
+    "tier": "Critical Priority",
+    "driver": "Multiple Evidence Sources",
+    "reasons": 5,
+    "success": true
+  },
+  "rs1800562": {
+    "score": 89,
+    "tier": "Critical Priority",
+    "driver": "Multiple Evidence Sources",
+    "reasons": 5,
+    "success": true
+  },
+  "rs1042522": {
+    "score": 78,
+    "tier": "Critical Priority",
+    "driver": "Multiple Evidence Sources",
+    "reasons": 5,
+    "success": true
+  },
+  "rs6025": {
+    "score": 78,
+    "tier": "Critical Priority",
+    "driver": "Multiple Evidence Sources",
+    "reasons": 5,
+    "success": true
+  },
+  "rs7903146": {
+    "score": 78,
+    "tier": "Critical Priority",
+    "driver": "Multiple Evidence Sources",
+    "reasons": 5,
+    "success": true
+  },
+  "rs9939609": {
+    "score": 51,
+    "tier": "High Priority",
+    "driver": "Extensive Literature Support",
+    "reasons": 2,
+    "success": true
+  },
+  "rs113993960": {
+    "score": 100,
+    "tier": "Critical Priority",
+    "driver": "Multiple Evidence Sources",
+    "reasons": 5,
+    "success": true
+  }
+}

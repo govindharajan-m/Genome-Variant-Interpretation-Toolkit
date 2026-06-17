@@ -1,0 +1,58 @@
+{
+  "rs429358": {
+    "score": 80,
+    "tier": "Strong",
+    "factors": 5,
+    "limitations": 0,
+    "success": true
+  },
+  "rs7412": {
+    "score": 80,
+    "tier": "Strong",
+    "factors": 5,
+    "limitations": 0,
+    "success": true
+  },
+  "rs334": {
+    "score": 90,
+    "tier": "Strong",
+    "factors": 5,
+    "limitations": 0,
+    "success": true
+  },
+  "rs113993960": {
+    "score": 100,
+    "tier": "Strong",
+    "factors": 5,
+    "limitations": 0,
+    "success": true
+  },
+  "rs1800562": {
+    "score": 90,
+    "tier": "Strong",
+    "factors": 5,
+    "limitations": 0,
+    "success": true
+  },
+  "rs6025": {
+    "score": 70,
+    "tier": "Moderate",
+    "factors": 4,
+    "limitations": 1,
+    "success": true
+  },
+  "rs7903146": {
+    "score": 70,
+    "tier": "Moderate",
+    "factors": 4,
+    "limitations": 1,
+    "success": true
+  },
+  "rs9939609": {
+    "score": 60,
+    "tier": "Moderate",
+    "factors": 3,
+    "limitations": 2,
+    "success": true
+  }
+}

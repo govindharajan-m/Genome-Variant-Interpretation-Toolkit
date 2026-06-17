@@ -1,0 +1,65 @@
+{
+  "rs429358": {
+    "score": 80,
+    "tier": "Very High",
+    "reasons": 5,
+    "applications": 7,
+    "success": true
+  },
+  "rs7412": {
+    "score": 80,
+    "tier": "Very High",
+    "reasons": 5,
+    "applications": 7,
+    "success": true
+  },
+  "rs334": {
+    "score": 90,
+    "tier": "Very High",
+    "reasons": 5,
+    "applications": 3,
+    "success": true
+  },
+  "rs1800562": {
+    "score": 90,
+    "tier": "Very High",
+    "reasons": 5,
+    "applications": 3,
+    "success": true
+  },
+  "rs1042522": {
+    "score": 80,
+    "tier": "Very High",
+    "reasons": 5,
+    "applications": 6,
+    "success": true
+  },
+  "rs6025": {
+    "score": 80,
+    "tier": "Very High",
+    "reasons": 5,
+    "applications": 3,
+    "success": true
+  },
+  "rs7903146": {
+    "score": 80,
+    "tier": "Very High",
+    "reasons": 5,
+    "applications": 4,
+    "success": true
+  },
+  "rs9939609": {
+    "score": 60,
+    "tier": "High",
+    "reasons": 2,
+    "applications": 1,
+    "success": true
+  },
+  "rs113993960": {
+    "score": 100,
+    "tier": "Very High",
+    "reasons": 5,
+    "applications": 6,
+    "success": true
+  }
+}

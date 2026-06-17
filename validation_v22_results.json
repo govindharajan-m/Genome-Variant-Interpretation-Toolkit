@@ -1,0 +1,66 @@
+{
+  "rs429358": {
+    "gene": "APOE",
+    "has_context": true,
+    "disease_count": 3,
+    "pathway_count": 3,
+    "relevance": "Very High",
+    "success": true
+  },
+  "rs113993960": {
+    "gene": "CFTR",
+    "has_context": true,
+    "disease_count": 2,
+    "pathway_count": 2,
+    "relevance": "Very High",
+    "success": true
+  },
+  "rs1042522": {
+    "gene": "TP53",
+    "has_context": true,
+    "disease_count": 2,
+    "pathway_count": 3,
+    "relevance": "Very High",
+    "success": true
+  },
+  "rs1800562": {
+    "gene": "HFE",
+    "has_context": true,
+    "disease_count": 1,
+    "pathway_count": 2,
+    "relevance": "Very High",
+    "success": true
+  },
+  "rs334": {
+    "gene": "HBB",
+    "has_context": true,
+    "disease_count": 2,
+    "pathway_count": 2,
+    "relevance": "Very High",
+    "success": true
+  },
+  "rs6025": {
+    "gene": "F5",
+    "has_context": true,
+    "disease_count": 2,
+    "pathway_count": 2,
+    "relevance": "Very High",
+    "success": true
+  },
+  "rs7903146": {
+    "gene": "TCF7L2",
+    "has_context": true,
+    "disease_count": 1,
+    "pathway_count": 2,
+    "relevance": "Very High",
+    "success": true
+  },
+  "rs121918310": {
+    "gene": "RRM2B",
+    "has_context": true,
+    "disease_count": 0,
+    "pathway_count": 0,
+    "relevance": "High",
+    "success": true
+  }
+}

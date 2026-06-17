@@ -361,8 +361,8 @@ function renderGWASHTML(data) {
     <div class="gwas-source">Source: GWAS Catalog REST API</div>
   </div>`;
 }
-// ── Executive Snapshot Generator ───────────────────────────────────────────
-function renderExecutiveSnapshotHTML(d) {
+// ── Report Summary Generator ───────────────────────────────────────────
+function renderReportSummaryHTML(d) {
   if (!d) return "";
   
   // Variant
@@ -385,7 +385,7 @@ function renderExecutiveSnapshotHTML(d) {
   }
   
   // Research Relevance
-  const relevance = d.research_relevance || "Low";
+  const relevance = (typeof d.research_relevance === "object") ? (d.research_relevance.tier || "Low") : (d.research_relevance || "Low");
   
   // Populations
   let sas = "N/A";
@@ -401,7 +401,7 @@ function renderExecutiveSnapshotHTML(d) {
 
   return `
     <div class="card result-card" style="border-left: 4px solid var(--primary-colour); background-color: var(--bg-secondary);">
-      <h2 class="card-title" style="margin-bottom: 12px; font-size: 1.25rem;">EXECUTIVE SNAPSHOT</h2>
+      <h2 class="card-title" style="margin-bottom: 12px; font-size: 1.25rem;">REPORT SUMMARY</h2>
       <div class="result-meta-grid" style="row-gap: 1.2rem;">
         <div class="meta-item">
           <span class="meta-label">Variant</span>
@@ -634,4 +634,126 @@ function renderPubMedHTML(data) {
     </div>
   </div>
   `;
+}
+
+
+// ── Evidence Confidence HTML Generator ─────────────────────────────────────
+function renderEvidenceConfidenceHTML(d) {
+    if (!d || !d.evidence_confidence) return "";
+    const ev = d.evidence_confidence;
+    
+    let factorsHtml = "";
+    if (ev.contributing_factors && ev.contributing_factors.length > 0) {
+        factorsHtml = `<div style="margin-top: 1rem;"><h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Contributing Factors</h4><ul style="list-style-type: none; padding: 0; margin: 0;">`;
+        ev.contributing_factors.forEach(f => {
+            factorsHtml += `<li style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.3rem;">✓ ${f}</li>`;
+        });
+        factorsHtml += `</ul></div>`;
+    }
+    
+    let limitsHtml = "";
+    if (ev.limitations && ev.limitations.length > 0) {
+        limitsHtml = `<div style="margin-top: 1rem;"><h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Limitations</h4><ul style="list-style-type: none; padding: 0; margin: 0;">`;
+        ev.limitations.forEach(l => {
+            limitsHtml += `<li style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.3rem;">• ${l}</li>`;
+        });
+        limitsHtml += `</ul></div>`;
+    }
+
+    return `
+    <div class="card result-card" id="evidenceConfidenceCard" style="margin-top: 1rem;">
+        <h3 class="card-title">Evidence Confidence</h3>
+        <div style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem;">
+            <span style="font-size: 2rem; font-weight: bold; color: var(--primary-colour);">${ev.score} <span style="font-size: 1rem; color: var(--text-secondary);">/ 100</span></span>
+            <span class="status-badge badge-strong" style="font-size: 1rem; padding: 0.4rem 0.8rem; background: var(--bg-tertiary);">${ev.tier.toUpperCase()} CONFIDENCE</span>
+            <span style="font-weight: 600; color: var(--text-primary);">${ev.strength}</span>
+        </div>
+        <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">${ev.narrative}</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            ${factorsHtml}
+            ${limitsHtml}
+        </div>
+    </div>`;
+}
+
+
+// ── Research Relevance HTML Generator ─────────────────────────────────────
+function renderResearchRelevanceHTML(d) {
+    if (!d || !d.research_relevance || typeof d.research_relevance !== 'object') return "";
+    const rr = d.research_relevance;
+    
+    let reasonsHtml = "";
+    if (rr.reasons && rr.reasons.length > 0) {
+        reasonsHtml = `<div style="margin-top: 1rem;"><h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Why This Variant Matters</h4><ul style="list-style-type: none; padding: 0; margin: 0;">`;
+        rr.reasons.forEach(r => {
+            reasonsHtml += `<li style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.3rem;">✓ ${r}</li>`;
+        });
+        reasonsHtml += `</ul></div>`;
+    }
+    
+    let appsHtml = "";
+    if (rr.applications && rr.applications.length > 0) {
+        appsHtml = `<div style="margin-top: 1rem;"><h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Potential Applications</h4><ul style="list-style-type: none; padding: 0; margin: 0;">`;
+        rr.applications.forEach(a => {
+            appsHtml += `<li style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.3rem;">• ${a}</li>`;
+        });
+        appsHtml += `</ul></div>`;
+    }
+
+    return `
+    <div class="card result-card" id="researchRelevanceCard" style="margin-top: 1rem;">
+        <h3 class="card-title">Research Relevance</h3>
+        <div style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem;">
+            <span class="status-badge badge-strong" style="font-size: 1rem; padding: 0.4rem 0.8rem; background: var(--bg-tertiary);">${rr.tier ? rr.tier.toUpperCase() : "UNKNOWN"}</span>
+            <span style="font-size: 1rem; color: var(--text-secondary);">Research Score: <span style="font-weight: 600; color: var(--primary-colour);">${rr.score} / 100</span></span>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            ${reasonsHtml}
+            ${appsHtml}
+        </div>
+    </div>`;
+}
+
+
+// ── ACMG Evidence HTML Generator ─────────────────────────────────────
+function renderACMGEvidenceHTML(d) {
+    if (!d || !d.acmg_evidence) return "";
+    const acmg = d.acmg_evidence;
+    
+    let criteriaHtml = "";
+    if (acmg.criteria && acmg.criteria.length > 0) {
+        criteriaHtml = `<div style="margin-top: 1rem;"><h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Mapped Criteria</h4><ul style="list-style-type: none; padding: 0; margin: 0;">`;
+        acmg.criteria.forEach(c => {
+            const codeColor = c.code.startsWith('P') ? '#e74c3c' : '#27ae60';
+            criteriaHtml += `<li style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.8rem;">
+                <span style="font-weight: 600; color: ${codeColor}; border: 1px solid ${codeColor}; padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.8rem;">${c.code}</span>
+                <span style="font-weight: 600; margin-left: 0.3rem;">— ${c.strength}</span><br>
+                <span style="margin-left: 2rem; display: block; font-size: 0.9rem; margin-top: 0.2rem;">${c.reason}</span>
+            </li>`;
+        });
+        criteriaHtml += `</ul></div>`;
+    }
+
+    return `
+    <div class="card result-card" id="acmgEvidenceCard" style="margin-top: 1rem; border-left: 4px solid #9b59b6;">
+        <h3 class="card-title">ACMG Evidence Mapping</h3>
+        
+        <div style="background-color: var(--bg-secondary); padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; border-left: 3px solid #f39c12;">
+            <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
+                <strong>Research Use Only:</strong> This module maps potentially relevant ACMG evidence categories based on available platform data. It is not a clinical ACMG classifier and must not be used for diagnosis, treatment decisions, or patient management.
+            </p>
+        </div>
+
+        <div style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem;">
+            <span class="status-badge badge-strong" style="font-size: 1.1rem; padding: 0.4rem 0.8rem; background: var(--bg-tertiary);">${acmg.classification.toUpperCase()}</span>
+            <span style="font-size: 0.9rem; color: var(--text-secondary);">Mapping Confidence: <strong style="color: var(--text-primary);">${acmg.mapping_confidence}</strong></span>
+        </div>
+        
+        <div style="display: flex; gap: 2rem; margin-bottom: 1rem;">
+            <span style="font-size: 0.9rem; color: var(--text-secondary);">Pathogenic Triggers: <strong style="color: var(--text-primary);">${acmg.pathogenic_evidence_count}</strong></span>
+            <span style="font-size: 0.9rem; color: var(--text-secondary);">Benign Triggers: <strong style="color: var(--text-primary);">${acmg.benign_evidence_count}</strong></span>
+        </div>
+        
+        ${criteriaHtml}
+    </div>`;
 }

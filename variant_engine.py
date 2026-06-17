@@ -1198,10 +1198,73 @@ def annotate_snp_from_rsid(rsid: str) -> dict:
         diseases = {"available": False, "diseases": []}
         pathways = {"available": False, "pathways": []}
         
-    research_relevance = generate_gene_relevance_score(
-        pubmed_count=pubmed_data.get("paper_count", 0),
-        disease_count=len(diseases.get("diseases", [])),
-        has_clinvar=bool(clinical_significance is not None and clinical_significance != "Unknown"),
+
+
+    
+    # Version 2.3: Evidence Confidence
+    has_conflict = False
+    review_status = None
+    if clinvar_record:
+        has_conflict = clinvar_record.get("conflicting_interpretations", False)
+        review_status = clinvar_record.get("review_status")
+        
+    pop_freqs = snp_record.get("population_frequencies")
+    has_pop_freq = bool(pop_freqs and pop_freqs.get("global") and pop_freqs.get("global") != "—")
+    
+    ev_score_dict = generate_evidence_confidence_score(
+        clinvar_significance=clinical_significance,
+        clinvar_review_status=review_status,
+        has_conflict=has_conflict,
+        pubmed_count=pubmed_data.get("paper_count", 0) if pubmed_data else 0,
+        has_gwas=bool(gwas_assocs),
+        has_pop_freq=has_pop_freq,
+        has_gene_context=gene_context.get("available", False),
+        disease_count=len(diseases.get("diseases", []) if diseases.get("available") else []),
+        pathway_count=len(pathways.get("pathways", []) if pathways.get("available") else [])
+    )
+    
+    ev_interp_dict = generate_evidence_confidence_interpretation(
+        score=ev_score_dict["score"],
+        clinvar_significance=clinical_significance,
+        pubmed_count=pubmed_data.get("paper_count", 0) if pubmed_data else 0,
+        has_gwas=bool(gwas_assocs),
+        has_gene_context=gene_context.get("available", False),
+        has_pop_freq=has_pop_freq,
+        disease_count=len(diseases.get("diseases", []) if diseases.get("available") else []),
+        pathway_count=len(pathways.get("pathways", []) if pathways.get("available") else [])
+    )
+    
+    evidence_confidence = {**ev_score_dict, **ev_interp_dict}
+
+    diseases_arr = diseases.get("diseases", []) if diseases.get("available") else []
+    pathways_arr = pathways.get("pathways", []) if pathways.get("available") else []
+    
+    research_relevance = generate_research_relevance(
+        pubmed_count=pubmed_data.get("paper_count", 0) if pubmed_data else 0,
+        clinvar_sig=clinical_significance,
+        gwas_evidence=bool(gwas_assocs),
+        has_gene_context=gene_context.get("available", False),
+        diseases_list=diseases_arr,
+        pathways_list=pathways_arr,
+        has_pop_freq=has_pop_freq,
+        ev_score=ev_score_dict["score"]
+    )
+
+    variant_priority = generate_priority_score(
+        ev_score=ev_score_dict["score"],
+        rr_score=research_relevance["score"],
+        clinvar_data=clinvar_record,
+        has_diseases=bool(diseases_arr),
+        has_gwas=bool(gwas_assocs),
+        pubmed_count=pubmed_data.get("paper_count", 0) if pubmed_data else 0
+    )
+
+    acmg_evidence = generate_acmg_evidence(
+        allele_frequency=snp_record.get("allele_frequency"),
+        clinical_significance=clinical_significance,
+        impact_level=impact.get("impact_level"),
+        consequence=consequence,
+        has_diseases=bool(diseases_arr),
         has_gwas=bool(gwas_assocs)
     )
 
@@ -1251,9 +1314,12 @@ def annotate_snp_from_rsid(rsid: str) -> dict:
         "clinvar": clinvar_record,
         "pubmed": pubmed_data,
         "gene_context": gene_context,
-        "diseases": diseases,
-        "pathways": pathways,
-        "research_relevance": research_relevance
+        "diseases": diseases.get("diseases", []) if diseases.get("available") else [],
+        "pathways": pathways.get("pathways", []) if pathways.get("available") else [],
+        "research_relevance": research_relevance,
+        "variant_priority": variant_priority,
+        "acmg_evidence": acmg_evidence,
+        "evidence_confidence": evidence_confidence
     }
 
 
@@ -1598,3 +1664,408 @@ def generate_interpretation_report(rsid: str) -> dict:
     base_report["sig_colour"] = sig_colour
     
     return base_report
+
+
+def generate_evidence_confidence_score(clinvar_significance: str, clinvar_review_status: str, has_conflict: bool, 
+                                     pubmed_count: int, has_gwas: bool, has_pop_freq: bool, 
+                                     has_gene_context: bool, disease_count: int, pathway_count: int) -> dict:
+    """
+    Generate an objective 0-100 Evidence Confidence Score based on data availability and consistency.
+    """
+    score = 0
+    
+    # 1. ClinVar (Max 35)
+    if clinvar_significance and clinvar_significance != "Unknown":
+        if "practice guideline" in (clinvar_review_status or "").lower() or "expert panel" in (clinvar_review_status or "").lower():
+            score += 35
+        elif "multiple submitters" in (clinvar_review_status or "").lower():
+            score += 25 if not has_conflict else 15
+        else:
+            score += 15
+    
+    # 2. Literature (Max 25)
+    if pubmed_count > 50:
+        score += 25
+    elif pubmed_count > 10:
+        score += 15
+    elif pubmed_count > 0:
+        score += 5
+        
+    # 3. GWAS (Max 20)
+    if has_gwas:
+        score += 20
+        
+    # 4. Gene Context (Max 10)
+    if has_gene_context:
+        score += 5
+        if disease_count > 0 or pathway_count > 0:
+            score += 5
+            
+    # 5. Population Evidence (Max 10)
+    if has_pop_freq:
+        score += 10
+        
+    # Cap score
+    score = min(score, 100)
+    
+    if score >= 75:
+        tier = "Strong Evidence"
+    elif score >= 50:
+        tier = "Moderate Evidence"
+    elif score >= 25:
+        tier = "Emerging Evidence"
+    else:
+        tier = "Limited Evidence"
+        
+    return {
+        "score": score,
+        "tier": tier.split()[0], # Strong, Moderate, Emerging, Limited
+        "strength": tier
+    }
+
+def generate_evidence_confidence_interpretation(score: int, clinvar_significance: str, pubmed_count: int, 
+                                              has_gwas: bool, has_gene_context: bool, has_pop_freq: bool, 
+                                              disease_count: int, pathway_count: int) -> dict:
+    """
+    Generate dynamic narrative and factor lists for the evidence confidence score.
+    """
+    factors = []
+    limitations = []
+    
+    if clinvar_significance and clinvar_significance != "Unknown":
+        factors.append("ClinVar evidence exists for this variant")
+    else:
+        limitations.append("Missing ClinVar clinical interpretations")
+        
+    if pubmed_count > 10:
+        factors.append(f"Extensive literature support ({pubmed_count} papers)")
+    elif pubmed_count > 0:
+        factors.append(f"Emerging literature support ({pubmed_count} papers)")
+    else:
+        limitations.append("Sparse or missing literature support")
+        
+    if has_gwas:
+        factors.append("Strong GWAS associations")
+    
+    if has_gene_context and (disease_count > 0 or pathway_count > 0):
+        factors.append("Well-characterized gene context")
+    else:
+        limitations.append("Missing pathway or disease information")
+        
+    if has_pop_freq:
+        factors.append("Robust population frequency data")
+    else:
+        limitations.append("Limited population frequency data")
+        
+    if score >= 75:
+        narrative = "Multiple independent evidence sources support the interpretation of this variant. Strong clinical, literature, and population evidence contribute to a high-confidence evidence profile."
+    elif score >= 50:
+        narrative = "There is moderate evidence available for this variant. While some sources provide clear data, other areas (such as literature or clinical consensus) may require further accumulation of evidence."
+    elif score >= 25:
+        narrative = "Evidence for this variant is currently emerging. The confidence score is low due to sparse representation across key databases."
+    else:
+        narrative = "There is very limited evidence available for this variant across standard databases. Interpretations should be treated with caution until more data becomes available."
+        
+    return {
+        "narrative": narrative,
+        "contributing_factors": factors,
+        "limitations": limitations
+    }
+
+
+def generate_research_reasons(pubmed_count, clinvar_sig, gwas_evidence, has_gene_context, disease_count, pathway_count):
+    reasons = []
+    if pubmed_count > 10000:
+        reasons.append("More than 10,000 scientific publications reference this gene.")
+    elif pubmed_count > 1000:
+        reasons.append("More than 1,000 scientific publications reference this gene.")
+    elif pubmed_count > 100:
+        reasons.append("Extensive scientific literature references this gene.")
+    elif pubmed_count > 0:
+        reasons.append("Scientific literature is available for this variant.")
+        
+    if clinvar_sig and clinvar_sig != "Unknown":
+        reasons.append("Clinical significance information is available through ClinVar.")
+        
+    if gwas_evidence:
+        reasons.append("Multiple trait associations have been reported through genome-wide association studies.")
+        
+    if has_gene_context:
+        if disease_count > 0:
+            reasons.append("The associated gene has established links to multiple human diseases.")
+        if pathway_count > 0:
+            reasons.append("The gene participates in biologically important pathways relevant to disease mechanisms.")
+            
+    if not reasons:
+        reasons.append("Limited baseline information requires further primary research.")
+        
+    return reasons
+
+def generate_research_applications(diseases_list, pathways_list, has_gwas, has_pop_freq):
+    apps = set()
+    
+    # Generic evidence-based apps
+    if has_gwas or has_pop_freq:
+        apps.add("Population genomics")
+    
+    if len(diseases_list) > 0:
+        apps.add("Biomarker panel development")
+        apps.add("Disease association studies")
+        
+    # Keyword-based from diseases and pathways
+    disease_str = " ".join([d.get("name", "") if isinstance(d, dict) else str(d) for d in diseases_list]).lower()
+    pathway_str = " ".join([p.get("name", "") if isinstance(p, dict) else str(p) for p in pathways_list]).lower()
+    combined = disease_str + " " + pathway_str
+    
+    if "alzheimer" in combined or "neuro" in combined:
+        apps.add("Neurodegenerative disease research")
+        if "alzheimer" in combined:
+            apps.add("Alzheimer's disease studies")
+            
+    if "cystic fibrosis" in combined:
+        apps.add("Cystic fibrosis research")
+        apps.add("Carrier screening panels")
+        apps.add("Population frequency studies")
+        
+    if "cancer" in combined or "carcinoma" in combined or "tumor" in combined or "oncology" in combined or "melanoma" in combined:
+        apps.add("Cancer biology research")
+        apps.add("Precision oncology studies")
+        apps.add("Somatic mutation analysis")
+        
+    if "cardio" in combined or "heart" in combined:
+        apps.add("Cardiovascular disease research")
+        
+    if "diabetes" in combined or "metabol" in combined:
+        apps.add("Metabolic disorder research")
+        
+    if not apps:
+        apps.add("Functional genomics research")
+        
+    sorted_apps = list(apps)
+    sorted_apps.sort()
+    return sorted_apps
+
+def generate_research_relevance(pubmed_count, clinvar_sig, gwas_evidence, has_gene_context, diseases_list, pathways_list, has_pop_freq, ev_score):
+    score = ev_score
+    
+    if score >= 75: category = "Very High"
+    elif score >= 50: category = "High"
+    elif score >= 25: category = "Moderate"
+    else: category = "Low"
+    
+    reasons = generate_research_reasons(pubmed_count, clinvar_sig, gwas_evidence, has_gene_context, len(diseases_list), len(pathways_list))
+    applications = generate_research_applications(diseases_list, pathways_list, gwas_evidence, has_pop_freq)
+    
+    return {
+        "research_relevance": category,
+        "score": score,
+        "reasons": reasons,
+        "applications": applications
+    }
+
+
+def generate_priority_reasons(clinvar_strength, lit_score, has_diseases, has_gwas, ev_score):
+    reasons = []
+    if clinvar_strength >= 10:
+        reasons.append("Expert-reviewed or multi-submitter ClinVar evidence available")
+    elif clinvar_strength > 0:
+        reasons.append("ClinVar clinical significance reported")
+        
+    if lit_score == 5:
+        reasons.append("Extensive literature support (>1,000 publications)")
+    elif lit_score >= 3:
+        reasons.append("Strong literature support (>100 publications)")
+    elif lit_score > 0:
+        reasons.append("Literature support available")
+        
+    if has_diseases:
+        reasons.append("Associated with well-characterized human diseases")
+        
+    if has_gwas:
+        reasons.append("Multiple trait associations reported")
+        
+    if ev_score >= 75:
+        reasons.append("High evidence confidence score")
+        
+    if not reasons:
+        reasons.append("Baseline priority based on available annotations")
+        
+    return reasons
+
+def generate_priority_driver(scores_dict):
+    # Normalized scores
+    normalized = {
+        "Strong Clinical Evidence": scores_dict["clinvar"] / 15.0 if scores_dict["clinvar"] else 0,
+        "Extensive Literature Support": scores_dict["lit"] / 5.0 if scores_dict["lit"] else 0,
+        "Significant Disease Associations": scores_dict["disease"] / 10.0 if scores_dict["disease"] else 0,
+        "High Research Importance": scores_dict["rr"] / 25.0 if scores_dict["rr"] else 0,
+        "Strong Trait Associations": scores_dict["gwas"] / 10.0 if scores_dict["gwas"] else 0,
+        "High Evidence Confidence": scores_dict["ev"] / 35.0 if scores_dict["ev"] else 0
+    }
+    
+    # Sort by normalized score
+    sorted_drivers = sorted(normalized.items(), key=lambda x: x[1], reverse=True)
+    
+    # If top driver is very strong, return it. If multiple are 1.0, return "Multiple Evidence Sources"
+    perfect_scores = [d for d in sorted_drivers if d[1] >= 0.9]
+    if len(perfect_scores) > 2:
+        return "Multiple Evidence Sources"
+        
+    if sorted_drivers[0][1] > 0:
+        return sorted_drivers[0][0]
+        
+    return "Baseline Annotation"
+
+def generate_priority_score(ev_score, rr_score, clinvar_data, has_diseases, has_gwas, pubmed_count):
+    # 1. Evidence Confidence (Max 35)
+    ev_pts = (ev_score / 100.0) * 35
+    
+    # 2. Research Relevance (Max 25)
+    rr_pts = (rr_score / 100.0) * 25
+    
+    # 3. ClinVar Strength (Max 15)
+    clinvar_pts = 0
+    if clinvar_data and clinvar_data.get("clinical_significance") and clinvar_data.get("clinical_significance") != "Unknown":
+        rev_status = clinvar_data.get("review_status", "").lower()
+        if "practice guideline" in rev_status or "expert panel" in rev_status:
+            clinvar_pts = 15
+        elif "multiple submitters" in rev_status:
+            clinvar_pts = 10
+        else:
+            clinvar_pts = 5
+            
+    # 4. Disease Context (Max 10)
+    disease_pts = 10 if has_diseases else 0
+    
+    # 5. GWAS Evidence (Max 10)
+    gwas_pts = 10 if has_gwas else 0
+    
+    # 6. Literature Bonus (Max 5)
+    lit_pts = 0
+    if pubmed_count > 1000: lit_pts = 5
+    elif pubmed_count > 100: lit_pts = 3
+    elif pubmed_count > 10: lit_pts = 1
+    
+    total_score = round(ev_pts + rr_pts + clinvar_pts + disease_pts + gwas_pts + lit_pts)
+    total_score = min(total_score, 100)
+    
+    if total_score >= 75: tier = "Critical Priority"
+    elif total_score >= 50: tier = "High Priority"
+    elif total_score >= 25: tier = "Moderate Priority"
+    else: tier = "Low Priority"
+    
+    scores_dict = {
+        "ev": ev_pts, "rr": rr_pts, "clinvar": clinvar_pts,
+        "disease": disease_pts, "gwas": gwas_pts, "lit": lit_pts
+    }
+    
+    driver = generate_priority_driver(scores_dict)
+    reasons = generate_priority_reasons(clinvar_pts, lit_pts, has_diseases, has_gwas, ev_score)
+    
+    return {
+        "priority_score": total_score,
+        "priority_tier": tier,
+        "primary_driver": driver,
+        "priority_reasons": reasons
+    }
+
+
+def generate_acmg_evidence(allele_frequency, clinical_significance, impact_level, consequence, has_diseases, has_gwas):
+    criteria = []
+    
+    # Pathogenic Logic
+    strong_clinvar = False
+    if clinical_significance:
+        sig_lower = clinical_significance.lower()
+        if "pathogenic" in sig_lower and "likely" not in sig_lower:
+            strong_clinvar = True
+            
+    strong_gwas = has_gwas
+    
+    if has_diseases and (strong_clinvar or strong_gwas):
+        criteria.append({
+            "code": "PS4",
+            "strength": "Strong",
+            "reason": "Variant has strong disease association evidence."
+        })
+        
+    if allele_frequency is not None and allele_frequency < 0.01:
+        criteria.append({
+            "code": "PM2",
+            "strength": "Moderate",
+            "reason": "Rare population frequency (<1%)."
+        })
+        
+    if impact_level in ["HIGH", "MODERATE"] and consequence and "missense" in consequence.lower():
+        criteria.append({
+            "code": "PP3",
+            "strength": "Supporting",
+            "reason": "Predicted functional impact."
+        })
+        
+    if strong_clinvar or (clinical_significance and "likely" in clinical_significance.lower() and "pathogenic" in clinical_significance.lower()):
+        criteria.append({
+            "code": "PP5",
+            "strength": "Supporting",
+            "reason": "ClinVar pathogenic assertion available."
+        })
+
+    # Benign Logic
+    if allele_frequency is not None and allele_frequency > 0.05:
+        criteria.append({
+            "code": "BA1",
+            "strength": "Stand-alone",
+            "reason": "Extremely common allele frequency (>5%)."
+        })
+        
+    if impact_level in ["LOW", "MODIFIER"]:
+        criteria.append({
+            "code": "BP4",
+            "strength": "Supporting",
+            "reason": "Low impact consequence or modifier variant."
+        })
+        
+    if clinical_significance and "benign" in clinical_significance.lower():
+        criteria.append({
+            "code": "BP6",
+            "strength": "Supporting",
+            "reason": "ClinVar benign assertion available."
+        })
+
+    pathogenic_codes = ["PS4", "PM2", "PP3", "PP5"]
+    benign_codes = ["BA1", "BP4", "BP6"]
+    
+    pathogenic_count = len([c for c in criteria if c["code"] in pathogenic_codes])
+    benign_count = len([c for c in criteria if c["code"] in benign_codes])
+    
+    if pathogenic_count > 0 and benign_count > 0:
+        classification = "Conflicting Evidence"
+    elif pathogenic_count >= 1 or benign_count >= 1:
+        classification = "Research Classification Available"
+    else:
+        classification = "Evidence Incomplete"
+        
+    evidence_points = 0
+    if allele_frequency is not None: evidence_points += 1
+    if clinical_significance: evidence_points += 1
+    if impact_level: evidence_points += 1
+    if has_diseases: evidence_points += 1
+    if has_gwas: evidence_points += 1
+    
+    if evidence_points >= 4:
+        mapping_confidence = "High"
+    elif evidence_points >= 2:
+        mapping_confidence = "Moderate"
+    else:
+        mapping_confidence = "Low"
+
+    return {
+        "criteria": criteria,
+        "triggered_criteria": [c["code"] for c in criteria],
+        "criteria_count": len(criteria),
+        "pathogenic_evidence_count": pathogenic_count,
+        "benign_evidence_count": benign_count,
+        "classification": classification,
+        "mapping_confidence": mapping_confidence,
+        "confidence": "Research Use Only"
+    }

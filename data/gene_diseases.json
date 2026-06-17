@@ -1,0 +1,89 @@
+{
+  "APOE": {
+    "available": true,
+    "diseases": [
+      {
+        "name": "Alzheimer Disease",
+        "source": "NCBI Gene"
+      },
+      {
+        "name": "Hyperlipoproteinemia",
+        "source": "ClinVar"
+      },
+      {
+        "name": "Cardiovascular Disease",
+        "source": "NCBI Gene"
+      }
+    ]
+  },
+  "CFTR": {
+    "available": true,
+    "diseases": [
+      {
+        "name": "Cystic Fibrosis",
+        "source": "NCBI Gene"
+      },
+      {
+        "name": "Congenital Bilateral Absence of Vas Deferens",
+        "source": "ClinVar"
+      }
+    ]
+  },
+  "TP53": {
+    "available": true,
+    "diseases": [
+      {
+        "name": "Li-Fraumeni Syndrome",
+        "source": "ClinVar"
+      },
+      {
+        "name": "Multiple Cancer Types",
+        "source": "NCBI Gene"
+      }
+    ]
+  },
+  "HFE": {
+    "available": true,
+    "diseases": [
+      {
+        "name": "Hereditary Hemochromatosis",
+        "source": "NCBI Gene"
+      }
+    ]
+  },
+  "F5": {
+    "available": true,
+    "diseases": [
+      {
+        "name": "Thrombophilia",
+        "source": "NCBI Gene"
+      },
+      {
+        "name": "Factor V Leiden",
+        "source": "ClinVar"
+      }
+    ]
+  },
+  "HBB": {
+    "available": true,
+    "diseases": [
+      {
+        "name": "Sickle Cell Anemia",
+        "source": "NCBI Gene"
+      },
+      {
+        "name": "Beta Thalassemia",
+        "source": "ClinVar"
+      }
+    ]
+  },
+  "TCF7L2": {
+    "available": true,
+    "diseases": [
+      {
+        "name": "Type 2 Diabetes",
+        "source": "NCBI Gene"
+      }
+    ]
+  }
+}

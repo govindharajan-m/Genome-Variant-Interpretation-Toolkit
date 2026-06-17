@@ -1,0 +1,101 @@
+{
+  "APOE": {
+    "available": true,
+    "pathways": [
+      {
+        "name": "Lipid Metabolism",
+        "source": "Reactome"
+      },
+      {
+        "name": "Cholesterol Transport",
+        "source": "Reactome"
+      },
+      {
+        "name": "Neuronal Maintenance",
+        "source": "NCBI Gene"
+      }
+    ]
+  },
+  "HFE": {
+    "available": true,
+    "pathways": [
+      {
+        "name": "Iron Homeostasis",
+        "source": "Reactome"
+      },
+      {
+        "name": "Metal Ion Transport",
+        "source": "NCBI Gene"
+      }
+    ]
+  },
+  "CFTR": {
+    "available": true,
+    "pathways": [
+      {
+        "name": "Ion Transport",
+        "source": "Reactome"
+      },
+      {
+        "name": "Epithelial Fluid Regulation",
+        "source": "NCBI Gene"
+      }
+    ]
+  },
+  "TP53": {
+    "available": true,
+    "pathways": [
+      {
+        "name": "Cell Cycle Regulation",
+        "source": "Reactome"
+      },
+      {
+        "name": "DNA Damage Response",
+        "source": "NCBI Gene"
+      },
+      {
+        "name": "Apoptosis",
+        "source": "Reactome"
+      }
+    ]
+  },
+  "F5": {
+    "available": true,
+    "pathways": [
+      {
+        "name": "Blood Coagulation Cascade",
+        "source": "Reactome"
+      },
+      {
+        "name": "Hemostasis",
+        "source": "NCBI Gene"
+      }
+    ]
+  },
+  "HBB": {
+    "available": true,
+    "pathways": [
+      {
+        "name": "Oxygen Transport",
+        "source": "Reactome"
+      },
+      {
+        "name": "Erythrocyte Function",
+        "source": "NCBI Gene"
+      }
+    ]
+  },
+  "TCF7L2": {
+    "available": true,
+    "pathways": [
+      {
+        "name": "Wnt Signaling Pathway",
+        "source": "Reactome"
+      },
+      {
+        "name": "Glucose Homeostasis",
+        "source": "NCBI Gene"
+      }
+    ]
+  }
+}

@@ -152,11 +152,11 @@
   <!-- ── Results Panel ─────────────────────────────────────────────────────── -->
   <div id="cnvResultPanel" class="result-panel hidden">
 
-    <!-- 1. Executive Snapshot Container -->
-    <div id="cnvExecutiveSnapshotContainer"></div>
+    <!-- 1. Report Summary Container -->
+    <div id="cnvReportSummaryContainer"></div>
 
-    <!-- 2. Interpretation Summary Container -->
-    <div id="cnvInterpretationSummaryContainer"></div>
+    <!-- 2. Summary Container -->
+    <div id="cnvSummaryContainer"></div>
 
     <!-- 3. Variant Overview Card -->
     <div class="card result-card">
@@ -428,7 +428,7 @@ function renderCNVResult(d) {
   document.getElementById("cr-clinical-note").textContent = d.clinical_note;
 
   // Explanations
-  document.getElementById("cnvExecutiveSnapshotContainer").innerHTML = renderExecutiveSnapshotHTML(d);
+  document.getElementById("cnvReportSummaryContainer").innerHTML = renderReportSummaryHTML(d);
   document.getElementById("cnvGwasContainer").innerHTML = renderGWASHTML(d);
   document.getElementById("cnvPopulationFrequenciesContainer").innerHTML =
     renderPopulationFrequenciesHTML(d);
@@ -437,13 +437,13 @@ function renderCNVResult(d) {
   document.getElementById("cnvSignificanceExplanationContainer").innerHTML =
     renderSignificanceExplanationHTML(d.significance_explanation, d.clinical_significance || "");
   if (d.interpretation_summary) {
-    document.getElementById("cnvInterpretationSummaryContainer").innerHTML = 
+    document.getElementById("cnvSummaryContainer").innerHTML = 
       `<div class="card result-card info-card" style="border-left-color: var(--accent);">
-         <h3 class="card-title">Interpretation Summary</h3>
+         <h3 class="card-title">Summary</h3>
          <p style="font-size: 0.95rem; line-height: 1.6;">${d.interpretation_summary}</p>
        </div>`;
   } else {
-    document.getElementById("cnvInterpretationSummaryContainer").innerHTML = "";
+    document.getElementById("cnvSummaryContainer").innerHTML = "";
   }
 
   // References
@@ -481,7 +481,7 @@ function showCNVError(msg) {
   document.getElementById("cnvPopulationFrequenciesContainer").innerHTML = "";
   document.getElementById("cnvImpactExplanationContainer").innerHTML = "";
   document.getElementById("cnvSignificanceExplanationContainer").innerHTML = "";
-  document.getElementById("cnvInterpretationSummaryContainer").innerHTML = "";
+  document.getElementById("cnvSummaryContainer").innerHTML = "";
   document.getElementById("referencesContainer").innerHTML = "";
   document.getElementById("cnvPubmedContainer").innerHTML = "";
 

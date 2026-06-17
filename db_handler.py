@@ -880,78 +880,38 @@ def _fetch_live_gene_context(gene_symbol: str) -> dict:
 # Phase 2: Disease Association
 # ═══════════════════════════════════════════════════════════════════════════════
 
-@lru_cache(maxsize=128)
-def _fetch_gene_diseases(gene_symbol: str) -> dict:
-    """
-    Fetch disease associations from Ensembl Phenotype API.
-    """
-    fallback = {"available": False, "diseases": []}
-    if not gene_symbol:
-        return fallback
-        
+@lru_cache(maxsize=1)
+def _load_gene_diseases() -> dict:
+    """Loads the external JSON database for gene diseases."""
+    filepath = os.path.join(os.path.dirname(__file__), "data", "gene_diseases.json")
     try:
-        url = f"https://rest.ensembl.org/phenotype/gene/homo_sapiens/{gene_symbol}?content-type=application/json"
-        resp = requests.get(url, headers={"Content-Type": "application/json"}, timeout=10)
-        if resp.ok:
-            data = resp.json()
-            diseases = list({d.get("description", "").title() for d in data if d.get("description")})
-            # Remove very generic or NA items if any
-            diseases = [d for d in diseases if d and d.lower() not in ["not provided", "na", "unknown"]]
-            
-            # Sort by length or just alphabetically, but cap to top 15 to avoid massive lists
-            diseases.sort()
-            
-            return {
-                "available": len(diseases) > 0,
-                "diseases": diseases[:15]
-            }
+        with open(filepath, "r", encoding="utf-8") as f:
+            return json.load(f)
     except Exception as e:
-        logger.error(f"Ensembl Phenotype fetch failed for {gene_symbol}: {e}")
-        
-    return fallback
+        logger.error(f"Failed to load gene_diseases.json: {e}")
+        return {}
+
+def _fetch_gene_diseases(gene_symbol: str) -> dict:
+    """Retrieves disease associations for a gene from the knowledge base."""
+    db = _load_gene_diseases()
+    return db.get(gene_symbol, {"available": False})
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # Phase 3: Biological Pathways
 # ═══════════════════════════════════════════════════════════════════════════════
 
-@lru_cache(maxsize=128)
-def _fetch_gene_pathways(gene_symbol: str) -> dict:
-    """
-    Fetch biological pathways from MyGene.info API.
-    """
-    fallback = {"available": False, "pathways": []}
-    if not gene_symbol:
-        return fallback
-        
+@lru_cache(maxsize=1)
+def _load_gene_pathways() -> dict:
+    """Loads the external JSON database for gene pathways."""
+    filepath = os.path.join(os.path.dirname(__file__), "data", "gene_pathways.json")
     try:
-        url = f"https://mygene.info/v3/query?q=symbol:{gene_symbol}&fields=pathway&species=human"
-        res = fetch_with_backoff(url, "MyGene Pathways", gene_symbol)
-        
-        if res and "hits" in res and len(res["hits"]) > 0:
-            hit = res["hits"][0]
-            pathways_data = hit.get("pathway", {})
-            pathway_names = set()
-            
-            # MyGene pathway data has keys like 'kegg', 'reactome', 'wikipathways'
-            if isinstance(pathways_data, dict):
-                for source, p_list in pathways_data.items():
-                    if isinstance(p_list, list):
-                        for p in p_list:
-                            if isinstance(p, dict) and p.get("name"):
-                                pathway_names.add(p["name"])
-                    elif isinstance(p_list, dict) and p_list.get("name"):
-                        pathway_names.add(p_list["name"])
-                        
-            pathways = list(pathway_names)
-            # Clean up trailing species names from KEGG like " - Homo sapiens (human)"
-            pathways = [p.split(" - Homo sapiens")[0] for p in pathways]
-            pathways.sort()
-            
-            return {
-                "available": len(pathways) > 0,
-                "pathways": pathways[:15]
-            }
+        with open(filepath, "r", encoding="utf-8") as f:
+            return json.load(f)
     except Exception as e:
-        logger.error(f"MyGene Pathway fetch failed for {gene_symbol}: {e}")
-        
-    return fallback
+        logger.error(f"Failed to load gene_pathways.json: {e}")
+        return {}
+
+def _fetch_gene_pathways(gene_symbol: str) -> dict:
+    """Retrieves pathway associations for a gene from the knowledge base."""
+    db = _load_gene_pathways()
+    return db.get(gene_symbol, {"available": False})

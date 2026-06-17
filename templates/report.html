@@ -22,13 +22,17 @@
 
 
 <div class="report-nav">
-  <a href="#section-snapshot">Executive Snapshot</a>
-  <a href="#section-summary">Interpretation Summary</a>
+  <a href="#section-snapshot">Report Summary</a>
+  <a href="#section-summary">Summary</a>
   <a href="#section-variant">Variant Overview</a>
   <a href="#section-clinvar">Clinical Evidence</a>
   <a href="#section-pop">Population Analysis</a>
   <a href="#section-gwas">Trait & Research</a>
-  <a href="#section-gene">Gene Context</a>
+  
+      <a href="#section-gene">Gene Context</a>
+      <a href="#section-diseases">Associated Diseases</a>
+      <a href="#section-pathways">Biological Pathways</a>
+
   <a href="#section-lit">Literature Evidence</a>
 </div>
 <div class="container">
@@ -48,44 +52,79 @@
   {% else %}
 
   
-  <!-- 1. Executive Snapshot -->
-  <div id="section-snapshot" class="card result-card" style="border-left: 4px solid var(--primary-colour); background-color: var(--bg-secondary);">
-    <h2 class="card-title" style="margin-bottom: 12px; font-size: 1.25rem;">EXECUTIVE SNAPSHOT</h2>
-    <div class="result-meta-grid" style="row-gap: 1.2rem;">
-      <div class="meta-item">
-        <span class="meta-label">Variant</span>
-        <span class="meta-val mono" style="font-size: 1.1rem; color: var(--text-primary); font-weight: bold;">{{ rsid }}</span>
+  
+  <!-- Research Relevance -->
+  {% if report.research_relevance is mapping %}
+  <div id="section-research-relevance" class="card result-card" style="margin-top: 1rem;">
+      <h3 class="card-title">Research Relevance</h3>
+      <div style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem;">
+          <span class="status-badge badge-strong" style="font-size: 1rem; padding: 0.4rem 0.8rem; background: var(--bg-tertiary);">{{ report.research_relevance.tier|upper }}</span>
+          <span style="font-size: 1rem; color: var(--text-secondary);">Research Score: <span style="font-weight: 600; color: var(--primary-colour);">{{ report.research_relevance.score }} / 100</span></span>
       </div>
-      <div class="meta-item">
-        <span class="meta-label">Gene</span>
-        <span class="meta-val mono" style="font-size: 1.1rem; color: var(--primary-colour); font-weight: bold;">{% if report.gene_context and report.gene_context.available %}{{ report.gene_context.symbol }}{% else %}Unknown{% endif %}</span>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div style="margin-top: 1rem;">
+              <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Why This Variant Matters</h4>
+              <ul style="list-style-type: none; padding: 0; margin: 0;">
+                  {% for r in report.research_relevance.reasons %}
+                  <li style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.3rem;">✓ {{ r }}</li>
+                  {% endfor %}
+              </ul>
+          </div>
+          {% if report.research_relevance.applications %}
+          <div style="margin-top: 1rem;">
+              <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Potential Applications</h4>
+              <ul style="list-style-type: none; padding: 0; margin: 0;">
+                  {% for a in report.research_relevance.applications %}
+                  <li style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.3rem;">• {{ a }}</li>
+                  {% endfor %}
+              </ul>
+          </div>
+          {% endif %}
       </div>
-      <div class="meta-item">
-        <span class="meta-label">Clinical Significance</span>
-        <span class="meta-val" style="font-size: 1.1rem; font-weight: 600;">{{ report.clinvar.clinical_significance if report.clinvar else "Uncertain significance" }}</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">Confidence</span>
-        <span class="meta-val" style="font-size: 1.1rem;">{{ report.clinvar.confidence_level if report.clinvar else "Low" }}</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">Research Relevance</span>
-        <span class="meta-val" style="font-size: 1.1rem; font-weight: 600; color: #8e44ad;">{{ report.research_relevance or 'Low' }}</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">Population Focus</span>
-        <span class="meta-val" style="font-size: 0.95rem; line-height: 1.5;">
-          South Asian: <strong>{% if report.population_frequencies and report.population_frequencies.south_asian is not none %}{{ "%.2f"|format(report.population_frequencies.south_asian * 100) }}%{% else %}N/A{% endif %}</strong><br>
-          European/Caucasian: <strong>{% if report.population_frequencies and report.population_frequencies.european is not none %}{{ "%.2f"|format(report.population_frequencies.european * 100) }}%{% else %}N/A{% endif %}</strong>
-        </span>
-      </div>
+  </div>
+  <div class="section-divider"></div>
+  {% endif %}
+
+  <!-- 1. Report Summary -->
+  <div id="section-snapshot" class="card result-card" style="border-left: 3px solid var(--primary-colour);">
+    <h2 class="card-title" style="margin-bottom: 12px; font-size: 1.25rem;">REPORT SUMMARY</h2>
+    <div class="result-meta-grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="meta-item">
+            <span class="meta-label">Variant ID</span>
+            <span class="meta-val mono" style="font-weight: 600; font-size: 1.1rem;">{{ report.rsid }}</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Gene</span>
+            <span class="meta-val mono">{% if report.gene %}{{ report.gene.gene }}{% else %}Unknown{% endif %}</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Consequence</span>
+            <span class="meta-val">{% if report.protein_change and report.protein_change != "—" %}{{ report.protein_change }}{% else %}{{ report.impact.impact_level }}{% endif %}</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Clinical Significance</span>
+            <span class="meta-val"><span class="status-badge {{ get_sig_class }}">{{ report.clinical_significance.replace("_", " ") if report.clinical_significance else "Uncertain significance" }}</span></span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Research Relevance</span>
+            <span class="meta-val">{% if report.research_relevance is mapping %}{{ report.research_relevance.tier }}{% else %}{{ report.research_relevance }}{% endif %}</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Evidence Confidence Score</span>
+            <span class="meta-val">{% if report.evidence_confidence %}{{ report.evidence_confidence.score }}/100 ({{ report.evidence_confidence.tier }}){% else %}N/A{% endif %}</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Literature Evidence Tier</span>
+            <span class="meta-val">{% if report.pubmed and report.pubmed.tier %}{{ report.pubmed.tier }}{% else %}N/A{% endif %}</span>
+        </div>
     </div>
   </div>
+  </div>
 
-  <!-- 2. Interpretation Summary -->
-<!-- ── Full Interpretation Summary ───────────────────────────────────────── -->
+  <!-- 2. Summary -->
+<!-- ── Full Summary ───────────────────────────────────────── -->
   <div class="card result-card" style="margin-top: 1.5rem;">
-    <h3 class="card-title">🧬 Scientific Interpretation Summary</h3>
+    <h3 class="card-title">🧬 Scientific Summary</h3>
     <div class="interpretation-box" style="margin-bottom: 1.5rem;">
       <p class="interpretation-text clinvar-interpretation">{{ report.interpretation.general_summary }}</p>
     </div>
