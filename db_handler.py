@@ -915,3 +915,50 @@ def _fetch_gene_pathways(gene_symbol: str) -> dict:
     """Retrieves pathway associations for a gene from the knowledge base."""
     db = _load_gene_pathways()
     return db.get(gene_symbol, {"available": False})
+
+
+_pgx_cache = None
+def _load_pgx():
+    global _pgx_cache
+    if _pgx_cache is None:
+        try:
+            path = os.path.join(DATA_DIR, "pharmacogenomics.json")
+            with open(path, "r", encoding="utf-8") as f:
+                _pgx_cache = json.load(f)
+        except Exception:
+            _pgx_cache = {}
+    return _pgx_cache
+
+def _fetch_pharmacogenomics(gene_symbol: str) -> dict:
+    if not gene_symbol:
+        return {"available": False, "drug_gene_interactions": [], "applications": []}
+        
+    db = _load_pgx()
+    record = db.get(gene_symbol)
+    if record:
+        return {
+            "available": True,
+            "drug_gene_interactions": record.get("drug_gene_interactions", []),
+            "applications": record.get("applications", [])
+        }
+    return {"available": False, "drug_gene_interactions": [], "applications": []}
+
+
+_panels_cache = None
+def _load_panels():
+    global _panels_cache
+    if _panels_cache is None:
+        try:
+            path = os.path.join(DATA_DIR, "disease_panels.json")
+            with open(path, "r", encoding="utf-8") as f:
+                _panels_cache = json.load(f)
+        except Exception:
+            _panels_cache = {}
+    return _panels_cache
+
+def _fetch_disease_panel(disease_name: str) -> list:
+    db = _load_panels()
+    for k, v in db.items():
+        if k.lower() == disease_name.lower():
+            return v.get("genes", [])
+    return []

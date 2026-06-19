@@ -1,0 +1,117 @@
+{
+  "APOE": {
+    "drug_gene_interactions": [
+      {
+        "drug": "Statins",
+        "gene": "APOE",
+        "evidence_level": "High",
+        "association": "Efficacy / Toxicity risk"
+      },
+      {
+        "drug": "Donepezil",
+        "gene": "APOE",
+        "evidence_level": "Moderate",
+        "association": "Treatment response in Alzheimer's"
+      }
+    ],
+    "applications": [
+      "Alzheimer's therapeutic studies",
+      "Neurodegenerative disease drug development",
+      "Lipid-lowering therapy response"
+    ]
+  },
+  "CFTR": {
+    "drug_gene_interactions": [
+      {
+        "drug": "Ivacaftor",
+        "gene": "CFTR",
+        "evidence_level": "Very High",
+        "association": "CFTR modulator efficacy"
+      },
+      {
+        "drug": "Lumacaftor",
+        "gene": "CFTR",
+        "evidence_level": "Very High",
+        "association": "CFTR modulator efficacy"
+      }
+    ],
+    "applications": [
+      "CFTR modulator therapies",
+      "Precision medicine research"
+    ]
+  },
+  "TP53": {
+    "drug_gene_interactions": [
+      {
+        "drug": "Cisplatin",
+        "gene": "TP53",
+        "evidence_level": "Moderate",
+        "association": "Chemotherapy resistance"
+      }
+    ],
+    "applications": [
+      "Precision oncology",
+      "Targeted cancer therapeutics",
+      "Chemotherapy resistance profiling"
+    ]
+  },
+  "HFE": {
+    "drug_gene_interactions": [
+      {
+        "drug": "Iron supplements",
+        "gene": "HFE",
+        "evidence_level": "High",
+        "association": "Toxicity risk in hemochromatosis"
+      }
+    ],
+    "applications": [
+      "Iron metabolism interventions"
+    ]
+  },
+  "F5": {
+    "drug_gene_interactions": [
+      {
+        "drug": "Oral Contraceptives",
+        "gene": "F5",
+        "evidence_level": "High",
+        "association": "Increased risk of venous thrombosis"
+      }
+    ],
+    "applications": [
+      "Thrombosis risk assessment",
+      "Hormonal therapy contraindication research"
+    ]
+  },
+  "TCF7L2": {
+    "drug_gene_interactions": [
+      {
+        "drug": "Sulfonylureas",
+        "gene": "TCF7L2",
+        "evidence_level": "High",
+        "association": "Reduced therapeutic response"
+      },
+      {
+        "drug": "Metformin",
+        "gene": "TCF7L2",
+        "evidence_level": "Moderate",
+        "association": "Altered glycemic response"
+      }
+    ],
+    "applications": [
+      "Type 2 diabetes precision therapeutics"
+    ]
+  },
+  "HBB": {
+    "drug_gene_interactions": [
+      {
+        "drug": "Hydroxyurea",
+        "gene": "HBB",
+        "evidence_level": "High",
+        "association": "Treatment response in sickle cell disease"
+      }
+    ],
+    "applications": [
+      "Hemoglobinopathy therapeutic research"
+    ]
+  }
+}

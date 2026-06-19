@@ -24,7 +24,11 @@ from flask import (
     Flask, render_template, request,
     jsonify, make_response, redirect, url_for, session
 )
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from variant_engine import (
+    analyze_variant_cohort,
+    generate_panel_recommendation,
     annotate_snp,
     annotate_snp_from_rsid,
     analyze_cnv,
@@ -41,6 +45,21 @@ from db_handler import get_all_known_rsids
 app = Flask(__name__)
 app.secret_key = "gvap_demo_secret_2024"   # change for production
 app.config["JSON_AS_ASCII"] = False
+
+limiter = Limiter(get_remote_address, app=app, default_limits=[])
+
+@app.after_request
+def add_security_headers(response):
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; "
+        "script-src 'self'; "
+        "style-src 'self' 'unsafe-inline'; "
+        "img-src 'self' data: https:;"
+    )
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    return response
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -99,6 +118,7 @@ def report_page(rsid):
 # ═══════════════════════════════════════════════════════════════════════════════
 
 @app.route("/api/analyze-snp", methods=["POST"])
+@limiter.limit("10 per minute")
 def api_analyze_snp():
     """
     Annotate a single SNP given chromosomal coordinates.
@@ -138,6 +158,7 @@ def api_analyze_snp():
 
 
 @app.route("/api/analyze-cnv", methods=["POST"])
+@limiter.limit("10 per minute")
 def api_analyze_cnv():
     """
     Annotate a CNV (Copy Number Variant).
@@ -190,6 +211,7 @@ def api_analyze_cnv():
 
 
 @app.route("/api/batch", methods=["POST"])
+@limiter.limit("10 per minute")
 def api_batch():
     """
     Batch rsID annotation.
@@ -244,6 +266,7 @@ def api_report(rsid):
 # ═══════════════════════════════════════════════════════════════════════════════
 
 @app.route("/api/analyze-snp-rsid", methods=["POST"])
+@limiter.limit("10 per minute")
 def api_analyze_snp_rsid():
     """
     Annotate a single SNP entered by rsID.
@@ -269,6 +292,7 @@ def api_analyze_snp_rsid():
 
 
 @app.route("/api/analyze-cnv-rsid", methods=["POST"])
+@limiter.limit("10 per minute")
 def api_analyze_cnv_rsid():
     """
     Analyse a CNV resolved from either an rsID or a gene symbol.
@@ -378,5 +402,81 @@ def server_error(e):
 # ENTRY POINT
 # ═══════════════════════════════════════════════════════════════════════════════
 
+
+@app.route("/panel_designer")
+def panel_designer():
+    return render_template("panel_designer.html")
+
+@app.route("/api/panel", methods=["POST"])
+@limiter.limit("10 per minute")
+def api_panel():
+    disease = request.form.get("disease", "").strip()
+    if not disease:
+        return jsonify({"error": "No disease name provided."}), 400
+        
+    try:
+        from variant_engine import generate_panel_recommendation
+        panel_data = generate_panel_recommendation(disease)
+        if "error" in panel_data:
+            return jsonify(panel_data), 404
+        return jsonify(panel_data)
+    except Exception as e:
+        app.logger.error(f"Panel generation error: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/cohort_analysis")
+def cohort_analysis():
+    return render_template("cohort_analysis.html")
+
+@app.route("/api/cohort", methods=["POST"])
+@limiter.limit("10 per minute")
+def api_cohort():
+    rsids_raw = request.form.get("rsids", "").strip()
+    if not rsids_raw:
+        return jsonify({"error": "No variants provided."}), 400
+        
+    # Parse rsids (comma separated, newlines, etc.)
+    import re
+    rsids = [v.strip() for v in re.split(r'[,\n\s]+', rsids_raw) if v.strip()]
+    if not rsids:
+        return jsonify({"error": "No valid variants provided."}), 400
+        
+    try:
+        from variant_engine import analyze_variant_cohort
+        cohort_data = analyze_variant_cohort(rsids)
+        return jsonify(cohort_data)
+    except Exception as e:
+        app.logger.error(f"Cohort generation error: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/comparative_analysis")
+def comparative_analysis():
+    return render_template("comparative_analysis.html")
+
+@app.route("/api/compare", methods=["POST"])
+@limiter.limit("10 per minute")
+def api_compare():
+    rsids_raw = request.form.get("rsids", "").strip()
+    if not rsids_raw:
+        return jsonify({"error": "No variants provided."}), 400
+        
+    import re
+    rsids = [v.strip() for v in re.split(r'[,\n\s]+', rsids_raw) if v.strip()]
+    if not rsids:
+        return jsonify({"error": "No valid variants provided."}), 400
+        
+    try:
+        from variant_engine import generate_variant_comparison
+        comp_data = generate_variant_comparison(rsids)
+        if "error" in comp_data:
+            return jsonify(comp_data), 404
+        return jsonify(comp_data)
+    except Exception as e:
+        app.logger.error(f"Comparative engine error: {e}")
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == "__main__":
+
     app.run(debug=True, host="0.0.0.0", port=5000)

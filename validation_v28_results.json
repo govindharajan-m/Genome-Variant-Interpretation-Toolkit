@@ -1,0 +1,30 @@
+{
+  "Alzheimer's Disease": {
+    "success": false,
+    "error": "name '_load_panels' is not defined"
+  },
+  "Breast Cancer": {
+    "success": false,
+    "error": "name '_load_panels' is not defined"
+  },
+  "Hemochromatosis": {
+    "success": false,
+    "error": "name '_load_panels' is not defined"
+  },
+  "Cystic Fibrosis": {
+    "success": false,
+    "error": "name '_load_panels' is not defined"
+  },
+  "Type 2 Diabetes": {
+    "success": false,
+    "error": "name '_load_panels' is not defined"
+  },
+  "Thrombophilia": {
+    "success": false,
+    "error": "name '_load_panels' is not defined"
+  },
+  "Sickle Cell Disease": {
+    "success": false,
+    "error": "name '_load_panels' is not defined"
+  }
+}

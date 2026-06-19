@@ -757,3 +757,55 @@ function renderACMGEvidenceHTML(d) {
         ${criteriaHtml}
     </div>`;
 }
+
+
+// ── Pharmacogenomics HTML Generator ─────────────────────────────────────
+function renderPharmacogenomicsHTML(d) {
+    if (!d || !d.pharmacogenomics || d.pharmacogenomics.tier === "Not Available") return "";
+    const pgx = d.pharmacogenomics;
+    
+    let appsHtml = "";
+    if (pgx.applications && pgx.applications.length > 0) {
+        appsHtml = `<div style="margin-top: 1rem;"><h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Applications</h4><ul style="list-style-type: none; padding: 0; margin: 0;">`;
+        pgx.applications.forEach(a => {
+            appsHtml += `<li style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.3rem;">✓ ${a}</li>`;
+        });
+        appsHtml += `</ul></div>`;
+    }
+
+    let interactionsHtml = "";
+    if (pgx.interactions && pgx.interactions.length > 0) {
+        interactionsHtml = `<div style="margin-top: 1rem;"><h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Drug Relevance</h4><ul style="list-style-type: none; padding: 0; margin: 0;">`;
+        pgx.interactions.forEach(i => {
+            interactionsHtml += `<li style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.8rem; background: var(--bg-secondary); padding: 0.8rem; border-radius: 4px; border-left: 3px solid #16a085;">
+                <span style="font-weight: bold; color: var(--primary-colour); font-size: 1.05rem;">${i.drug}</span>
+                <span class="status-badge badge-strong" style="font-size: 0.75rem; margin-left: 0.5rem;">${i.evidence_level} Evidence</span><br>
+                <span style="display: block; margin-top: 0.4rem; font-size: 0.9rem;">${i.association}</span>
+            </li>`;
+        });
+        interactionsHtml += `</ul></div>`;
+    }
+
+    return `
+    <div class="card result-card" id="pharmacogenomicsCard" style="margin-top: 1rem; border-left: 4px solid #16a085;">
+        <h3 class="card-title">Pharmacogenomics & Precision Medicine</h3>
+        
+        <div style="background-color: var(--bg-secondary); padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; border-left: 3px solid #f39c12;">
+            <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
+                <strong>Research Use Only:</strong> This module identifies potential pharmacogenomic and precision medicine relevance based on curated databases (e.g., PharmGKB, CPIC). It must not be used to recommend medications, suggest doses, or provide treatment advice.
+            </p>
+        </div>
+
+        <div style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem;">
+            <span class="status-badge badge-strong" style="font-size: 1.1rem; padding: 0.4rem 0.8rem; background: var(--bg-tertiary);">${pgx.tier.toUpperCase()} TIER</span>
+            <span style="font-size: 0.9rem; color: var(--text-secondary);">Relevance Score: <strong style="color: var(--text-primary);">${pgx.score}</strong>/100</span>
+        </div>
+        
+        ${interactionsHtml}
+        ${appsHtml}
+        
+        <div style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-secondary);">
+            <strong>Evidence Source:</strong> Curated mappings derived from authoritative pharmacogenomic resources (PharmGKB / CPIC / FDA).
+        </div>
+    </div>`;
+}

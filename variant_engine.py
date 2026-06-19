@@ -16,6 +16,8 @@ Biological foundations:
 
 import hashlib
 from db_handler import (
+    _fetch_disease_panel,
+    _fetch_pharmacogenomics,
     get_dbsnp_record,
     get_clinvar_record,
     get_gene_info,
@@ -1239,6 +1241,9 @@ def annotate_snp_from_rsid(rsid: str) -> dict:
     diseases_arr = diseases.get("diseases", []) if diseases.get("available") else []
     pathways_arr = pathways.get("pathways", []) if pathways.get("available") else []
     
+    pgx_data = _fetch_pharmacogenomics(gene_symbol_clean) if gene_symbol_clean else {}
+    pharmacogenomics = generate_pharmacogenomic_relevance(pgx_data)
+
     research_relevance = generate_research_relevance(
         pubmed_count=pubmed_data.get("paper_count", 0) if pubmed_data else 0,
         clinvar_sig=clinical_significance,
@@ -1247,16 +1252,7 @@ def annotate_snp_from_rsid(rsid: str) -> dict:
         diseases_list=diseases_arr,
         pathways_list=pathways_arr,
         has_pop_freq=has_pop_freq,
-        ev_score=ev_score_dict["score"]
-    )
-
-    variant_priority = generate_priority_score(
-        ev_score=ev_score_dict["score"],
-        rr_score=research_relevance["score"],
-        clinvar_data=clinvar_record,
-        has_diseases=bool(diseases_arr),
-        has_gwas=bool(gwas_assocs),
-        pubmed_count=pubmed_data.get("paper_count", 0) if pubmed_data else 0
+        pgx_score=pharmacogenomics.get("score", 0)
     )
 
     acmg_evidence = generate_acmg_evidence(
@@ -1266,6 +1262,16 @@ def annotate_snp_from_rsid(rsid: str) -> dict:
         consequence=consequence,
         has_diseases=bool(diseases_arr),
         has_gwas=bool(gwas_assocs)
+    )
+
+    variant_priority = generate_priority_score(
+        clinvar_data=clinvar_record,
+        acmg_class=acmg_evidence.get("classification"),
+        has_diseases=bool(diseases_arr),
+        has_gwas=bool(gwas_assocs),
+        has_pathways=bool(pathways_arr),
+        pubmed_count=pubmed_data.get("paper_count", 0) if pubmed_data else 0,
+        pgx_score=pharmacogenomics.get("score", 0)
     )
 
     return {
@@ -1319,6 +1325,7 @@ def annotate_snp_from_rsid(rsid: str) -> dict:
         "research_relevance": research_relevance,
         "variant_priority": variant_priority,
         "acmg_evidence": acmg_evidence,
+        "pharmacogenomics": pharmacogenomics,
         "evidence_confidence": evidence_confidence
     }
 
@@ -1845,8 +1852,19 @@ def generate_research_applications(diseases_list, pathways_list, has_gwas, has_p
     sorted_apps.sort()
     return sorted_apps
 
-def generate_research_relevance(pubmed_count, clinvar_sig, gwas_evidence, has_gene_context, diseases_list, pathways_list, has_pop_freq, ev_score):
-    score = ev_score
+def generate_research_relevance(pubmed_count, clinvar_sig, gwas_evidence, has_gene_context, diseases_list, pathways_list, has_pop_freq, pgx_score):
+    disease_score = min(len(diseases_list) * 10, 30)
+    pathway_score = min(len(pathways_list) * 5, 25)
+    pgx_pts = (pgx_score / 100.0) * 20
+    gwas_pts = 15 if gwas_evidence else 0
+    
+    lit_pts = 0
+    if pubmed_count > 100: lit_pts = 10
+    elif pubmed_count > 10: lit_pts = 5
+    elif pubmed_count > 0: lit_pts = 2
+    
+    score = int(disease_score + pathway_score + pgx_pts + gwas_pts + lit_pts)
+    score = min(score, 100)
     
     if score >= 75: category = "Very High"
     elif score >= 50: category = "High"
@@ -1864,18 +1882,17 @@ def generate_research_relevance(pubmed_count, clinvar_sig, gwas_evidence, has_ge
     }
 
 
-def generate_priority_reasons(clinvar_strength, lit_score, has_diseases, has_gwas, ev_score):
+def generate_priority_reasons(clinvar_data, acmg_class, has_diseases, has_gwas, pubmed_count, pgx_score):
     reasons = []
-    if clinvar_strength >= 10:
-        reasons.append("Expert-reviewed or multi-submitter ClinVar evidence available")
-    elif clinvar_strength > 0:
+    if clinvar_data and clinvar_data.get("clinical_significance") and clinvar_data.get("clinical_significance") != "Unknown":
         reasons.append("ClinVar clinical significance reported")
         
-    if lit_score == 5:
-        reasons.append("Extensive literature support (>1,000 publications)")
-    elif lit_score >= 3:
+    if acmg_class and "Research Classification" in acmg_class:
+        reasons.append("ACMG evidence criteria triggered")
+        
+    if pubmed_count > 100:
         reasons.append("Strong literature support (>100 publications)")
-    elif lit_score > 0:
+    elif pubmed_count > 0:
         reasons.append("Literature support available")
         
     if has_diseases:
@@ -1884,8 +1901,8 @@ def generate_priority_reasons(clinvar_strength, lit_score, has_diseases, has_gwa
     if has_gwas:
         reasons.append("Multiple trait associations reported")
         
-    if ev_score >= 75:
-        reasons.append("High evidence confidence score")
+    if pgx_score > 0:
+        reasons.append("Pharmacogenomic relevance identified")
         
     if not reasons:
         reasons.append("Baseline priority based on available annotations")
@@ -1893,20 +1910,15 @@ def generate_priority_reasons(clinvar_strength, lit_score, has_diseases, has_gwa
     return reasons
 
 def generate_priority_driver(scores_dict):
-    # Normalized scores
     normalized = {
-        "Strong Clinical Evidence": scores_dict["clinvar"] / 15.0 if scores_dict["clinvar"] else 0,
-        "Extensive Literature Support": scores_dict["lit"] / 5.0 if scores_dict["lit"] else 0,
-        "Significant Disease Associations": scores_dict["disease"] / 10.0 if scores_dict["disease"] else 0,
-        "High Research Importance": scores_dict["rr"] / 25.0 if scores_dict["rr"] else 0,
-        "Strong Trait Associations": scores_dict["gwas"] / 10.0 if scores_dict["gwas"] else 0,
-        "High Evidence Confidence": scores_dict["ev"] / 35.0 if scores_dict["ev"] else 0
+        "Clinical Evidence": scores_dict["clinical"] / 40.0 if scores_dict["clinical"] else 0,
+        "Research & Trait Associations": scores_dict["research"] / 30.0 if scores_dict["research"] else 0,
+        "Literature Support": scores_dict["literature"] / 15.0 if scores_dict["literature"] else 0,
+        "Pharmacogenomic Relevance": scores_dict["pgx"] / 15.0 if scores_dict["pgx"] else 0
     }
     
-    # Sort by normalized score
     sorted_drivers = sorted(normalized.items(), key=lambda x: x[1], reverse=True)
     
-    # If top driver is very strong, return it. If multiple are 1.0, return "Multiple Evidence Sources"
     perfect_scores = [d for d in sorted_drivers if d[1] >= 0.9]
     if len(perfect_scores) > 2:
         return "Multiple Evidence Sources"
@@ -1916,38 +1928,39 @@ def generate_priority_driver(scores_dict):
         
     return "Baseline Annotation"
 
-def generate_priority_score(ev_score, rr_score, clinvar_data, has_diseases, has_gwas, pubmed_count):
-    # 1. Evidence Confidence (Max 35)
-    ev_pts = (ev_score / 100.0) * 35
-    
-    # 2. Research Relevance (Max 25)
-    rr_pts = (rr_score / 100.0) * 25
-    
-    # 3. ClinVar Strength (Max 15)
+def generate_priority_score(clinvar_data, acmg_class, has_diseases, has_gwas, has_pathways, pubmed_count, pgx_score):
+    # 1. Clinical Axis (Max 40)
     clinvar_pts = 0
     if clinvar_data and clinvar_data.get("clinical_significance") and clinvar_data.get("clinical_significance") != "Unknown":
         rev_status = clinvar_data.get("review_status", "").lower()
         if "practice guideline" in rev_status or "expert panel" in rev_status:
-            clinvar_pts = 15
+            clinvar_pts = 20
         elif "multiple submitters" in rev_status:
-            clinvar_pts = 10
+            clinvar_pts = 15
         else:
-            clinvar_pts = 5
+            clinvar_pts = 10
             
-    # 4. Disease Context (Max 10)
+    acmg_pts = 10 if acmg_class and "Research Classification" in acmg_class else 0
     disease_pts = 10 if has_diseases else 0
+    clinical_score = min(clinvar_pts + acmg_pts + disease_pts, 40)
     
-    # 5. GWAS Evidence (Max 10)
-    gwas_pts = 10 if has_gwas else 0
+    # 2. Research Axis (Max 30)
+    gwas_pts = 15 if has_gwas else 0
+    pathway_pts = 15 if has_pathways else 0
+    research_score = min(gwas_pts + pathway_pts, 30)
     
-    # 6. Literature Bonus (Max 5)
-    lit_pts = 0
-    if pubmed_count > 1000: lit_pts = 5
-    elif pubmed_count > 100: lit_pts = 3
-    elif pubmed_count > 10: lit_pts = 1
+    # 3. Literature Axis (Max 15)
+    literature_score = 0
+    if pubmed_count > 100: literature_score = 15
+    elif pubmed_count > 10: literature_score = 10
+    elif pubmed_count > 0: literature_score = 5
     
-    total_score = round(ev_pts + rr_pts + clinvar_pts + disease_pts + gwas_pts + lit_pts)
-    total_score = min(total_score, 100)
+    # 4. Precision Medicine Axis (Max 15)
+    pgx_pts = (pgx_score / 100.0) * 15
+    precision_score = min(pgx_pts, 15)
+    
+    total_score = round(clinical_score + research_score + literature_score + precision_score)
+    total_score = int(min(total_score, 100))
     
     if total_score >= 75: tier = "Critical Priority"
     elif total_score >= 50: tier = "High Priority"
@@ -1955,12 +1968,14 @@ def generate_priority_score(ev_score, rr_score, clinvar_data, has_diseases, has_
     else: tier = "Low Priority"
     
     scores_dict = {
-        "ev": ev_pts, "rr": rr_pts, "clinvar": clinvar_pts,
-        "disease": disease_pts, "gwas": gwas_pts, "lit": lit_pts
+        "clinical": clinical_score,
+        "research": research_score,
+        "literature": literature_score,
+        "pgx": precision_score
     }
     
     driver = generate_priority_driver(scores_dict)
-    reasons = generate_priority_reasons(clinvar_pts, lit_pts, has_diseases, has_gwas, ev_score)
+    reasons = generate_priority_reasons(clinvar_data, acmg_class, has_diseases, has_gwas, pubmed_count, pgx_score)
     
     return {
         "priority_score": total_score,
@@ -2069,3 +2084,522 @@ def generate_acmg_evidence(allele_frequency, clinical_significance, impact_level
         "mapping_confidence": mapping_confidence,
         "confidence": "Research Use Only"
     }
+
+
+def generate_pharmacogenomic_relevance(pgx_data: dict) -> dict:
+    if not pgx_data or not pgx_data.get("available"):
+        return {
+            "tier": "Not Available",
+            "score": 0,
+            "applications": [],
+            "interactions": []
+        }
+        
+    interactions = pgx_data.get("drug_gene_interactions", [])
+    applications = pgx_data.get("applications", [])
+    
+    score = 0
+    if len(interactions) > 0:
+        score += 30
+        
+    has_high = any(i.get("evidence_level") in ["High", "Very High"] for i in interactions)
+    if has_high:
+        score += 50
+    elif any(i.get("evidence_level") == "Moderate" for i in interactions):
+        score += 30
+        
+    if len(applications) > 0:
+        score += 20
+        
+    score = min(score, 100)
+    
+    if score >= 80: tier = "High"
+    elif score >= 50: tier = "Moderate"
+    elif score > 0: tier = "Low"
+    else: tier = "Not Available"
+    
+    return {
+        "tier": tier,
+        "score": score,
+        "applications": applications,
+        "interactions": interactions
+    }
+
+
+def generate_panel_recommendation(disease_name: str) -> dict:
+    genes = _fetch_disease_panel(disease_name)
+    if not genes:
+        return {"error": f"No panel found for disease: {disease_name}"}
+        
+    recommended_genes = []
+    total_papers = 0
+    
+    # Global Summary Tracking
+    total_candidate_variants = 0
+    priority_counts = {"Critical": 0, "High": 0, "Moderate": 0, "Low": 0}
+    top_variant = None
+    top_score = -1
+    
+    for g in genes:
+        pubmed = _fetch_live_pubmed(f"{g} {disease_name}", g)
+        paper_count = pubmed.get("paper_count", 0)
+        total_papers += paper_count
+        
+        pgx = _fetch_pharmacogenomics(g)
+        pgx_score = 0
+        if pgx.get("available"):
+            if any(i.get("evidence_level") in ["High", "Very High"] for i in pgx.get("drug_gene_interactions", [])):
+                pgx_score = 25
+            else:
+                pgx_score = 10
+                
+        diseases = _fetch_gene_diseases(g)
+        disease_score = 25 if len(diseases) > 0 else 0
+        
+        pathways = _fetch_gene_pathways(g)
+        pathway_score = 15 if len(pathways) > 0 else 0
+        
+        lit_score = 0
+        if paper_count > 1000: lit_score = 35
+        elif paper_count > 100: lit_score = 20
+        elif paper_count > 10: lit_score = 5
+        
+        panel_score = min(pgx_score + disease_score + pathway_score + lit_score, 100)
+        
+        reasons = []
+        if lit_score >= 20: reasons.append("Extensive literature support")
+        elif lit_score > 0: reasons.append("Literature support available")
+        
+        if disease_score > 0: reasons.append("Strong disease associations")
+        if pgx_score > 0: reasons.append("High research relevance")
+        if pathway_score > 0: reasons.append("Established biological role")
+        
+        # Phase 2.8: Candidate Variants
+        gene_variants = generate_candidate_variants(g)
+        total_candidate_variants += len(gene_variants)
+        
+        for v in gene_variants:
+            v_tier = v["discovery_tier"]
+            if v_tier in priority_counts:
+                priority_counts[v_tier] += 1
+            if v["discovery_score"] > top_score:
+                top_score = v["discovery_score"]
+                top_variant = f"{v['variant_id']} ({g})"
+        
+        recommended_genes.append({
+            "gene": g,
+            "panel_score": panel_score,
+            "variant_count": len(gene_variants),
+            "reason": "\n".join(["✓ " + r for r in reasons]) if reasons else "Baseline recommendation",
+            "paper_count": paper_count,
+            "variants": gene_variants
+        })
+        
+    recommended_genes.sort(key=lambda x: x["panel_score"], reverse=True)
+    
+    db = _load_panels()
+    matched_disease = disease_name
+    for k in db.keys():
+        if k.lower() == disease_name.lower():
+            matched_disease = k
+            break
+            
+    summary = {
+        "disease_name": matched_disease,
+        "genes_evaluated": len(genes),
+        "candidate_variants": total_candidate_variants,
+        "critical_priority_variants": priority_counts["Critical"],
+        "high_priority_variants": priority_counts["High"],
+        "moderate_priority_variants": priority_counts["Moderate"],
+        "low_priority_variants": priority_counts["Low"],
+        "top_variant": top_variant if top_variant else "None",
+        "top_discovery_score": top_score if top_score >= 0 else 0
+    }
+            
+    return {
+        "disease": matched_disease,
+        "summary": summary,
+        "recommended_genes": recommended_genes,
+        "total_literature": total_papers
+    }
+
+
+def generate_variant_discovery_score(payload):
+    reasons = []
+    
+    # 1. Novelty & Discovery Potential (0-30)
+    pop_freq = payload.get("population_frequencies", {}).get("global") if payload.get("population_frequencies") else None
+    paper_count = payload.get("pubmed", {}).get("paper_count", 0)
+    
+    novelty_pts = 0
+    if pop_freq is not None and type(pop_freq) in [int, float] and pop_freq < 0.01:
+        novelty_pts += 15
+        reasons.append("Rare variant potential")
+    if 0 < paper_count <= 10:
+        novelty_pts += 15
+        reasons.append("Emerging research interest")
+    elif 10 < paper_count <= 50:
+        novelty_pts += 10
+        
+    novelty_score = min(novelty_pts, 30)
+    
+    # 2. Research Importance (0-25)
+    res_pts = 0
+    if payload.get("gwas_associations"): res_pts += 10
+    if payload.get("pathways"): res_pts += 5
+    if payload.get("diseases"): res_pts += 10
+    res_score = min(res_pts, 25)
+    if res_score >= 15: reasons.append("Strong research utility")
+    
+    # 3. Precision Medicine (0-20)
+    pgx_score = payload.get("pharmacogenomics", {}).get("score", 0)
+    prec_score = min(int((pgx_score / 100.0) * 20), 20)
+    if prec_score > 0: reasons.append("Pharmacogenomic discovery potential")
+    
+    # 4. Literature Support (0-15)
+    lit_pts = 0
+    if paper_count > 100: lit_pts = 15
+    elif paper_count > 10: lit_pts = 10
+    elif paper_count > 0: lit_pts = 5
+    lit_score = min(lit_pts, 15)
+    
+    # 5. Biological Context (0-10)
+    bio_pts = 0
+    if payload.get("gene_context", {}).get("available"): bio_pts += 5
+    impact = payload.get("impact", {}).get("impact_level")
+    if impact in ["HIGH", "MODERATE"]: bio_pts += 5
+    bio_score = min(bio_pts, 10)
+    
+    total_score = novelty_score + res_score + prec_score + lit_score + bio_score
+    total_score = min(total_score, 100)
+    
+    if total_score >= 85: tier = "Critical"
+    elif total_score >= 65: tier = "High"
+    elif total_score >= 40: tier = "Moderate"
+    else: tier = "Low"
+    
+    if not reasons: reasons.append("Baseline Discovery Potential")
+    
+    return total_score, tier, reasons
+
+def generate_discovery_driver(payload):
+    has_clinvar = payload.get("clinical_evidence", {}).get("clinvar_record", {}).get("clinical_significance")
+    has_gwas = len(payload.get("gwas_evidence", {}).get("associations", [])) > 0
+    has_pgx = payload.get("pharmacogenomics", {}).get("tier") in ["High", "Very High"]
+    has_lit = payload.get("pubmed_literature", {}).get("paper_count", 0) > 100
+    has_disease = len(payload.get("disease_associations", {}).get("diseases", [])) > 0
+    
+    if has_clinvar and has_lit and has_disease: return "Multiple Evidence Sources"
+    if has_clinvar: return "Strong Clinical Evidence"
+    if has_pgx: return "Pharmacogenomic Relevance"
+    if has_gwas: return "GWAS Evidence"
+    if has_lit and has_disease: return "Literature + Disease Association"
+    if payload.get("research_relevance", {}).get("tier") == "High": return "High Research Relevance"
+    
+    return "Baseline Association"
+
+def generate_research_flags(payload):
+    flags = []
+    if payload.get("pubmed_literature", {}).get("paper_count", 0) > 100:
+        flags.append("Extensive Literature")
+    if len(payload.get("gwas_evidence", {}).get("associations", [])) > 0:
+        flags.append("GWAS Supported")
+    if len(payload.get("disease_associations", {}).get("diseases", [])) > 0:
+        flags.append("Disease Associated")
+    if payload.get("pharmacogenomics", {}).get("tier") in ["High", "Very High", "Moderate"]:
+        flags.append("PGx Relevant")
+    return flags
+
+def generate_candidate_variants(gene_symbol):
+    mapping = {
+        "APOE": ["rs429358", "rs7412"],
+        "HBB": ["rs334"],
+        "CFTR": ["rs113993960"],
+        "HFE": ["rs1800562"],
+        "TP53": ["rs1042522"],
+        "F5": ["rs6025"],
+        "TCF7L2": ["rs7903146"],
+        "FTO": ["rs9939609"]
+    }
+    
+    rsids = mapping.get(gene_symbol.upper(), [])
+    variants = []
+    
+    for rsid in rsids:
+        # Call the existing engine pipeline
+        payload = annotate_snp_from_rsid(rsid)
+        
+        disc_score, disc_tier, disc_reasons = generate_variant_discovery_score(payload)
+        driver = generate_discovery_driver(payload)
+        flags = generate_research_flags(payload)
+        
+        variant_obj = {
+            "variant_id": payload.get("variant_id"),
+            "discovery_score": disc_score,
+            "discovery_tier": disc_tier,
+            "discovery_reasons": disc_reasons,
+            "discovery_driver": driver,
+            "research_flags": flags,
+            "evidence_confidence": payload.get("evidence_confidence", {}).get("score", 0),
+            "research_relevance": payload.get("research_relevance", {}).get("score", 0),
+            "variant_priority": payload.get("variant_priority", {}).get("priority_score", 0),
+            "acmg_status": payload.get("acmg_evidence", {}).get("classification", "N/A")
+        }
+        variants.append(variant_obj)
+        
+    variants.sort(key=lambda x: (x["variant_priority"], x["evidence_confidence"], x["research_relevance"]), reverse=True)
+    return variants
+
+
+def generate_cohort_priority_score(payload):
+    # 1. Clinical Importance (0-30)
+    clin_pts = 0
+    clinvar = payload.get("clinvar")
+    if clinvar and clinvar.get("clinical_significance") and clinvar.get("clinical_significance") != "Unknown":
+        clin_pts += 15
+    acmg = payload.get("acmg_evidence", {}).get("classification")
+    if acmg and "Research Classification" in acmg:
+        clin_pts += 15
+    clin_score = min(clin_pts, 30)
+    
+    # 2. Research Importance (0-25)
+    res_pts = 0
+    if payload.get("gwas_associations"): res_pts += 15
+    if payload.get("diseases"): res_pts += 10
+    res_score = min(res_pts, 25)
+    
+    # 3. Biological Importance (0-20)
+    bio_pts = 0
+    if payload.get("pathways"): bio_pts += 10
+    impact = payload.get("impact", {}).get("impact_level")
+    if impact in ["HIGH", "MODERATE"]: bio_pts += 5
+    if payload.get("gene_context", {}).get("available"): bio_pts += 5
+    bio_score = min(bio_pts, 20)
+    
+    # 4. Precision Medicine (0-15)
+    pgx_score = payload.get("pharmacogenomics", {}).get("score", 0)
+    prec_score = min(int((pgx_score / 100.0) * 15), 15)
+    
+    # 5. Population Context (0-10)
+    pop_freq = payload.get("population_frequencies")
+    pop_pts = 0
+    if pop_freq and pop_freq.get("global") is not None and pop_freq.get("global") != "—":
+        pop_pts += 10
+    pop_score = min(pop_pts, 10)
+    
+    total_score = clin_score + res_score + bio_score + prec_score + pop_score
+    total_score = min(total_score, 100)
+    
+    if total_score >= 85: tier = "Critical"
+    elif total_score >= 65: tier = "High"
+    elif total_score >= 40: tier = "Moderate"
+    else: tier = "Low"
+    
+    driver = generate_discovery_driver(payload)
+    
+    return total_score, tier, driver
+
+def analyze_variant_cohort(rsid_list):
+    variants = []
+    
+    # Global Summary Tracking
+    total_variants = len(rsid_list)
+    priority_counts = {"Critical": 0, "High": 0, "Moderate": 0, "Low": 0}
+    gene_counts = {}
+    total_ec = 0
+    total_rr = 0
+    
+    for rsid in rsid_list:
+        payload = annotate_snp_from_rsid(rsid)
+        if "error" in payload:
+            continue
+            
+        c_score, c_tier, c_driver = generate_cohort_priority_score(payload)
+        
+        gene = payload.get("annotation", {}).get("gene_symbol", "Unknown")
+        ec = payload.get("evidence_confidence", {}).get("score", 0)
+        rr = payload.get("research_relevance", {}).get("score", 0)
+        vp = payload.get("variant_priority", {}).get("priority_score", 0)
+        acmg = payload.get("acmg_evidence", {}).get("classification", "N/A")
+        pgx = payload.get("pharmacogenomics", {}).get("tier", "Not Available")
+        
+        # Summary Tracking
+        priority_counts[c_tier] += 1
+        gene_counts[gene] = gene_counts.get(gene, 0) + 1
+        total_ec += ec
+        total_rr += rr
+        
+        variant_obj = {
+            "variant_id": rsid,
+            "gene": gene,
+            "cohort_score": c_score,
+            "cohort_tier": c_tier,
+            "variant_priority": vp,
+            "evidence_confidence": ec,
+            "research_relevance": rr,
+            "acmg_status": acmg,
+            "pharmacogenomic_relevance": pgx,
+            "discovery_driver": c_driver
+        }
+        variants.append(variant_obj)
+        
+    # Sort descending by Cohort Score
+    variants.sort(key=lambda x: x["cohort_score"], reverse=True)
+    
+    # Calculate Summary Stats
+    actual_variants = len(variants)
+    avg_ec = int(total_ec / actual_variants) if actual_variants > 0 else 0
+    avg_rr = int(total_rr / actual_variants) if actual_variants > 0 else 0
+    
+    top_gene = "None"
+    if gene_counts:
+        top_gene = max(gene_counts, key=gene_counts.get)
+        
+    summary = {
+        "total_variants": actual_variants,
+        "critical_variants": priority_counts["Critical"],
+        "high_variants": priority_counts["High"],
+        "moderate_variants": priority_counts["Moderate"],
+        "low_variants": priority_counts["Low"],
+        "top_5_variants": [v["variant_id"] for v in variants[:5]],
+        "top_gene_representation": top_gene,
+        "average_evidence_confidence": avg_ec,
+        "average_research_relevance": avg_rr
+    }
+            
+    return {
+        "variants": variants,
+        "summary": summary
+    }
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VERSION 2.10: COMPARATIVE ANALYSIS ENGINE
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def generate_comparison_insights(variants: list, winners: dict) -> list:
+    """
+    Produces deterministic, evidence-based text insights comparing multiple variants.
+    """
+    insights = []
+    
+    if winners.get("Most Studied Variant"):
+        w_str = ", ".join(winners["Most Studied Variant"])
+        insights.append(f"{w_str} exhibits the strongest literature support.")
+        
+    if winners.get("Best Clinical Evidence"):
+        w_str = ", ".join(winners["Best Clinical Evidence"])
+        insights.append(f"{w_str} demonstrates the strongest clinical evidence.")
+        
+    if winners.get("Best Research Evidence"):
+        w_str = ", ".join(winners["Best Research Evidence"])
+        insights.append(f"{w_str} shows the highest research relevance based on functional axes.")
+        
+    if winners.get("Strongest Precision Medicine"):
+        w_str = ", ".join(winners["Strongest Precision Medicine"])
+        insights.append(f"{w_str} is the strongest precision medicine candidate based on pharmacogenomic data.")
+        
+    genes = [v["gene"] for v in variants if v["gene"] and v["gene"] != "Unknown"]
+    if genes:
+        from collections import Counter
+        most_common_gene = Counter(genes).most_common(1)[0]
+        if len(set(genes)) == 1:
+            insights.append(f"All evaluated variants map to {genes[0]}, consolidating the pathway risk.")
+        elif most_common_gene[1] > 1:
+            insights.append(f"{most_common_gene[0]}-associated variants display strong representation in this cohort.")
+
+    return insights
+
+def generate_variant_comparison(rsid_list: list) -> dict:
+    """
+    Version 2.10: Compares multiple variants side-by-side without generating new scientific claims.
+    """
+    variants = []
+    for rsid in rsid_list:
+        payload = annotate_snp_from_rsid(rsid.strip())
+        if not payload.get("found"):
+            continue
+            
+        disc_score, disc_tier, _ = generate_variant_discovery_score(payload)
+        coh_score, coh_tier, coh_driver = generate_cohort_priority_score(payload)
+        
+        ec_score = payload.get("evidence_confidence", {}).get("score", 0)
+        rr_score = payload.get("research_relevance", {}).get("score", 0)
+        vp_score = payload.get("variant_priority", {}).get("priority_score", 0)
+        pubmed_count = payload.get("pubmed", {}).get("paper_count", 0)
+        
+        clin_score = 0
+        acmg = payload.get("acmg_evidence", {}).get("classification", "Unknown")
+        if "Pathogenic" in acmg and "Likely" not in acmg: clin_score += 50
+        elif "Likely Pathogenic" in acmg: clin_score += 40
+        elif "VUS" in acmg or "Uncertain" in acmg: clin_score += 20
+        
+        clinvar = payload.get("clinical_significance", "Unknown") or "Unknown"
+        if "Pathogenic" in clinvar and "Likely" not in clinvar: clin_score += 50
+        elif "Likely Pathogenic" in clinvar: clin_score += 40
+        elif "Uncertain" in clinvar: clin_score += 20
+        
+        pgx_score = payload.get("pharmacogenomics", {}).get("score", 0)
+        
+        variants.append({
+            "variant_id": payload["rsid"],
+            "gene": payload.get("gene", {}).get("gene", "Unknown") if payload.get("gene") else "Unknown",
+            "clinical_significance": clinvar,
+            "evidence_confidence": ec_score,
+            "research_relevance": rr_score,
+            "variant_priority": vp_score,
+            "acmg_status": acmg,
+            "pharmacogenomics": payload.get("pharmacogenomics", {}).get("tier", "None"),
+            "pgx_score": pgx_score,
+            "discovery_score": disc_score,
+            "cohort_score": coh_score,
+            "literature_tier": payload.get("pubmed", {}).get("tier", "None"),
+            "pubmed_count": pubmed_count,
+            "clin_score": clin_score,
+            "badges": [],
+            "strength_matrix": {}
+        })
+
+    if not variants:
+        return {"error": "No valid variants found for comparison."}
+
+    def get_winners(key):
+        max_val = max((v[key] for v in variants), default=-1)
+        if max_val <= 0: return []
+        return [v["variant_id"] for v in variants if v[key] == max_val]
+        
+    winners = {
+        "Best Clinical Evidence": get_winners("clin_score"),
+        "Best Research Evidence": get_winners("research_relevance"),
+        "Most Studied Variant": get_winners("pubmed_count"),
+        "Highest Overall Priority": get_winners("variant_priority"),
+        "Strongest Precision Medicine": get_winners("pgx_score")
+    }
+    
+    for v in variants:
+        if v["variant_id"] in winners["Best Clinical Evidence"]: v["badges"].append("Best Clinical Evidence")
+        if v["variant_id"] in winners["Best Research Evidence"]: v["badges"].append("Best Research Evidence")
+        if v["variant_id"] in winners["Most Studied Variant"]: v["badges"].append("Most Studied Variant")
+        if v["variant_id"] in winners["Highest Overall Priority"]: v["badges"].append("Highest Overall Priority")
+        if v["variant_id"] in winners["Strongest Precision Medicine"]: v["badges"].append("Strongest Precision Medicine")
+        
+        dims = {
+            "Evidence Confidence": v["evidence_confidence"],
+            "Research Relevance": v["research_relevance"],
+            "Variant Priority": v["variant_priority"]
+        }
+        sorted_dims = sorted(dims.items(), key=lambda x: x[1])
+        v["strength_matrix"] = {
+            "weakest": sorted_dims[0][0] if sorted_dims[0][1] > 0 else "None",
+            "strongest": sorted_dims[-1][0] if sorted_dims[-1][1] > 0 else "None"
+        }
+
+    summary = {
+        "top_overall": winners["Highest Overall Priority"],
+        "most_clinical": winners["Best Clinical Evidence"],
+        "most_research": winners["Best Research Evidence"],
+        "most_pgx": winners["Strongest Precision Medicine"],
+        "most_studied": winners["Most Studied Variant"],
+        "insights": generate_comparison_insights(variants, winners)
+    }
+
+    return {"variants": variants, "summary": summary}

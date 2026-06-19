@@ -1,0 +1,49 @@
+{
+  "Alzheimer's Disease": {
+    "genes": [
+      "APOE",
+      "APP",
+      "PSEN1",
+      "PSEN2"
+    ]
+  },
+  "Breast Cancer": {
+    "genes": [
+      "BRCA1",
+      "BRCA2",
+      "TP53",
+      "PALB2",
+      "CHEK2"
+    ]
+  },
+  "Cystic Fibrosis": {
+    "genes": [
+      "CFTR"
+    ]
+  },
+  "Type 2 Diabetes": {
+    "genes": [
+      "TCF7L2",
+      "KCNJ11",
+      "PPARG"
+    ]
+  },
+  "Hemochromatosis": {
+    "genes": [
+      "HFE",
+      "HJV",
+      "HAMP",
+      "TFR2"
+    ]
+  },
+  "Thrombophilia": {
+    "genes": [
+      "F5"
+    ]
+  },
+  "Sickle Cell Disease": {
+    "genes": [
+      "HBB"
+    ]
+  }
+}

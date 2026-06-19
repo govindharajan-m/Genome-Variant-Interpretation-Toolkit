@@ -1,0 +1,51 @@
+{
+  "rs429358": {
+    "tier": "High",
+    "score": 100,
+    "interactions": 2,
+    "applications": 3,
+    "success": true
+  },
+  "rs113993960": {
+    "tier": "High",
+    "score": 100,
+    "interactions": 2,
+    "applications": 2,
+    "success": true
+  },
+  "rs1042522": {
+    "tier": "High",
+    "score": 80,
+    "interactions": 1,
+    "applications": 3,
+    "success": true
+  },
+  "rs1800562": {
+    "tier": "High",
+    "score": 100,
+    "interactions": 1,
+    "applications": 1,
+    "success": true
+  },
+  "rs6025": {
+    "tier": "High",
+    "score": 100,
+    "interactions": 1,
+    "applications": 2,
+    "success": true
+  },
+  "rs7903146": {
+    "tier": "High",
+    "score": 100,
+    "interactions": 2,
+    "applications": 1,
+    "success": true
+  },
+  "rs334": {
+    "tier": "High",
+    "score": 100,
+    "interactions": 1,
+    "applications": 1,
+    "success": true
+  }
+}
