@@ -39,6 +39,39 @@
 
 <div id="resultsContainer" style="display: none;">
     
+    <!-- Pathway Analysis -->
+    <div class="row" style="margin-bottom: 2rem; display: none;" id="pathwayAnalysisContainer">
+        <div class="col-12">
+            <div class="card result-card" style="border-left: 4px solid #8e44ad;">
+                <h3 class="card-title"><i class="fas fa-project-diagram"></i> Pathway & Biological Theme Analysis</h3>
+                <div class="row" style="margin-top: 1rem;">
+                    <div class="col-md-3 text-center mb-2">
+                        <div style="background: rgba(142,68,173,0.1); padding: 1rem; border-radius: 8px; height: 100%;">
+                            <div style="font-size: 0.8rem; color: #8e44ad; text-transform: uppercase;">Top Gene</div>
+                            <div id="pathTopGene" style="font-size: 1.2rem; font-weight: 700; color: #8e44ad; word-break: break-word;">--</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-center mb-2">
+                        <div style="background: rgba(41,128,185,0.1); padding: 1rem; border-radius: 8px; height: 100%;">
+                            <div style="font-size: 0.8rem; color: #2980b9; text-transform: uppercase;">Dominant Pathway</div>
+                            <div id="pathTopPathway" style="font-size: 1.2rem; font-weight: 700; color: #2980b9; word-break: break-word;">--</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; height: 100%;">
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase;">Shared Diseases</div>
+                            <div id="pathSharedDiseases" style="font-weight: 600; color: var(--text-primary); margin-top: 0.5rem;">--</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; border-left: 3px solid #27ae60;">
+                    <h5 style="font-size: 1rem; color: #27ae60; margin-bottom: 0.5rem;"><i class="fas fa-lightbulb"></i> Pathway Insights</h5>
+                    <div id="pathwayInsightsText" style="color: var(--text-secondary); font-size: 0.95rem;">--</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Comparative Summary -->
     <div class="row" style="margin-bottom: 2rem;">
         <div class="col-12">
@@ -117,15 +150,6 @@
 <script>
 let currentComparisonData = null;
 
-function sanitizeCSVValue(value) {
-    if (value === null || value === undefined) return '';
-    value = String(value);
-    if (value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@')) {
-        return "'" + value;
-    }
-    return value;
-}
-
 document.getElementById('compareForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const rsids = document.getElementById('rsidsInput').value.trim();
@@ -177,6 +201,15 @@ function createBadge(text, colorClass) {
 function renderComparisonResults(data) {
     const summary = data.summary;
     const variants = data.variants;
+    const p_analysis = data.pathway_analysis;
+
+    if (p_analysis) {
+        document.getElementById('pathwayAnalysisContainer').style.display = 'flex';
+        document.getElementById('pathTopGene').textContent = p_analysis.top_gene || 'None';
+        document.getElementById('pathTopPathway').textContent = p_analysis.top_pathway || 'None';
+        document.getElementById('pathSharedDiseases').textContent = (p_analysis.shared_diseases && p_analysis.shared_diseases.length > 0) ? p_analysis.shared_diseases.join(', ') : 'No shared diseases';
+        document.getElementById('pathwayInsightsText').textContent = p_analysis.summary || 'No pathway insights identified.';
+    }
 
     // Update Summary Boxes
     const setSummaryText = (id, arr) => {

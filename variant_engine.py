@@ -2469,7 +2469,8 @@ def analyze_variant_cohort(rsid_list):
             
     return {
         "variants": variants,
-        "summary": summary
+        "summary": summary,
+        "pathway_analysis": generate_pathway_analysis(rsid_list)
     }
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -2508,6 +2509,84 @@ def generate_comparison_insights(variants: list, winners: dict) -> list:
             insights.append(f"{most_common_gene[0]}-associated variants display strong representation in this cohort.")
 
     return insights
+
+
+from collections import Counter
+
+def generate_pathway_insights(p_analysis, p_counts, g_counts, t_counts):
+    insights = []
+    if p_analysis["top_pathway"] and p_counts[p_analysis["top_pathway"]] > 1:
+        insights.append(f"{p_analysis['top_pathway']} is the dominant pathway represented in this cohort.")
+    
+    if p_analysis["top_gene"] and g_counts[p_analysis["top_gene"]] > 1:
+        insights.append(f"{p_analysis['top_gene']} appears most frequently among the submitted variants.")
+        
+    top_theme = t_counts.most_common(1)[0][0] if t_counts else None
+    if top_theme and top_theme != "General Biology" and t_counts[top_theme] > 1:
+        if "Metabolic" in top_theme:
+            insights.append("Multiple variants converge on metabolic regulation pathways.")
+        else:
+            insights.append(f"Multiple variants converge on {top_theme.lower()} pathways.")
+            
+    return " ".join(insights)
+
+def generate_pathway_analysis(rsid_list):
+    genes_counter = Counter()
+    pathways_counter = Counter()
+    diseases_counter = Counter()
+    themes_counter = Counter()
+    
+    for rsid in rsid_list:
+        payload = annotate_snp_from_rsid(rsid.strip())
+        if not payload.get("found"):
+            continue
+            
+        gene = payload.get("gene", {}).get("gene") if payload.get("gene") else None
+        if gene and gene != "Unknown": genes_counter[gene] += 1
+        
+        pathways = payload.get("pathways", [])
+        if not pathways:
+            gc_pathway = payload.get("gene_context", {}).get("pathway")
+            if gc_pathway and gc_pathway != "Unknown":
+                pathways = [{"name": gc_pathway}]
+                
+        for pw in pathways:
+            if isinstance(pw, dict):
+                p_name = pw.get("name") or pw.get("pathway")
+                if p_name: pathways_counter[p_name] += 1
+            elif isinstance(pw, str):
+                pathways_counter[pw] += 1
+                
+        diseases = payload.get("diseases", [])
+        for d in diseases:
+            if isinstance(d, dict):
+                d_name = d.get("disease") or d.get("name")
+                if d_name: diseases_counter[d_name] += 1
+            elif isinstance(d, str):
+                diseases_counter[d] += 1
+                
+    for p in pathways_counter:
+        lower_p = p.lower()
+        if "metabolism" in lower_p or "lipid" in lower_p: themes_counter["Metabolic Regulation"] += 1
+        elif "signal" in lower_p or "cascade" in lower_p: themes_counter["Signal Transduction"] += 1
+        elif "immune" in lower_p or "defense" in lower_p: themes_counter["Immune Response"] += 1
+        elif "cancer" in lower_p or "cell cycle" in lower_p: themes_counter["Cell Cycle / Oncology"] += 1
+        else: themes_counter["General Biology"] += 1
+            
+    top_gene = genes_counter.most_common(1)[0][0] if genes_counter else ""
+    top_pathway = pathways_counter.most_common(1)[0][0] if pathways_counter else ""
+    
+    pathway_analysis = {
+        "genes": [g for g, c in genes_counter.most_common()],
+        "pathways": [p for p, c in pathways_counter.most_common()],
+        "top_pathway": top_pathway,
+        "top_gene": top_gene,
+        "shared_diseases": [d for d, c in diseases_counter.most_common() if c > 1],
+        "biological_themes": [t for t, c in themes_counter.most_common()]
+    }
+    
+    pathway_analysis["summary"] = generate_pathway_insights(pathway_analysis, pathways_counter, genes_counter, themes_counter)
+    return pathway_analysis
 
 def generate_variant_comparison(rsid_list: list) -> dict:
     """
@@ -2602,4 +2681,4 @@ def generate_variant_comparison(rsid_list: list) -> dict:
         "insights": generate_comparison_insights(variants, winners)
     }
 
-    return {"variants": variants, "summary": summary}
+    return {"variants": variants, "summary": summary, "pathway_analysis": generate_pathway_analysis(rsid_list)}

@@ -1,194 +1,56 @@
-# 🧬 GenomeVAP — Genome Variation Analysis Platform
+# Genome Variation Analysis Platform (GenomeVAP)
 
-A **bioinformatics web application** built with Python (Flask) + HTML5/CSS/JS.
+**Version:** 3.0
+**Author:** B.Tech Industrial Biotechnology Portfolio Project
 
-Simulates a simplified version of real-world tools:
-- Ensembl Variant Effect Predictor (VEP)
-- ANNOVAR
-- ClinVar annotation pipelines
+GenomeVAP is an advanced, terminal-aesthetic web platform built for genomic variant interpretation. It mimics a 1990s Unix lab workstation while providing modern, complex analytical pipelines for bioinformatics analysis. 
 
----
+## Overview
+GenomeVAP transforms raw genomic data (rsIDs, chromosomal coordinates) into comprehensive, biologically contextualized reports. The platform leverages a deterministic scoring engine to assess variant priority, discovery potential, and research relevance without relying on stochastic models.
 
-## 📸 Features
+## Features
+- **Single Variant Annotation (SNP/Indel):** Deep-dive analysis of specific loci.
+- **Batch rsID Analysis:** High-throughput triage of multiple variants.
+- **Copy Number Variant (CNV) Analysis:** Structural variant interpretation.
+- **Cohort Analysis:** Population-level variant prioritization.
+- **Comparative Analysis:** Head-to-head evaluation of candidate variants.
+- **Disease Panel Designer:** Custom gene panel recommendations based on discovery potential.
+- **Pathway Analysis:** Systems biology mapping of variants to functional pathways.
+- **Client-Side Export:** Secure, zero-latency CSV reporting.
 
-| Module | Description |
-|--------|-------------|
-| **SNP Analysis** | Enter Chr:Pos:Ref:Alt → gene mapping, consequence prediction (missense/nonsense/synonymous), SIFT & PolyPhen-2 |
-| **CNV Analysis** | Deletion/Duplication region → dosage effect, haploinsufficiency, gene affected |
-| **Batch rsID** | Up to 200 rsIDs → full table with gene, consequence, ClinVar significance, CSV export |
-| **Variant Reports** | Full per-rsID report: dbSNP + ClinVar + gene info + scientific interpretation |
+## Architecture
+GenomeVAP is a Python/Flask monolith.
+- **Backend:** Flask routes handle request parsing and delegation.
+- **Engine:** `variant_engine.py` executes all mathematical and biological scoring heuristics.
+- **Database:** `db_handler.py` manages hydration from localized mock datasets.
+- **Frontend:** Jinja2 templates, CSS custom properties, and vanilla JS (augmented with Bootstrap 5 for responsiveness).
 
----
-
-## 🗂 Project Structure
-
-```
-genome_variant_platform/
-├── app.py                  # Flask routes & server
-├── variant_engine.py       # Bioinformatics analysis logic
-├── db_handler.py           # Mock dbSNP / ClinVar / Ensembl data handler
-├── requirements.txt
-├── data/
-│   ├── dbsnp_mock.json     # 15 real rsIDs with coordinates & consequences
-│   ├── clinvar_mock.json   # Clinical significance for all 15 rsIDs
-│   └── gene_coordinates.json  # 14 genes with genomic coordinates
-├── templates/
-│   ├── base.html           # Layout with navbar & footer
-│   ├── index.html          # Home / landing page
-│   ├── single_variant.html # SNP analysis page
-│   ├── cnv_analysis.html   # CNV analysis page
-│   ├── batch_analysis.html # Batch rsID page
-│   ├── report.html         # Full variant report page
-│   └── 404.html
-└── static/
-    ├── css/style.css       # Dark bioinformatics UI
-    └── js/main.js          # Shared JS utilities
-```
-
----
-
-## 🚀 Quick Start
-
-### 1. Clone / Download the project
-
+## Installation
 ```bash
-cd genome_variant_platform
-```
+# Clone the repository
+git clone https://github.com/yourusername/GenomeVAP.git
+cd GenomeVAP
 
-### 2. Create a virtual environment (recommended)
-
-```bash
-python -m venv venv
-source venv/bin/activate          # Linux / macOS
-venv\Scripts\activate             # Windows
-```
-
-### 3. Install dependencies
-
-```bash
+# Install dependencies
 pip install -r requirements.txt
-```
 
-### 4. Run the server
-
-```bash
+# Run the application
 python app.py
 ```
+Access the platform at `http://localhost:5000`.
 
-Open **http://localhost:5000** in your browser.
+## Usage
+1. Navigate to the desired tool via the dashboard.
+2. Enter a variant (e.g., `rs334`, `rs429358`, `rs1042522`).
+3. View the generated report or export the summary via CSV.
 
----
+## Validation
+All scoring engines undergo strict deterministic validation testing. The V3 release ensures 100% computational reproducibility across the Clinical, Research, and Discovery axes. See `validate_v29.py` for testing frameworks.
 
-## 🧪 Demo Variants (included in mock dataset)
+## Limitations
+**RESEARCH USE ONLY.** GenomeVAP utilizes static mock data for demonstration purposes and simplified ACMG heuristics. See documentation for details.
 
-| rsID | Gene | Consequence | Clinical Significance |
-|------|------|-------------|----------------------|
-| rs334 | HBB | Missense (p.Glu7Val) | **Pathogenic** — Sickle Cell Disease |
-| rs113993960 | CFTR | Inframe deletion (p.Phe508del) | **Pathogenic** — Cystic Fibrosis |
-| rs1800562 | HFE | Missense (p.Cys282Tyr) | **Pathogenic** — Hereditary Hemochromatosis |
-| rs113488022 | BRAF | Missense (p.Val600Glu) | **Pathogenic** — Melanoma / MAPK pathway |
-| rs28897743 | BRCA2 | Missense (p.Arg2336His) | **Pathogenic** — HBOC syndrome |
-| rs80357906 | BRCA1 | Frameshift (p.Gln1756fs) | **Pathogenic** — HBOC syndrome |
-| rs429358 | APOE | Missense (p.Cys130Arg) | Risk factor — Alzheimer's |
-| rs7412 | APOE | Missense (p.Arg176Cys) | Drug response — Atorvastatin / Alzheimer's |
-| rs1042522 | TP53 | Missense (p.Pro72Arg) | **Benign** — Li-Fraumeni modifier |
-| rs762551 | CYP1A2 | Intron variant (CYP1A2*1F) | Likely benign — Caffeine metabolism |
-| rs9939609 | FTO | Intron variant | Risk factor (GWAS only) — Obesity |
-| rs1805007 | MC1R | Missense (p.Arg151Cys) | Risk factor — Melanoma susceptibility |
-| rs1799971 | OPRM1 | Missense (p.Asn40Asp) | Uncertain significance — Opioid sensitivity |
-| rs699 | AGT | Missense (p.Met268Thr) | **Benign** — Hypertension susceptibility |
-| rs2230199 | C3 | Missense (p.Arg102Gly) | Benign/Likely benign — AMD / Complement |
-
----
-
-## 🔌 API Endpoints
-
-### Single SNP Annotation
-```http
-POST /api/analyze-snp
-Content-Type: application/json
-
-{
-  "chromosome": "17",
-  "position": 7676154,
-  "ref": "C",
-  "alt": "G"
-}
-```
-
-### CNV Analysis
-```http
-POST /api/analyze-cnv
-Content-Type: application/json
-
-{
-  "chromosome": "17",
-  "start": 43044295,
-  "end": 43125483,
-  "cnv_type": "Deletion",
-  "copy_number": 1
-}
-```
-
-### Batch rsID Analysis
-```http
-POST /api/batch
-Content-Type: application/json
-
-{
-  "rsids": ["rs334", "rs7412", "rs429358"]
-}
-```
-
-### Full Variant Report
-```http
-GET /api/report/rs334
-```
-
-### CSV Download
-```http
-POST /download/csv
-Content-Type: application/json
-
-{"results": [...]}   # same array returned by /api/batch
-```
-
----
-
-## 🧬 Bioinformatics Concepts Demonstrated
-
-- **SNP Classification**: Transition vs. Transversion based on nucleotide change
-- **Functional Consequence Prediction**: Using codon table simulation (synonymous / missense / nonsense)
-- **CNV Dosage Analysis**: Haploinsufficiency and triplosensitivity prediction
-- **Clinical Significance**: Pathogenic / Likely Pathogenic / VUS / Benign — per ACMG guidelines
-- **HGVS Nomenclature**: Human Genome Variation Society standard notation
-- **Gene Mapping**: Coordinate-based overlap detection (simplified interval scan)
-- **dbSNP / ClinVar / Ensembl**: Data model simulation with extensible API hooks
-
----
-
-## 🔧 Extending to Real APIs
-
-Each function in `db_handler.py` has a comment with the real API equivalent:
-
-```python
-# Real-world equivalent:
-#   GET https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi
-#       ?db=snp&id=<rsid>&rettype=json
-```
-
-To connect to real databases, replace the local JSON lookups with the corresponding HTTP calls using the `requests` library.
-
----
-
-## 📚 Technologies
-
-- **Backend**: Python 3.11+, Flask 3.x
-- **Frontend**: HTML5, CSS3 (Flexbox/Grid), Vanilla JavaScript
-- **Fonts**: Inter + JetBrains Mono (Google Fonts)
-- **Data**: Local JSON (inspired by dbSNP, ClinVar, Ensembl GRCh38)
-- **Reference Genome**: GRCh38 / hg38
-
----
-
-*Built as a B.Tech Industrial Biotechnology portfolio project demonstrating bioinformatics pipeline concepts.*
+## Future Work
+- Integration with live external APIs (Ensembl REST, ClinVar).
+- Implementation of rigorous ACMG/AMP 2015 boolean logic.
+- VCF file parsing for cohort data upload.

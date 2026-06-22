@@ -72,17 +72,33 @@
 
       <!-- Batch -->
       <a href="{{ url_for('batch_analysis_page') }}" class="feature-card">
-        <div class="feature-icon batch-icon">RS</div>
-        <h3>Batch rsID Analysis</h3>
-        <p>
-          Process multiple rsIDs simultaneously via text input or file upload.
-          Export annotated results as a downloadable CSV report.
-        </p>
-        <ul class="feature-list">
-          <li>Up to 200 rsIDs per batch</li>
-          <li>ClinVar significance lookup</li>
-          <li>CSV export</li>
-        </ul>
+        <div class="feature-icon">▤</div>
+        <h3>Batch Analysis</h3>
+        <p>High-throughput rsID triage and annotation.</p>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <!-- 4. Disease Panel Designer -->
+      <a href="{{ url_for('panel_designer') }}" class="feature-card">
+        <div class="feature-icon">◎</div>
+        <h3>Panel Designer</h3>
+        <p>Dynamically generate gene panels based on discovery potential.</p>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <!-- 5. Cohort Analysis -->
+      <a href="{{ url_for('cohort_analysis') }}" class="feature-card">
+        <div class="feature-icon">◱</div>
+        <h3>Cohort Analysis</h3>
+        <p>Population-level variant risk prioritization.</p>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <!-- 6. Comparative Analysis -->
+      <a href="{{ url_for('comparative_analysis') }}" class="feature-card">
+        <div class="feature-icon">◨</div>
+        <h3>Comparative Analysis</h3>
+        <p>Head-to-head evaluation of candidate variants.</p>
         <span class="card-arrow">→</span>
       </a>
 

@@ -29,6 +29,11 @@
 
   --border:      #1e1b1a;
   --border-2:    #2e2a26;
+  --border-colour: var(--border-2);
+  --primary-colour: #3498db;
+  --bg-secondary: var(--bg-card);
+  --bg-tertiary: var(--bg-alt);
+  --accent:      var(--amber);
 
   --high:        #c84848;
   --moderate:    #c07830;
@@ -368,7 +373,14 @@ textarea.form-control { resize: vertical; }
 .example-btn:hover { background: var(--amber-glow); color: var(--amber); }
 
 /* ── Result / Empty states ───────────────────────────────────── */
-.input-panel  { align-self: start; }
+.input-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: sticky;
+  top: 20px;
+  height: max-content;
+}
 .result-panel { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
 .empty-state  { background: var(--bg-card); border: 1px solid var(--border); padding: 3rem; }
 .empty-icon   { font-size: 1.2rem; margin-bottom: 1rem; color: var(--text-3); }
@@ -946,8 +958,8 @@ a, a:visited, a:hover, a:focus, a:active {
   background: var(--bg-surface);
 }
 
-.status-badge::before { content: "["; margin-right: 0.2rem; opacity: 0.5; }
-.status-badge::after  { content: "]"; margin-left: 0.2rem; opacity: 0.5; }
+.status-badge::before { content: ""; margin-right: 0; opacity: 1; }
+.status-badge::after  { content: ""; margin-left: 0; opacity: 1; }
 
 /* Dynamic Badge Colors */
 .status-badge.badge-pathogenic { color: var(--high); border-color: var(--high); }

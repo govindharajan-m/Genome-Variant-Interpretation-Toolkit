@@ -19,6 +19,7 @@ Architecture:
 import csv
 import io
 import json
+import re
 
 from flask import (
     Flask, render_template, request,
@@ -237,7 +238,6 @@ def api_batch():
             rsid_text = content
 
         # Split on commas, newlines, tabs, or spaces
-        import re
         rsids = [r.strip() for r in re.split(r"[,\n\r\t ]+", rsid_text) if r.strip()]
 
     if not rsids:
@@ -342,7 +342,9 @@ def api_analyze_cnv_rsid():
 @app.route("/download/csv", methods=["POST"])
 def download_csv():
     """
-    Generate and serve a CSV report for the batch analysis results.
+    [DEPRECATED] Generate and serve a CSV report for the batch analysis results.
+    This backend route is deprecated in favor of client-side CSV generation.
+    Do not delete until fully verified unused by legacy integrations.
 
     Expects JSON body: { "results": [...] }
     (Re-sends the same results array returned by /api/batch)
@@ -437,7 +439,6 @@ def api_cohort():
         return jsonify({"error": "No variants provided."}), 400
         
     # Parse rsids (comma separated, newlines, etc.)
-    import re
     rsids = [v.strip() for v in re.split(r'[,\n\s]+', rsids_raw) if v.strip()]
     if not rsids:
         return jsonify({"error": "No valid variants provided."}), 400

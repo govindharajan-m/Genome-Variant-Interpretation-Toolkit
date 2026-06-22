@@ -2,6 +2,15 @@
  * main.js — GenomeVAP / Autoradiograph Terminal
  */
 
+function sanitizeCSVValue(value) {
+    if (value === null || value === undefined) return '';
+    value = String(value);
+    if (value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@')) {
+        return "'" + value;
+    }
+    return value;
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 
   // ── Auto-uppercase nucleotide inputs ─────────────────────────
@@ -551,14 +560,14 @@ function renderClinvarHTML(data) {
         <h3 class="card-title" style="margin-bottom: 0;">ClinVar Evidence</h3>
       </div>
       <div>
-        <span class="status-badge badge-high">[${data.confidence_level} Confidence]</span>
+        <span class="status-badge badge-high">${data.confidence_level} Confidence</span>
       </div>
     </div>
     
     <div class="result-meta-grid" style="margin-top: 1rem;">
       <div class="meta-item">
         <span class="meta-label">Clinical Significance</span>
-        <span class="status-badge badge-pathogenic" style="color: ${color}; border-color: ${color};">[${data.clinical_significance || "—"}]</span>
+        <span class="status-badge badge-pathogenic" style="color: ${color}; border-color: ${color};">${data.clinical_significance || "—"}</span>
       </div>
       <div class="meta-item">
         <span class="meta-label">Condition</span>
