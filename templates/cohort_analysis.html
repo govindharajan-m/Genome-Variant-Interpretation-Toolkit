@@ -233,7 +233,7 @@ function renderCohortResults(data) {
     // Summary Updates
     const summary = data.summary;
     document.getElementById('summaryTotal').textContent = summary.total_variants;
-    document.getElementById('summaryTopGene').textContent = summary.top_gene_representation;
+    document.getElementById('hlTopGene').textContent = summary.top_gene_representation;
     document.getElementById('summaryCritical').textContent = summary.critical_variants;
     document.getElementById('summaryHigh').textContent = summary.high_variants;
     document.getElementById('summaryAvgEC').textContent = summary.average_evidence_confidence;

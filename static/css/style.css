@@ -34,6 +34,8 @@
   --bg-secondary: var(--bg-card);
   --bg-tertiary: var(--bg-alt);
   --accent:      var(--amber);
+  --text-primary: var(--text);
+  --text-secondary: var(--text-2);
 
   --high:        #c84848;
   --moderate:    #c07830;

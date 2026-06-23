@@ -53,8 +53,9 @@ limiter = Limiter(get_remote_address, app=app, default_limits=[])
 def add_security_headers(response):
     response.headers["Content-Security-Policy"] = (
         "default-src 'self'; "
-        "script-src 'self'; "
-        "style-src 'self' 'unsafe-inline'; "
+        "script-src 'self' https://cdn.jsdelivr.net; "
+        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; "
+        "font-src 'self' https://fonts.gstatic.com; "
         "img-src 'self' data: https:;"
     )
     response.headers["X-Content-Type-Options"] = "nosniff"
@@ -417,7 +418,6 @@ def api_panel():
         return jsonify({"error": "No disease name provided."}), 400
         
     try:
-        from variant_engine import generate_panel_recommendation
         panel_data = generate_panel_recommendation(disease)
         if "error" in panel_data:
             return jsonify(panel_data), 404
@@ -442,9 +442,11 @@ def api_cohort():
     rsids = [v.strip() for v in re.split(r'[,\n\s]+', rsids_raw) if v.strip()]
     if not rsids:
         return jsonify({"error": "No valid variants provided."}), 400
+
+    if len(rsids) > 50:
+        return jsonify({"error": "Maximum cohort size is 50 variants."}), 400
         
     try:
-        from variant_engine import analyze_variant_cohort
         cohort_data = analyze_variant_cohort(rsids)
         return jsonify(cohort_data)
     except Exception as e:
@@ -463,13 +465,14 @@ def api_compare():
     if not rsids_raw:
         return jsonify({"error": "No variants provided."}), 400
         
-    import re
     rsids = [v.strip() for v in re.split(r'[,\n\s]+', rsids_raw) if v.strip()]
     if not rsids:
         return jsonify({"error": "No valid variants provided."}), 400
+
+    if len(rsids) > 50:
+        return jsonify({"error": "Maximum comparison size is 50 variants."}), 400
         
     try:
-        from variant_engine import generate_variant_comparison
         comp_data = generate_variant_comparison(rsids)
         if "error" in comp_data:
             return jsonify(comp_data), 404
@@ -479,5 +482,10 @@ def api_compare():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
+    import os
 
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(
+        debug=os.environ.get("FLASK_DEBUG", "0") == "1",
+        host="127.0.0.1",
+        port=int(os.environ.get("PORT", 5000))
+    )

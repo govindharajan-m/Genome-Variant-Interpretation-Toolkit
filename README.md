@@ -25,6 +25,27 @@ GenomeVAP is a Python/Flask monolith.
 - **Database:** `db_handler.py` manages hydration from localized mock datasets.
 - **Frontend:** Jinja2 templates, CSS custom properties, and vanilla JS (augmented with Bootstrap 5 for responsiveness).
 
+## Screenshots
+
+### Single Variant Dashboard
+![Single Variant Dashboard](C:/Users/mgovi/.gemini/antigravity-ide/brain/5ba47b3c-9e65-4ee7-9310-47ceacac79b5/single_variant_dashboard_1782120685917.png)
+
+### Clinical Evidence Report
+![Clinical Evidence Report View](C:/Users/mgovi/.gemini/antigravity-ide/brain/5ba47b3c-9e65-4ee7-9310-47ceacac79b5/report_view_1782120701687.png)
+
+### Disease Panel Designer
+![Disease Panel Designer](C:/Users/mgovi/.gemini/antigravity-ide/brain/5ba47b3c-9e65-4ee7-9310-47ceacac79b5/disease_panel_designer_1782120716458.png)
+
+### Cohort Analysis
+![Cohort Analysis Dashboard](C:/Users/mgovi/.gemini/antigravity-ide/brain/5ba47b3c-9e65-4ee7-9310-47ceacac79b5/cohort_analysis_1782120733700.png)
+
+### Comparative Analysis
+![Comparative Analysis Grid](C:/Users/mgovi/.gemini/antigravity-ide/brain/5ba47b3c-9e65-4ee7-9310-47ceacac79b5/comparative_analysis_1782120750014.png)
+
+### Pathway Analysis
+![Systems Biology Pathway Mapping](C:/Users/mgovi/.gemini/antigravity-ide/brain/5ba47b3c-9e65-4ee7-9310-47ceacac79b5/pathway_analysis_1782120763437.png)
+
+
 ## Installation
 ```bash
 # Clone the repository
