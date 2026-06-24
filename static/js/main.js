@@ -305,7 +305,7 @@ function renderPopulationFrequenciesHTML(data) {
     <div class="pop-freq-grid">
       ${renderRow("Global", "global", true)}
       ${renderRow("South Asian", "south_asian")}
-      ${renderRow("European", "european")}
+      ${renderRow("Caucasian", "caucasian")}
     </div>
     ${comparisonHtml}
     ${sourceHtml}
@@ -398,13 +398,13 @@ function renderReportSummaryHTML(d) {
   
   // Populations
   let sas = "N/A";
-  let eur = "N/A";
+  let cau = "N/A";
   if (d.population_frequencies) {
       if (d.population_frequencies.South_Asian != null) {
           sas = (d.population_frequencies.South_Asian * 100).toFixed(2) + "%";
       }
-      if (d.population_frequencies.European != null) {
-          eur = (d.population_frequencies.European * 100).toFixed(2) + "%";
+      if (d.population_frequencies.Caucasian != null) {
+          cau = (d.population_frequencies.Caucasian * 100).toFixed(2) + "%";
       }
   }
 
@@ -436,7 +436,7 @@ function renderReportSummaryHTML(d) {
           <span class="meta-label">Population Focus</span>
           <span class="meta-val" style="font-size: 0.95rem; line-height: 1.5;">
             South Asian: <strong>${sas}</strong><br>
-            European/Caucasian: <strong>${eur}</strong>
+            Caucasian/Caucasian: <strong>${cau}</strong>
           </span>
         </div>
       </div>

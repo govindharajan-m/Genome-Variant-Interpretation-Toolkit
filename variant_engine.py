@@ -402,15 +402,15 @@ def get_significance_explanation(significance: str) -> dict:
 def generate_frequency_comparison(pop_freqs: dict) -> dict | None:
     """
     Calculates absolute and fold differences specifically between
-    South Asian (SAS) and European (EUR) populations.
+    South Asian (SAS) and Caucasian (CAU) populations.
     """
     if not pop_freqs or not isinstance(pop_freqs, dict) or pop_freqs.get("available") is False:
         return None
         
     sas = pop_freqs.get("south_asian")
-    eur = pop_freqs.get("european")
+    cau = pop_freqs.get("caucasian")
     
-    if sas is None or eur is None:
+    if sas is None or cau is None:
         return None
         
     abs_diff = abs(sas - eur)
@@ -426,15 +426,15 @@ def generate_frequency_comparison(pop_freqs: dict) -> dict | None:
         
     return {
         "south_asian": sas,
-        "european": eur,
+        "caucasian": cau,
         "absolute_difference": abs_diff,
         "fold_difference": fold,
-        "higher_in": "South Asian" if sas > eur else ("European" if eur > sas else "Equal")
+        "higher_in": "South Asian" if sas > cau else ("Caucasian" if cau > sas else "Equal")
     }
 
 def generate_frequency_interpretation(pop_freqs: dict) -> str:
     """
-    Generates a natural language interpretation comparing South Asian and European frequencies.
+    Generates a natural language interpretation comparing South Asian and Caucasian frequencies.
     """
     comparison = generate_frequency_comparison(pop_freqs)
     
@@ -444,13 +444,13 @@ def generate_frequency_interpretation(pop_freqs: dict) -> str:
         return "Detailed population breakdowns are not available for this variant."
         
     sas = comparison["south_asian"]
-    eur = comparison["european"]
+    cau = comparison["caucasian"]
     
-    if sas == eur:
-        return f"This variant appears at an identical frequency ({sas:.4f}) in both South Asian and European populations."
+    if sas == cau:
+        return f"This variant appears at an identical frequency ({sas:.4f}) in both South Asian and Caucasian populations."
         
     higher_name = comparison["higher_in"]
-    lower_name = "European" if higher_name == "South Asian" else "South Asian"
+    lower_name = "Caucasian" if higher_name == "South Asian" else "South Asian"
     
     fold = comparison["fold_difference"]
     if fold == float('inf'):
