@@ -1,0 +1,510 @@
+{% extends "base.html" %}
+{% block title %}CNV Analysis{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <div class="page-header-inner">
+      <div>
+        <div class="page-label">Copy Number Variant Analysis</div>
+        <h1>CNV Analysis</h1>
+        <p>Analyse genomic duplications and deletions by gene, rsID, or coordinates</p>
+      </div>
+      <div class="genome-badge">GRCh38 · hg38</div>
+    </div>
+  </div>
+</div>
+
+<div class="container two-col-layout">
+
+  <!-- ── Input Panel ──────────────────────────────────────────────────────── -->
+  <div class="input-panel card">
+    <h2 class="card-title">CNV Input</h2>
+
+    <!-- Mode Tab Bar -->
+    <div class="mode-tabs" role="tablist" aria-label="CNV input mode">
+      <button class="mode-tab" data-mode="rsid" id="cnv-tab-rsid"
+              role="tab" aria-selected="false" aria-controls="cnv-panel-rsid">
+        <span class="mode-tab-icon">🔍</span> rsID
+      </button>
+      <button class="mode-tab active" data-mode="gene" id="cnv-tab-gene"
+              role="tab" aria-selected="true" aria-controls="cnv-panel-gene">
+        <span class="mode-tab-icon">🧬</span> Gene
+      </button>
+      <button class="mode-tab" data-mode="coord" id="cnv-tab-coord"
+              role="tab" aria-selected="false" aria-controls="cnv-panel-coord">
+        <span class="mode-tab-icon">📐</span> Coordinates
+      </button>
+    </div>
+
+    <!-- ── rsID Panel ──────────────────────────────────────────────────── -->
+    <div id="cnv-panel-rsid" class="mode-panel hidden" role="tabpanel">
+      <p class="card-subtitle">
+        Enter a dbSNP rsID. The CNV region will span the full genomic extent of
+        the associated gene.
+      </p>
+      <div class="form-group">
+        <label for="cnv-rsid-input">rsID</label>
+        <input type="text" id="cnv-rsid-input" class="form-control mono"
+               placeholder="e.g. rs80357906"
+               autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="quick-examples">
+        <span class="example-label">Quick examples:</span>
+        <button class="cnv-rsid-example-btn" data-rsid="rs80357906">rs80357906 <span class="ex-gene">BRCA1</span></button>
+        <button class="cnv-rsid-example-btn" data-rsid="rs113993960">rs113993960 <span class="ex-gene">CFTR</span></button>
+        <button class="cnv-rsid-example-btn" data-rsid="rs28897743">rs28897743 <span class="ex-gene">BRCA2</span></button>
+      </div>
+    </div>
+
+    <!-- ── Gene Panel ───────────────────────────────────────────────────── -->
+    <div id="cnv-panel-gene" class="mode-panel" role="tabpanel">
+      <p class="card-subtitle">
+        Enter a gene symbol to analyse the full gene body as a CNV region.
+      </p>
+      <div class="form-group">
+        <label for="cnv-gene-input">Gene Symbol</label>
+        <input type="text" id="cnv-gene-input" class="form-control"
+               placeholder="e.g. BRCA1, CFTR, TP53"
+               autocomplete="off" autocapitalize="characters" spellcheck="false" />
+      </div>
+      <div class="quick-examples">
+        <span class="example-label">Quick examples:</span>
+        <button class="cnv-gene-example-btn" data-gene="BRCA1">BRCA1</button>
+        <button class="cnv-gene-example-btn" data-gene="BRCA2">BRCA2</button>
+        <button class="cnv-gene-example-btn" data-gene="CFTR">CFTR</button>
+        <button class="cnv-gene-example-btn" data-gene="TP53">TP53</button>
+        <button class="cnv-gene-example-btn" data-gene="BRAF">BRAF</button>
+      </div>
+    </div>
+
+    <!-- ── Coordinate Panel ─────────────────────────────────────────────── -->
+    <div id="cnv-panel-coord" class="mode-panel hidden" role="tabpanel">
+      <p class="card-subtitle">
+        Specify the genomic coordinates and type of copy number event directly.
+      </p>
+      <div class="form-group">
+        <label for="cnv-chromosome">Chromosome</label>
+        <select id="cnv-chromosome" class="form-control">
+          <option value="">Select Chr…</option>
+          {% for c in ['1','2','3','4','5','6','7','8','9','10',
+                       '11','12','13','14','15','16','17','18',
+                       '19','20','21','22','X','Y'] %}
+          <option value="{{ c }}">Chr {{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cnv-start">Start Position</label>
+          <input type="number" id="cnv-start" class="form-control"
+                 placeholder="e.g. 43044295" min="1" />
+        </div>
+        <div class="form-group">
+          <label for="cnv-end">End Position</label>
+          <input type="number" id="cnv-end" class="form-control"
+                 placeholder="e.g. 43125483" min="1" />
+        </div>
+      </div>
+
+      <!-- Quick fill examples (coord mode only) -->
+      <div class="quick-examples">
+        <span class="example-label">Quick examples:</span>
+        <button class="cnv-example-btn"
+                data-chr="17" data-start="43044295" data-end="43125483"
+                data-type="Deletion" data-copies="1">BRCA1 het del</button>
+        <button class="cnv-example-btn"
+                data-chr="7"  data-start="117465784" data-end="117715971"
+                data-type="Duplication" data-copies="3">CFTR dup</button>
+      </div>
+    </div>
+
+    <!-- ── Shared CNV Type + Copy Number (all modes) ─────────────────────── -->
+    <div class="shared-cnv-fields">
+      <div class="form-group">
+        <label>CNV Type</label>
+        <div class="cnv-type-toggle">
+          <button type="button" class="cnv-toggle active" data-type="Deletion">
+            <span class="toggle-icon">▼</span> Deletion
+          </button>
+          <button type="button" class="cnv-toggle" data-type="Duplication">
+            <span class="toggle-icon">▲</span> Duplication
+          </button>
+        </div>
+        <input type="hidden" id="cnv-type" value="Deletion" />
+      </div>
+
+      <div class="form-group">
+        <label for="cnv-copies">Copy Number <span style="font-weight:400; color:var(--text-secondary);">(optional)</span></label>
+        <input type="number" id="cnv-copies" class="form-control"
+               placeholder="e.g. 1 (het del), 0 (hom del), 3 (dup)"
+               min="0" max="10" />
+        <small class="form-hint">Normal = 2 · Het deletion = 1 · Hom deletion = 0 · Duplication = 3+</small>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-primary btn-full" id="cnvBtn">
+      <span id="cnvBtnText">Analyze CNV</span>
+      <span id="cnvBtnSpinner" class="spinner hidden"></span>
+    </button>
+  </div>
+
+  <!-- ── Results Panel ─────────────────────────────────────────────────────── -->
+  <div id="cnvResultPanel" class="result-panel hidden">
+
+    <!-- 1. Report Summary Container -->
+    <div id="cnvReportSummaryContainer"></div>
+
+    <!-- 2. Summary Container -->
+    <div id="cnvSummaryContainer"></div>
+
+    <!-- 3. Variant Overview Card -->
+    <div class="card result-card">
+      <div id="variantOverviewAnchor" class="result-header">
+        <div>
+          <div class="result-label">CNV Overview</div>
+          <h2 id="cr-title" class="result-title mono">—</h2>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0.4rem;">
+          <div id="cr-type-badge" class="type-badge type-cnv">CNV</div>
+          <div id="cr-source-badge" class="rsid-tag hidden" style="font-size:0.8rem;"></div>
+        </div>
+      </div>
+      <div class="result-meta-grid">
+        <div class="meta-item"><span class="meta-label">Chromosome</span><span class="meta-val mono" id="cr-chr">—</span></div>
+        <div class="meta-item"><span class="meta-label">Region</span><span class="meta-val mono" id="cr-region">—</span></div>
+        <div class="meta-item"><span class="meta-label">Size</span><span class="meta-val" id="cr-size">—</span></div>
+        <div class="meta-item"><span class="meta-label">Size Class</span><span class="meta-val" id="cr-size-class">—</span></div>
+      </div>
+
+      <h3 class="card-title" style="margin-top: 1.5rem;">Gene Dosage Effect</h3>
+      <div class="impact-row">
+        <div class="impact-badge-wrap">
+          <div id="cr-dosage-badge" class="impact-badge">—</div>
+          <div class="impact-label">Dosage Impact</div>
+        </div>
+        <div class="impact-details">
+          <p id="cr-dosage-text" style="margin:0; color: var(--text-primary);"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Clinical Evidence Container -->
+    <div class="card result-card">
+      <h3 class="card-title">Clinical Interpretation Note</h3>
+      <p id="cr-clinical-note" class="interpretation-text"></p>
+      <div class="info-box">
+        <strong>Note:</strong> CNV pathogenicity assessment requires integration with
+        ClinGen dosage sensitivity data, population CNV databases (gnomAD-SV, DGV),
+        and clinical phenotypic correlation. This report is for educational/portfolio
+        demonstration only.
+      </div>
+    </div>
+    <div id="cnvSignificanceExplanationContainer"></div>
+
+    <!-- 5. Population Analysis Container -->
+    <div id="cnvPopulationFrequenciesContainer"></div>
+
+    <!-- 6. Trait & Research Evidence Container -->
+    <div id="cnvGwasContainer"></div>
+    <div id="cnvImpactExplanationContainer"></div>
+
+    <!-- 7. Gene Context Containers -->
+    <div id="cnvGeneContextContainer"></div>
+    <div id="cnvDiseasesContainer"></div>
+    <div id="cnvPathwaysContainer"></div>
+
+    <!-- 8. Literature Evidence Container -->
+    <div id="cnvPubmedContainer"></div>
+
+    <!-- 9. References Container -->
+    <div id="referencesContainer"></div>
+
+  </div><!-- /cnvResultPanel -->
+
+  <div id="cnvEmptyState" class="empty-state">
+    <div class="empty-icon">🔬</div>
+    <h3>Enter a CNV Region to Analyze</h3>
+    <p>Use <strong>Gene</strong> mode to target a gene directly, <strong>rsID</strong> to resolve
+       from a known variant, or <strong>Coordinates</strong> for manual bp-level input.
+       The platform predicts dosage effects, maps affected genes, and generates a
+       clinical interpretation note.</p>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// ── Mode Tab Switching ────────────────────────────────────────────────────────
+const cnvTabs = document.querySelectorAll(".mode-tab");
+cnvTabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    cnvTabs.forEach(t => { t.classList.remove("active"); t.setAttribute("aria-selected", "false"); });
+    tab.classList.add("active");
+    tab.setAttribute("aria-selected", "true");
+    const mode = tab.dataset.mode;
+    document.getElementById("cnv-panel-rsid").classList.toggle("hidden", mode !== "rsid");
+    document.getElementById("cnv-panel-gene").classList.toggle("hidden", mode !== "gene");
+    document.getElementById("cnv-panel-coord").classList.toggle("hidden", mode !== "coord");
+  });
+});
+
+// ── CNV Type Toggle ───────────────────────────────────────────────────────────
+document.querySelectorAll(".cnv-toggle").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".cnv-toggle").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("cnv-type").value = btn.dataset.type;
+  });
+});
+
+// ── rsID quick-fill ───────────────────────────────────────────────────────────
+document.querySelectorAll(".cnv-rsid-example-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.getElementById("cnv-rsid-input").value = btn.dataset.rsid;
+  });
+});
+
+// ── Gene quick-fill ───────────────────────────────────────────────────────────
+document.querySelectorAll(".cnv-gene-example-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.getElementById("cnv-gene-input").value = btn.dataset.gene;
+  });
+});
+
+// ── Coordinate quick-fill ─────────────────────────────────────────────────────
+document.querySelectorAll(".cnv-example-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.getElementById("cnv-chromosome").value = btn.dataset.chr;
+    document.getElementById("cnv-start").value      = btn.dataset.start;
+    document.getElementById("cnv-end").value        = btn.dataset.end;
+    document.getElementById("cnv-copies").value     = btn.dataset.copies;
+    document.getElementById("cnv-type").value       = btn.dataset.type;
+    document.querySelectorAll(".cnv-toggle").forEach(b => {
+      b.classList.toggle("active", b.dataset.type === btn.dataset.type);
+    });
+  });
+});
+
+// ── Main Submit Button ────────────────────────────────────────────────────────
+document.getElementById("cnvBtn").addEventListener("click", async () => {
+  const btn  = document.getElementById("cnvBtn");
+  const text = document.getElementById("cnvBtnText");
+  const spin = document.getElementById("cnvBtnSpinner");
+
+  text.textContent = "Analyzing…";
+  spin.classList.remove("hidden");
+  btn.disabled = true;
+
+  // Determine active mode
+  const activeTab  = document.querySelector(".mode-tab.active");
+  const mode       = activeTab ? activeTab.dataset.mode : "gene";
+  const cnvType    = document.getElementById("cnv-type").value;
+  const copiesVal  = document.getElementById("cnv-copies").value;
+  const copyNumber = copiesVal !== "" ? parseInt(copiesVal) : null;
+
+  let url     = "";
+  let payload = {};
+
+  if (mode === "rsid") {
+    const rsid = document.getElementById("cnv-rsid-input").value.trim().toLowerCase();
+    if (!rsid) { showCNVError("Please enter an rsID."); resetCNVBtn(); return; }
+    url     = "/api/analyze-cnv-rsid";
+    payload = { rsid, cnv_type: cnvType, copy_number: copyNumber };
+
+  } else if (mode === "gene") {
+    const gene = document.getElementById("cnv-gene-input").value.trim().toUpperCase();
+    if (!gene) { showCNVError("Please enter a gene symbol."); resetCNVBtn(); return; }
+    url     = "/api/analyze-cnv-rsid";
+    payload = { gene, cnv_type: cnvType, copy_number: copyNumber };
+
+  } else {
+    // Coordinate mode
+    const chromosome = document.getElementById("cnv-chromosome").value;
+    const start      = parseInt(document.getElementById("cnv-start").value);
+    const end        = parseInt(document.getElementById("cnv-end").value);
+    if (!chromosome || isNaN(start) || isNaN(end)) {
+      showCNVError("Please fill in all coordinate fields.");
+      resetCNVBtn();
+      return;
+    }
+    if (start >= end) {
+      showCNVError("Start position must be less than end position.");
+      resetCNVBtn();
+      return;
+    }
+    url     = "/api/analyze-cnv";
+    payload = { chromosome, start, end, cnv_type: cnvType, copy_number: copyNumber };
+  }
+
+  try {
+    const res  = await fetch(url, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(payload),
+    });
+    let data;
+    try {
+      data = await res.json();
+    } catch(e) {
+      if (!res.ok) throw new Error("External service temporarily unavailable.");
+      throw e;
+    }
+    
+    if (data.error || !data.found) { 
+      showCNVError(data.error || "Variant not found."); 
+    } else { 
+      renderCNVResult(data); 
+    }
+  } catch(err) {
+    showCNVError("Network error — is the server running?");
+  } finally {
+    resetCNVBtn();
+  }
+});
+
+function resetCNVBtn() {
+  document.getElementById("cnvBtnText").textContent = "Analyze CNV";
+  document.getElementById("cnvBtnSpinner").classList.add("hidden");
+  document.getElementById("cnvBtn").disabled = false;
+}
+
+// ── Render CNV Result ─────────────────────────────────────────────────────────
+function renderCNVResult(d) {
+  document.getElementById("cnvEmptyState").classList.add("hidden");
+  const panel = document.getElementById("cnvResultPanel");
+  panel.classList.remove("hidden");
+
+  const inp    = d.input;
+  const source = inp.source || "coord_lookup";
+
+  // Title
+  document.getElementById("cr-title").textContent =
+    `Chr${inp.chromosome}: ${inp.start.toLocaleString()}–${inp.end.toLocaleString()} (${inp.cnv_type})`;
+  document.getElementById("cr-chr").textContent    = "Chr " + inp.chromosome;
+  document.getElementById("cr-region").textContent =
+    `${inp.start.toLocaleString()} – ${inp.end.toLocaleString()}`;
+  document.getElementById("cr-size").textContent       = d.region_size_bp.toLocaleString() + " bp";
+  document.getElementById("cr-size-class").textContent = d.size_class;
+
+  // Source badge
+  const srcBadge = document.getElementById("cr-source-badge");
+  if (source === "rsid_lookup" && inp.rsid) {
+    srcBadge.textContent = inp.rsid;
+    srcBadge.classList.remove("hidden");
+  } else if (source === "gene_lookup" && inp.gene_symbol) {
+    srcBadge.textContent = inp.gene_symbol;
+    srcBadge.classList.remove("hidden");
+  } else {
+    srcBadge.classList.add("hidden");
+  }
+
+  // Dosage
+  const badge = document.getElementById("cr-dosage-badge");
+  badge.textContent = d.dosage_class;
+  badge.className   = "impact-badge impact-" + d.dosage_class;
+  document.getElementById("cr-dosage-text").textContent = d.dosage_effect;
+
+  // Gene Context & Biological Engine
+  if (d.gene_context && d.gene_context.available) {
+    document.getElementById("cnvGeneContextContainer").innerHTML = renderGeneContextHTML(d.gene_context, d.research_relevance);
+  } else {
+    document.getElementById("cnvGeneContextContainer").innerHTML = "";
+  }
+
+  if (d.diseases && d.diseases.available) {
+    document.getElementById("cnvDiseasesContainer").innerHTML = renderDiseasesHTML(d.diseases);
+  } else {
+    document.getElementById("cnvDiseasesContainer").innerHTML = "";
+  }
+
+  if (d.pathways && d.pathways.available) {
+    document.getElementById("cnvPathwaysContainer").innerHTML = renderPathwaysHTML(d.pathways);
+  } else {
+    document.getElementById("cnvPathwaysContainer").innerHTML = "";
+  }
+
+  document.getElementById("cr-clinical-note").textContent = d.clinical_note;
+
+  // Explanations
+  document.getElementById("cnvReportSummaryContainer").innerHTML = renderReportSummaryHTML(d);
+  document.getElementById("cnvGwasContainer").innerHTML = renderGWASHTML(d);
+  document.getElementById("cnvPopulationFrequenciesContainer").innerHTML =
+    renderPopulationFrequenciesHTML(d);
+  document.getElementById("cnvImpactExplanationContainer").innerHTML =
+    renderImpactExplanationHTML(d.impact_explanation, d.dosage_class);
+  document.getElementById("cnvSignificanceExplanationContainer").innerHTML =
+    renderSignificanceExplanationHTML(d.significance_explanation, d.clinical_significance || "");
+  if (d.interpretation_summary) {
+    document.getElementById("cnvSummaryContainer").innerHTML = 
+      `<div class="card result-card info-card" style="border-left-color: var(--accent);">
+         <h3 class="card-title">Summary</h3>
+         <p style="font-size: 0.95rem; line-height: 1.6;">${d.interpretation_summary}</p>
+       </div>`;
+  } else {
+    document.getElementById("cnvSummaryContainer").innerHTML = "";
+  }
+
+  // References
+  document.getElementById("referencesContainer").innerHTML = renderEvidenceHTML(d.evidence);
+  document.getElementById("cnvPubmedContainer").innerHTML = renderPubMedHTML(d.pubmed);
+
+  
+  document.getElementById("dynamicReportNav")?.classList.remove("hidden");
+  document.getElementById("dynamicReportTimestamp")?.classList.remove("hidden");
+
+  panel.scrollIntoView({behavior: "smooth"});
+}
+
+function showCNVError(msg) {
+  document.getElementById("cnvEmptyState").classList.add("hidden");
+  const panel = document.getElementById("cnvResultPanel");
+  panel.classList.remove("hidden");
+  
+  // Clear all previous results
+  document.getElementById("cr-title").textContent = "Error";
+  document.getElementById("cr-chr").textContent = "—";
+  document.getElementById("cr-region").textContent = "—";
+  document.getElementById("cr-size").textContent = "—";
+  document.getElementById("cr-size-class").textContent = "—";
+  document.getElementById("cr-source-badge").classList.add("hidden");
+  
+  document.getElementById("cr-dosage-badge").textContent = "—";
+  document.getElementById("cr-dosage-badge").className = "impact-badge";
+  document.getElementById("cr-dosage-text").textContent = "—";
+  
+  document.getElementById("cr-gene-section").classList.add("hidden");
+  document.getElementById("cr-clinical-note").textContent = "—";
+  
+  document.getElementById("cnvGwasContainer").innerHTML = "";
+  document.getElementById("cnvPopulationFrequenciesContainer").innerHTML = "";
+  document.getElementById("cnvImpactExplanationContainer").innerHTML = "";
+  document.getElementById("cnvSignificanceExplanationContainer").innerHTML = "";
+  document.getElementById("cnvSummaryContainer").innerHTML = "";
+  document.getElementById("referencesContainer").innerHTML = "";
+  document.getElementById("cnvPubmedContainer").innerHTML = "";
+
+  // Inject error banner
+  const errorHtml = `
+    <div class="card result-card info-card" style="border-left-color: #e74c3c; background-color: rgba(231, 76, 60, 0.05);">
+      <h3 class="card-title" style="color: #e74c3c; display: flex; align-items: center; gap: 0.5rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        Analysis Failed
+      </h3>
+      <p style="font-size: 1.05rem; line-height: 1.6; margin-top: 0.5rem;">${msg}</p>
+    </div>
+  `;
+  document.getElementById("referencesContainer").innerHTML = errorHtml;
+  
+  document.getElementById("dynamicReportNav")?.classList.remove("hidden");
+  document.getElementById("dynamicReportTimestamp")?.classList.remove("hidden");
+
+  panel.scrollIntoView({behavior: "smooth"});
+}
+</script>
+{% endblock %}

@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- ── Hero Section ───────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-content">
+    <div class="hero-label">Genomic Variant Annotation System</div>
+    <h1 class="hero-title">
+      <span class="dim">GENOME</span><br>
+      <span class="hl">VARIATION</span><br>
+      <span class="dim">ANALYSIS</span>
+    </h1>
+    <p class="hero-sub">
+      SNP annotation · CNV dosage prediction · Batch rsID processing ·
+      Clinical interpretation. Powered by simulated dbSNP, ClinVar, and
+      Ensembl GRCh38 pipelines. Built for the bench scientist who reads
+      the pipeline source.
+    </p>
+    <div class="hero-actions">
+      <a href="{{ url_for('single_variant_page') }}" class="btn btn-primary">Start SNP Analysis →</a>
+      <a href="{{ url_for('batch_analysis_page') }}" class="btn btn-outline">Batch rsID Lookup</a>
+    </div>
+
+
+  </div>
+</section>
+
+<!-- ── Feature Cards ──────────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Analysis Modules</h2>
+      <p>Choose an analysis type to begin variant interpretation</p>
+    </div>
+
+    <div class="feature-grid">
+
+      <!-- SNP -->
+      <a href="{{ url_for('single_variant_page') }}" class="feature-card">
+        <div class="feature-icon snp-icon">SNP</div>
+        <h3>Single Variant Analysis</h3>
+        <p>
+          Input chromosomal coordinates (Chr, Position, Ref, Alt) for
+          real-time SNP annotation, consequence prediction, and gene mapping.
+        </p>
+        <ul class="feature-list">
+          <li>Synonymous / Missense / Nonsense classification</li>
+          <li>Gene & pathway mapping</li>
+          <li>SIFT & PolyPhen-2 predictions</li>
+        </ul>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <!-- CNV -->
+      <a href="{{ url_for('cnv_analysis_page') }}" class="feature-card">
+        <div class="feature-icon cnv-icon">CNV</div>
+        <h3>CNV Analysis</h3>
+        <p>
+          Analyse Copy Number Variants — deletions and duplications across
+          genomic regions with dosage effect prediction.
+        </p>
+        <ul class="feature-list">
+          <li>Duplication / Deletion detection</li>
+          <li>Haploinsufficiency prediction</li>
+          <li>Region size classification</li>
+        </ul>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <!-- Batch -->
+      <a href="{{ url_for('batch_analysis_page') }}" class="feature-card">
+        <div class="feature-icon">▤</div>
+        <h3>Batch Analysis</h3>
+        <p>High-throughput rsID triage and annotation.</p>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <!-- 4. Disease Panel Designer -->
+      <a href="{{ url_for('panel_designer') }}" class="feature-card">
+        <div class="feature-icon">◎</div>
+        <h3>Panel Designer</h3>
+        <p>Dynamically generate gene panels based on discovery potential.</p>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <!-- 5. Cohort Analysis -->
+      <a href="{{ url_for('cohort_analysis') }}" class="feature-card">
+        <div class="feature-icon">◱</div>
+        <h3>Cohort Analysis</h3>
+        <p>Population-level variant risk prioritization.</p>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <!-- 6. Comparative Analysis -->
+      <a href="{{ url_for('comparative_analysis') }}" class="feature-card">
+        <div class="feature-icon">◨</div>
+        <h3>Comparative Analysis</h3>
+        <p>Head-to-head evaluation of candidate variants.</p>
+        <span class="card-arrow">→</span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Pipeline Overview ──────────────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header">
+      <h2>Analysis Pipeline</h2>
+      <p>Inspired by real-world tools: Ensembl VEP · ANNOVAR · ClinVar pipelines</p>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <div class="pipeline-num">01</div>
+        <div class="pipeline-body">
+          <h4>Variant Input</h4>
+          <p>Chromosomal coordinates (Chr:Pos:Ref:Alt) or rsID identifiers</p>
+        </div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">02</div>
+        <div class="pipeline-body">
+          <h4>Classification</h4>
+          <p>SNP vs CNV · Transition vs Transversion · Indel detection</p>
+        </div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">03</div>
+        <div class="pipeline-body">
+          <h4>Annotation</h4>
+          <p>dbSNP lookup · Gene mapping · HGVS nomenclature</p>
+        </div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">04</div>
+        <div class="pipeline-body">
+          <h4>Impact Prediction</h4>
+          <p>Functional consequence · SIFT · PolyPhen-2 · Impact level</p>
+        </div>
+      </div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">
+        <div class="pipeline-num">05</div>
+        <div class="pipeline-body">
+          <h4>Clinical Report</h4>
+          <p>ClinVar significance · Disease association · Interpretation</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Demo rsIDs ─────────────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Try These Variants</h2>
+      <p>Click any rsID to view its full annotation report</p>
+    </div>
+
+    <div class="demo-rsid-grid">
+      {% for rsid in demo_rsids %}
+      <a href="{{ url_for('report_page', rsid=rsid) }}" class="demo-rsid-card">
+        <span class="rsid-tag">{{ rsid }}</span>
+        <span class="demo-arrow">→</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}

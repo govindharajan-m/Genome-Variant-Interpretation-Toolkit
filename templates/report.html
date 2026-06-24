@@ -1,0 +1,703 @@
+{% extends "base.html" %}
+{% block title %}Report: {{ rsid }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <div class="page-header-inner">
+      <div>
+        <div class="page-label">Variant Report</div>
+        <h1 class="mono">{{ rsid | upper }}</h1>
+        <p>Full annotation report generated from dbSNP + ClinVar + Ensembl data</p>
+      </div>
+      {% if report.found %}
+      <div class="sig-badge-large"
+        style="background: {{ report.sig_colour }}22; border: 1px solid {{ report.sig_colour }}; color: {{ report.sig_colour }};">
+        {{ report.clinical_significance }}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+<div class="report-nav">
+  <a href="#section-snapshot">Report Summary</a>
+  <a href="#section-summary">Summary</a>
+  <a href="#section-variant">Variant Overview</a>
+  <a href="#section-clinvar">Clinical Evidence</a>
+  <a href="#section-pop">Population Analysis</a>
+  <a href="#section-gwas">Trait & Research</a>
+  
+      <a href="#section-gene">Gene Context</a>
+      <a href="#section-diseases">Associated Diseases</a>
+      <a href="#section-pathways">Biological Pathways</a>
+
+  <a href="#section-lit">Literature Evidence</a>
+</div>
+<div class="container">
+  <div class="report-timestamp" id="reportTimestamp">Last Updated: <script>document.write(new Date().toISOString().replace('T', ' ').substring(0, 16));</script></div>
+
+  {% if not report.found %}
+  <div class="card" style="text-align:center; padding: 3rem;">
+    <div style="font-size:3rem; margin-bottom:1rem;">🔍</div>
+    <h2>Variant Not Found</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+      <strong>{{ rsid }}</strong> was not found in the local mock database.
+      In a production system this query would be forwarded to NCBI E-utilities.
+    </p>
+    <a href="{{ url_for('batch_analysis_page') }}" class="btn btn-primary">Try Batch Analysis</a>
+  </div>
+
+  {% else %}
+
+  
+  
+  <!-- Research Relevance -->
+  {% if report.research_relevance is mapping %}
+  <div id="section-research-relevance" class="card result-card" style="margin-top: 1rem;">
+      <h3 class="card-title">Research Relevance</h3>
+      <div style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem;">
+          <span class="status-badge badge-strong" style="font-size: 1rem; padding: 0.4rem 0.8rem; background: var(--bg-tertiary);">{{ report.research_relevance.tier|upper }}</span>
+          <span style="font-size: 1rem; color: var(--text-secondary);">Research Score: <span style="font-weight: 600; color: var(--primary-colour);">{{ report.research_relevance.score }} / 100</span></span>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div style="margin-top: 1rem;">
+              <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Why This Variant Matters</h4>
+              <ul style="list-style-type: none; padding: 0; margin: 0;">
+                  {% for r in report.research_relevance.reasons %}
+                  <li style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.3rem;">✓ {{ r }}</li>
+                  {% endfor %}
+              </ul>
+          </div>
+          {% if report.research_relevance.applications %}
+          <div style="margin-top: 1rem;">
+              <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Potential Applications</h4>
+              <ul style="list-style-type: none; padding: 0; margin: 0;">
+                  {% for a in report.research_relevance.applications %}
+                  <li style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.3rem;">• {{ a }}</li>
+                  {% endfor %}
+              </ul>
+          </div>
+          {% endif %}
+      </div>
+  </div>
+  <div class="section-divider"></div>
+  {% endif %}
+
+  <!-- 1. Report Summary -->
+  <div id="section-snapshot" class="card result-card" style="border-left: 3px solid var(--primary-colour);">
+    <h2 class="card-title" style="margin-bottom: 12px; font-size: 1.25rem;">REPORT SUMMARY</h2>
+    <div class="result-meta-grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="meta-item">
+            <span class="meta-label">Variant ID</span>
+            <span class="meta-val mono" style="font-weight: 600; font-size: 1.1rem;">{{ report.rsid }}</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Gene</span>
+            <span class="meta-val mono">{% if report.gene %}{{ report.gene.gene }}{% else %}Unknown{% endif %}</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Consequence</span>
+            <span class="meta-val">{% if report.protein_change and report.protein_change != "—" %}{{ report.protein_change }}{% else %}{{ report.impact.impact_level }}{% endif %}</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Clinical Significance</span>
+            <span class="meta-val"><span class="status-badge {{ get_sig_class }}">{{ report.clinical_significance.replace("_", " ") if report.clinical_significance else "Uncertain significance" }}</span></span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Research Relevance</span>
+            <span class="meta-val">{% if report.research_relevance is mapping %}{{ report.research_relevance.tier }}{% else %}{{ report.research_relevance }}{% endif %}</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Evidence Confidence Score</span>
+            <span class="meta-val">{% if report.evidence_confidence %}{{ report.evidence_confidence.score }}/100 ({{ report.evidence_confidence.tier }}){% else %}N/A{% endif %}</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Literature Evidence Tier</span>
+            <span class="meta-val">{% if report.pubmed and report.pubmed.tier %}{{ report.pubmed.tier }}{% else %}N/A{% endif %}</span>
+        </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- 2. Summary -->
+<!-- ── Full Summary ───────────────────────────────────────── -->
+  <div class="card result-card" style="margin-top: 1.5rem;">
+    <h3 class="card-title">🧬 Scientific Summary</h3>
+    <div class="interpretation-box" style="margin-bottom: 1.5rem;">
+      <p class="interpretation-text clinvar-interpretation">{{ report.interpretation.general_summary }}</p>
+    </div>
+
+    <div class="interpretation-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+      <div class="interp-column" style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 0.5rem;">
+        <h4 style="margin-top: 0; color: var(--text-primary); font-size: 1.1rem;">Molecular Impact</h4>
+        <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; color: var(--primary-colour);">{{
+          report.interpretation.impact }}</div>
+        <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Meaning:</div>
+        <p style="color: var(--text-secondary); margin: 0; line-height: 1.5;">{{ report.interpretation.impact_meaning }}
+        </p>
+      </div>
+      <div class="interp-column" style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 0.5rem;">
+        <h4 style="margin-top: 0; color: var(--text-primary); font-size: 1.1rem;">Clinical Significance</h4>
+        <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; color: {{ report.sig_colour }};">{{
+          report.interpretation.clinical_significance.replace("_", " ") }}</div>
+        <div style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Meaning:</div>
+        <p style="color: var(--text-secondary); margin: 0; line-height: 1.5;">{{
+          report.interpretation.significance_meaning }}</p>
+      </div>
+    </div>
+
+    <div class="info-box" style="margin-top: 1.5rem;">
+      <strong>Disclaimer:</strong> This report is generated by a mock annotation pipeline
+      for portfolio / educational purposes. Clinical decisions should only be based on
+      validated assays and certified clinical genomics laboratories.
+    </div>
+  </div>
+
+  <!-- ── Evidence & References ─────────────────────────────────────────────── -->
+
+  <!-- 3. Variant Overview -->
+<!-- Variant Overview -->
+      <div class="card result-card">
+        <div class="result-header">
+          <div>
+            <div class="result-label">Variant Overview</div>
+            <h2 class="result-title mono">{{ report.snp.hgvs or rsid }}</h2>
+          </div>
+          <span class="type-badge type-snp">{{ report.classification.type }}</span>
+        </div>
+        <div class="result-meta-grid">
+          <div class="meta-item"><span class="meta-label">rsID</span><span class="meta-val mono">{{ rsid }}</span></div>
+          <div class="meta-item"><span class="meta-label">Chromosome</span><span class="meta-val mono">Chr {{
+              report.snp.chromosome }}</span></div>
+          <div class="meta-item"><span class="meta-label">Position (GRCh38)</span><span class="meta-val mono">{{
+              "{:,}".format(report.snp.position) }}</span></div>
+          <div class="meta-item"><span class="meta-label">Ref → Alt</span><span class="meta-val mono">{{ report.snp.ref
+              }} → {{ report.snp.alt }}</span></div>
+          <div class="meta-item"><span class="meta-label">Variant Type</span><span class="meta-val">{{
+              report.classification.subtype }}</span></div>
+          <div class="meta-item"><span class="meta-label">Allele Frequency</span>
+            <span class="meta-val">
+              {% if report.snp.allele_frequency %}
+              {{ "%.4f"|format(report.snp.allele_frequency) }} ({{ "%.2f"|format(report.snp.allele_frequency * 100) }}%)
+              {% else %}—{% endif %}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Functional Impact -->
+<!-- Functional Impact -->
+      <div class="card result-card">
+        <h3 class="card-title">Functional Consequence</h3>
+        <div class="impact-row">
+          <div class="impact-badge-wrap">
+            <div class="impact-badge impact-{{ report.impact.impact_level }}">{{ report.impact.impact_level }}</div>
+            <div class="impact-label">Impact Level</div>
+          </div>
+          <div class="impact-details">
+            <div class="consequence-tag">{{ (report.impact.consequence or "—").replace("_"," ") }}</div>
+            {% if report.snp.protein_change %}
+            <div class="protein-change">
+              <span class="pill">Protein</span> {{ report.snp.protein_change }}
+            </div>
+            {% endif %}
+            <div class="impact-tools">
+              <span class="tool-pred">SIFT: <strong>{{ report.impact.sift_pred or "—" }}</strong></span>
+              <span class="tool-pred">PolyPhen-2: <strong>{{ report.impact.polyphen_pred or "—" }}</strong></span>
+            </div>
+          </div>
+        </div>
+        <div class="impact-description">{{ report.impact.description }}</div>
+      </div>
+
+      <!-- Impact Explanation -->
+
+  <!-- 4. Clinical Evidence -->
+<!-- Clinical Significance -->
+      {% if report.clinvar %}
+      {% set cv = report.clinvar %}
+      {% set conf_class = {
+          "Very High": "cv-conf-very-high",
+          "High": "cv-conf-high",
+          "Moderate": "cv-conf-moderate",
+          "Low": "cv-conf-low"
+      }.get(cv.confidence_level, "cv-conf-low") %}
+      
+      <div class="card result-card" id="clinvarCard">
+        <div class="result-header">
+          <div>
+            <h3 class="card-title" style="margin-bottom: 0;">ClinVar Evidence</h3>
+          </div>
+          <div>
+            <span class="cv-confidence-badge {{ conf_class }}">
+              {{ cv.confidence_level }} Confidence
+            </span>
+          </div>
+        </div>
+        
+        <div class="result-meta-grid" style="margin-top: 1rem;">
+          <div class="meta-item">
+            <span class="meta-label">Clinical Significance</span>
+            <span class="meta-val" style="color: {{ report.sig_colour }}; font-weight: 600;">{{ cv.clinical_significance or "—" }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Condition</span>
+            <span class="meta-val">{{ cv.condition or "—" }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Review Status</span>
+            <span class="meta-val">{{ cv.review_status or "—" }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Accession</span>
+            <span class="meta-val mono">
+              <a href="https://www.ncbi.nlm.nih.gov/clinvar/variation/{{ cv.variation_id }}/" target="_blank" style="color: var(--accent); text-decoration: none;">
+                {{ cv.accession or cv.variation_id }} ↗
+              </a>
+            </span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Last Evaluated</span>
+            <span class="meta-val mono">{{ cv.last_evaluated or "—" }}</span>
+          </div>
+        </div>
+        
+        {% if cv.conflicting_interpretations and cv.conflict_breakdown %}
+        <div class="cv-conflict-panel">
+          <div class="cv-conflict-title">
+            Conflicting Interpretations
+            <span class="cv-consensus">Consensus: {% if cv.consensus_score is not none %}{{ cv.consensus_score }}%{% else %}N/A{% endif %}</span>
+          </div>
+          <div class="cv-conflict-list">
+            {% for cls, count in cv.conflict_breakdown.items() %}
+            <div class="cv-conflict-item">
+              <span>{{ cls }}</span>
+              <span class="cv-count">{{ count }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <!-- Population Frequencies -->
+<!-- Clinical Significance Explanation -->
+      {% if report.significance_explanation %}
+      <div class="card result-card sig-expl-card">
+        <details class="sig-expl-details">
+          <summary class="sig-expl-summary">
+            <span class="sig-expl-summary-text">
+              <span class="sig-expl-icon">⚕</span>
+              Clinical Significance Explanation —
+              <span class="sig-expl-level" style="color: {{ report.sig_colour }};">
+                {{ report.clinical_significance }}
+              </span>
+            </span>
+            <span class="sig-expl-toggle">▸</span>
+          </summary>
+          <div class="sig-expl-body">
+            <div class="sig-expl-section">
+              <div class="sig-expl-label">Definition</div>
+              <p class="sig-expl-text">{{ report.significance_explanation.definition }}</p>
+            </div>
+            <div class="sig-expl-section">
+              <div class="sig-expl-label">Interpretation</div>
+              <p class="sig-expl-interp">{{ report.significance_explanation.interpretation }}</p>
+            </div>
+            <div class="sig-expl-section">
+              <div class="sig-expl-label">Evidence Basis</div>
+              <ul class="sig-expl-list">
+                {% for item in report.significance_explanation.evidence_basis %}
+                <li>{{ item }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+      {% endif %}
+
+    
+
+  <!-- 5. Population Analysis -->
+<!-- Population Frequencies -->
+      {% if report.population_frequencies %}
+      <div class="card result-card">
+        <h3 class="card-title">Population Frequencies</h3>
+        <p class="interpretation-text clinvar-interpretation" style="margin-top: 0;">{{ report.frequency_interpretation }}</p>
+        <div class="pop-freq-grid">
+          <div class="pop-freq-row">
+            <span class="pop-freq-label">Global</span>
+            <div class="pop-freq-bar-container"><div class="pop-freq-bar global" style="width: {% if report.population_frequencies.global %}{{ [report.population_frequencies.global * 100, 100]|min }}{% else %}0{% endif %}%;"></div></div>
+            <span class="pop-freq-val">{% if report.population_frequencies.global %}{{ "%.2f"|format(report.population_frequencies.global * 100) }}%{% else %}—{% endif %}</span>
+          </div>
+          <div class="pop-freq-row">
+            <span class="pop-freq-label">South Asian</span>
+            <div class="pop-freq-bar-container"><div class="pop-freq-bar" style="width: {% if report.population_frequencies.south_asian %}{{ [report.population_frequencies.south_asian * 100, 100]|min }}{% else %}0{% endif %}%;"></div></div>
+            <span class="pop-freq-val">{% if report.population_frequencies.south_asian %}{{ "%.2f"|format(report.population_frequencies.south_asian * 100) }}%{% else %}—{% endif %}</span>
+          </div>
+          <div class="pop-freq-row">
+            <span class="pop-freq-label">Caucasian</span>
+            <div class="pop-freq-bar-container"><div class="pop-freq-bar" style="width: {% if report.population_frequencies.caucasian %}{{ [report.population_frequencies.caucasian * 100, 100]|min }}{% else %}0{% endif %}%;"></div></div>
+            <span class="pop-freq-val">{% if report.population_frequencies.caucasian %}{{ "%.2f"|format(report.population_frequencies.caucasian * 100) }}%{% else %}—{% endif %}</span>
+          </div>
+        </div>
+        
+        {% if report.frequency_comparison %}
+        <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 0.5rem; border-left: 3px solid var(--primary-colour);">
+          <h4 style="margin-top: 0; margin-bottom: 0.5rem; font-size: 0.95rem; color: var(--text-primary);">Population Comparison</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+              <span style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Absolute Difference</span>
+              <span style="font-weight: 600; font-size: 1.1rem; color: var(--text-primary);">{{ "%.2f"|format(report.frequency_comparison.absolute_difference * 100) }}%</span>
+            </div>
+            <div>
+              <span style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Fold Difference</span>
+              <span style="font-weight: 600; font-size: 1.1rem; color: var(--text-primary);">
+                {% if report.frequency_comparison.fold_difference > 1000000 %}
+                  Infinity
+                {% else %}
+                  {{ "%.1f"|format(report.frequency_comparison.fold_difference) }}&times;
+                {% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        
+        {% if report.frequency_source %}
+        <div class="pop-freq-source" style="margin-top: 0.5rem;">Source: {{ report.frequency_source }}</div>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <!-- GWAS Evidence -->
+
+  <!-- 6. Trait & Research Evidence -->
+<!-- GWAS Evidence -->
+      {% if report.gwas_associations is not none %}
+      <div class="card result-card" id="gwasCard">
+        <h3 class="card-title">GWAS Evidence</h3>
+        {% if report.gwas_top_hit %}
+        <div class="gwas-meta-grid">
+          <div class="gwas-meta-item">
+            <span class="gwas-meta-label">Trait</span>
+            <span class="gwas-meta-val">{{ report.gwas_top_hit.trait or "—" }}</span>
+          </div>
+          <div class="gwas-meta-item">
+            <span class="gwas-meta-label">P-value</span>
+            <span class="gwas-meta-val mono">
+              {% if report.gwas_top_hit.p_value < 0.001 or report.gwas_top_hit.p_value > 1000 %}
+                {{ "%.2e"|format(report.gwas_top_hit.p_value) }}
+              {% else %}
+                {{ report.gwas_top_hit.p_value }}
+              {% endif %}
+            </span>
+          </div>
+          <div class="gwas-meta-item">
+            <span class="gwas-meta-label">Odds Ratio</span>
+            <span class="gwas-meta-val mono">
+              {% if report.gwas_top_hit.odds_ratio is not none %}
+                {{ "%.2f"|format(report.gwas_top_hit.odds_ratio) }}
+              {% else %}
+                —
+              {% endif %}
+            </span>
+          </div>
+          <div class="gwas-meta-item">
+            <span class="gwas-meta-label">Beta</span>
+            <span class="gwas-meta-val mono">
+              {% if report.gwas_top_hit.beta is not none %}
+                {{ "%.3f"|format(report.gwas_top_hit.beta) }}
+              {% else %}
+                —
+              {% endif %}
+            </span>
+          </div>
+          <div class="gwas-meta-item">
+            <span class="gwas-meta-label">Study</span>
+            <span class="gwas-meta-val">
+              {% if report.gwas_top_hit.pmid %}
+              <a href="https://pubmed.ncbi.nlm.nih.gov/{{ report.gwas_top_hit.pmid }}/" target="_blank">{{ report.gwas_top_hit.study or report.gwas_top_hit.pmid }} ↗</a>
+              {% else %}
+              {{ report.gwas_top_hit.study or "—" }}
+              {% endif %}
+            </span>
+          </div>
+        </div>
+        
+        {% if report.gwas_interpretation %}
+        <div class="gwas-interp">
+          <strong>{{ report.gwas_interpretation.association_strength }}</strong>: {{ report.gwas_interpretation.narrative }}
+        </div>
+        {% endif %}
+        
+        {% else %}
+        <div class="gwas-empty">No GWAS associations available.</div>
+        {% endif %}
+        <div class="gwas-source">Source: GWAS Catalog REST API</div>
+      </div>
+      {% endif %}
+
+      <!-- Version 2.2 Biological Context -->
+<!-- Impact Explanation -->
+      {% if report.impact_explanation %}
+      <div class="card result-card impact-expl-card">
+        <details class="impact-expl-details">
+          <summary class="impact-expl-summary">
+            <span class="impact-expl-summary-text">
+              <span class="impact-expl-icon">?</span>
+              Impact Explanation — What does <span class="impact-expl-level"
+                style="color: {% if report.impact.impact_level == 'HIGH' %}var(--high){% elif report.impact.impact_level == 'MODERATE' %}var(--moderate){% elif report.impact.impact_level == 'LOW' %}var(--low){% else %}var(--modifier){% endif %};">{{
+                report.impact.impact_level }}</span> mean?
+            </span>
+            <span class="impact-expl-toggle">▸</span>
+          </summary>
+          <div class="impact-expl-body">
+            <div class="impact-expl-section">
+              <div class="impact-expl-label">Meaning</div>
+              <p class="impact-expl-text">{{ report.impact_explanation.meaning }}</p>
+            </div>
+            <div class="impact-expl-section">
+              <div class="impact-expl-label">Typical Biological Consequences</div>
+              <ul class="impact-expl-list">
+                {% for item in report.impact_explanation.biological_consequences %}
+                <li>{{ item }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="impact-expl-section">
+              <div class="impact-expl-label">Example Variant Types</div>
+              <div class="impact-expl-tags">
+                {% for item in report.impact_explanation.example_variant_types %}
+                <span class="impact-expl-tag">{{ item }}</span>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="impact-expl-section">
+              <div class="impact-expl-label">Interpretation Guidance</div>
+              <p class="impact-expl-interp">{{ report.impact_explanation.interpretation }}</p>
+            </div>
+          </div>
+        </details>
+      </div>
+      {% endif %}
+
+      <!-- Clinical Significance Explanation -->
+
+  <!-- 7. Gene Context -->
+<!-- Version 2.2 Biological Context -->
+      {% if report.gene_context and report.gene_context.available %}
+      <div class="card result-card">
+        <h3 class="card-title">Gene Context</h3>
+        <div class="result-meta-grid" style="margin-bottom: 1rem;">
+          <div class="meta-item"><span class="meta-label">Gene Symbol</span><span class="meta-val mono" style="font-weight:bold; color:var(--primary-colour);">{{ report.gene_context.symbol }}</span></div>
+          <div class="meta-item"><span class="meta-label">Full Name</span><span class="meta-val">{{ report.gene_context.full_name }}</span></div>
+          <div class="meta-item"><span class="meta-label">Chromosome</span><span class="meta-val mono">{{ report.gene_context.location }}</span></div>
+          <div class="meta-item">
+            <span class="meta-label">Research Relevance</span>
+            <span class="meta-val" style="font-weight:600; color:{% if report.research_relevance == 'Very High' %}#8e44ad{% elif report.research_relevance == 'High' %}#2980b9{% elif report.research_relevance == 'Moderate' %}#27ae60{% else %}#7f8c8d{% endif %};">
+              {{ report.research_relevance }}
+            </span>
+          </div>
+        </div>
+        <div class="gene-description">
+          <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-secondary); display: block; margin-bottom: 0.25rem;">Function:</span>
+          {{ report.gene_context.description }}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if report.diseases and report.diseases.available %}
+      <div class="card result-card">
+        <h3 class="card-title">Associated Diseases</h3>
+        <ul style="margin: 0; padding-left: 1.5rem; color: var(--text-primary); line-height: 1.6;">
+          {% for disease in report.diseases.diseases %}
+          <li>{{ disease }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      {% if report.pathways and report.pathways.available %}
+      <div class="card result-card">
+        <h3 class="card-title">Biological Pathways</h3>
+        <ul style="margin: 0; padding-left: 1.5rem; color: var(--text-primary); line-height: 1.6;">
+          {% for pathway in report.pathways.pathways %}
+          <li>{{ pathway }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+    
+
+  <!-- 8 & 9. Literature Evidence & References -->
+<!-- ── Evidence & References ─────────────────────────────────────────────── -->
+  {% if report.evidence %}
+  <div class="card result-card" style="margin-top: 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <h3 class="card-title" style="margin-bottom: 0;">Supporting Evidence</h3>
+      <div class="evidence-score-badge"
+        style="display: flex; align-items: center; gap: 0.75rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 2rem; border: 1px solid var(--border-colour);">
+        <span style="font-weight: 600; color: var(--text-primary);">Evidence Strength:</span>
+        <span
+          style="font-weight: bold; color: {% if report.evidence.evidence_strength == 'High' %}#2ecc71{% elif report.evidence.evidence_strength == 'Moderate' %}#f39c12{% else %}#e74c3c{% endif %};">
+          {{ report.evidence.evidence_strength }} (Score: {{ report.evidence.evidence_score }}/100)
+        </span>
+      </div>
+    </div>
+
+    {% if report.evidence.warnings %}
+    <div class="warnings-box"
+      style="background: rgba(243, 156, 18, 0.1); border-left: 4px solid #f39c12; padding: 1rem; margin-bottom: 1.5rem; border-radius: 0 0.25rem 0.25rem 0;">
+      <h4 style="margin-top: 0; color: #d68910; font-size: 0.9rem; text-transform: uppercase;">Missing Evidence Notices
+      </h4>
+      <ul style="margin: 0; padding-left: 1.5rem; color: var(--text-secondary);">
+        {% for warning in report.evidence.warnings %}
+        <li>{{ warning }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <div class="references-container"
+      style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+
+      <!-- dbSNP -->
+      <div class="ref-card" style="border: 1px solid var(--border-colour); border-radius: 0.5rem; padding: 1.25rem;">
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-colour); padding-bottom: 0.75rem;">
+          <h4 style="margin: 0; color: var(--text-primary); font-size: 1.1rem;">dbSNP</h4>
+          {% if report.evidence.dbsnp %}
+          <span
+            style="background: #2ecc7122; color: #27ae60; padding: 0.2rem 0.5rem; border-radius: 0.25rem; font-size: 0.8rem; font-weight: bold;">Found</span>
+          {% endif %}
+        </div>
+        {% if report.evidence.dbsnp %}
+        <p style="margin-top: 0; margin-bottom: 0.5rem; color: var(--text-secondary);">Variant registered in dbSNP
+          database.</p>
+        <a href="{{ report.evidence.dbsnp.url }}" target="_blank" class="ext-link"
+          style="color: var(--primary-colour); text-decoration: none; font-weight: 600;">View Record {{
+          report.evidence.dbsnp.id }} ↗</a>
+        {% else %}
+        <p style="margin: 0; color: var(--text-secondary); font-style: italic;">No dbSNP record available.</p>
+        {% endif %}
+      </div>
+
+      <!-- ClinVar -->
+      <div class="ref-card" style="border: 1px solid var(--border-colour); border-radius: 0.5rem; padding: 1.25rem;">
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-colour); padding-bottom: 0.75rem;">
+          <h4 style="margin: 0; color: var(--text-primary); font-size: 1.1rem;">ClinVar</h4>
+          {% if report.evidence.clinvar %}
+          <span
+            style="background: #2ecc7122; color: #27ae60; padding: 0.2rem 0.5rem; border-radius: 0.25rem; font-size: 0.8rem; font-weight: bold;">Found</span>
+          {% endif %}
+        </div>
+        {% if report.evidence.clinvar %}
+        <p style="margin-top: 0; margin-bottom: 0.5rem; color: var(--text-secondary);"><strong>Classification:</strong>
+          {{ report.evidence.clinvar.classification.replace("_", " ") }}</p>
+        <p style="margin-top: 0; margin-bottom: 0.75rem; color: var(--text-secondary);"><strong>Review Status:</strong>
+          {{ report.evidence.clinvar.review_status.replace("_", " ") }}</p>
+        {% if report.evidence.clinvar.disease_associations %}
+        <div style="margin-bottom: 0.75rem;">
+          <strong style="color: var(--text-secondary);">Associated Conditions:</strong>
+          <ul style="margin: 0.25rem 0 0 0; padding-left: 1.25rem; color: var(--text-secondary);">
+            {% for condition in report.evidence.clinvar.disease_associations %}
+            <li>{{ condition }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+        <a href="{{ report.evidence.clinvar.url }}" target="_blank" class="ext-link"
+          style="color: var(--primary-colour); text-decoration: none; font-weight: 600;">View {{
+          report.evidence.clinvar.id }} ↗</a>
+        {% else %}
+        <p style="margin: 0; color: var(--text-secondary); font-style: italic;">No ClinVar annotation available.</p>
+        {% endif %}
+      </div>
+
+      <!-- GeneCards -->
+      <div class="ref-card" style="border: 1px solid var(--border-colour); border-radius: 0.5rem; padding: 1.25rem;">
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-colour); padding-bottom: 0.75rem;">
+          <h4 style="margin: 0; color: var(--text-primary); font-size: 1.1rem;">GeneCards</h4>
+          {% if report.evidence.genecards %}
+          <span
+            style="background: #2ecc7122; color: #27ae60; padding: 0.2rem 0.5rem; border-radius: 0.25rem; font-size: 0.8rem; font-weight: bold;">Found</span>
+          {% endif %}
+        </div>
+        {% if report.evidence.genecards %}
+        <p style="margin-top: 0; margin-bottom: 0.5rem; color: var(--text-secondary);"><strong>Gene Summary:</strong> {{
+          report.evidence.genecards.gene_summary }}</p>
+        <p style="margin-top: 0; margin-bottom: 0.75rem; color: var(--text-secondary);"><strong>Biological
+            Function:</strong> {{ report.evidence.genecards.biological_function }}</p>
+        <a href="{{ report.evidence.genecards.url }}" target="_blank" class="ext-link"
+          style="color: var(--primary-colour); text-decoration: none; font-weight: 600;">View {{
+          report.evidence.genecards.id }} ↗</a>
+        {% else %}
+        <p style="margin: 0; color: var(--text-secondary); font-style: italic;">No GeneCards information available.</p>
+        {% endif %}
+      </div>
+
+      <!-- PubMed -->
+      <div class="ref-card" style="border: 1px solid var(--border-colour); border-radius: 0.5rem; padding: 1.25rem;">
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-colour); padding-bottom: 0.75rem;">
+          <h4 style="margin: 0; color: var(--text-primary); font-size: 1.1rem;">PubMed Literature</h4>
+          {% if report.pubmed and report.pubmed.available %}
+          <span
+            style="background: #3498db22; color: #2980b9; padding: 0.2rem 0.5rem; border-radius: 0.25rem; font-size: 0.8rem; font-weight: bold;">{{
+            report.pubmed.paper_count }} Refs</span>
+          {% endif %}
+        </div>
+        
+        {% if report.pubmed and report.pubmed.available and report.pubmed.paper_count > 0 %}
+        <div style="margin-bottom: 1rem;">
+          <span style="font-weight: 600; color: var(--text-primary); font-size: 0.95rem;">Evidence Level:</span>
+          <span style="color: var(--primary-colour); font-weight: 600; font-size: 0.95rem; margin-left: 0.5rem;">{{ report.pubmed.evidence_level }}</span>
+        </div>
+        
+        <h5 style="margin-top: 0; margin-bottom: 0.75rem; color: var(--text-secondary); font-size: 0.9rem; text-transform: uppercase;">Top Publications</h5>
+        
+        <ul style="list-style-type: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.75rem;">
+          {% for item in report.pubmed.papers %}
+          <li
+            style="background: var(--bg-secondary); padding: 0.75rem; border-radius: 0.25rem; border-left: 3px solid #3498db;">
+            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.25rem; font-size: 0.95rem;">
+              <a href="{{ item.url }}" target="_blank" style="color: var(--text-primary); text-decoration: none;">{{ item.title }}</a>
+            </div>
+            <div style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.25rem;">
+              {{ item.journal }} ({{ item.year }}) &bull; PMID: <a href="{{ item.url }}" target="_blank" style="color: var(--text-secondary);">{{ item.pmid }}</a>
+            </div>
+            <div style="color: var(--text-secondary); font-size: 0.8rem; font-style: italic;">
+              {{ "Abstract available" if item.has_abstract else "No abstract" }}
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p style="margin: 0; color: var(--text-secondary); font-style: italic;">No PubMed references identified for this
+          variant.</p>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ── Action Buttons ────────────────────────────────────────────────────── -->
+<!-- ── Action Buttons ────────────────────────────────────────────────────── -->
+  <div class="report-actions">
+    <a href="{{ url_for('batch_analysis_page') }}" class="btn btn-outline">← Back to Batch Analysis</a>
+    <a href="{{ url_for('single_variant_page') }}" class="btn btn-outline">New SNP Analysis</a>
+    <button class="btn btn-primary" onclick="window.print()">🖨 Print Report</button>
+  </div>
+
+  {% endif %}
+</div>
+{% endblock %}
