@@ -125,7 +125,6 @@ main.main-content { flex: 1; }
 .nav-link:first-child { border-left: 1px solid var(--border); }
 .nav-link:hover  { color: var(--amber); background: var(--amber-glow); }
 .nav-link.active { color: var(--amber); background: var(--amber-glow); }
-.nav-link.active::bottom { }
 .nav-link.active::after {
   content: ''; position: absolute; bottom: 0; left: 0; right: 0;
   height: 2px; background: var(--amber);
@@ -815,7 +814,7 @@ textarea.form-control { resize: vertical; }
   color: var(--text-3);
   margin-top: 1rem;
   padding-top: 0.5rem;
-  border-top: 1px dashed var(--border-1);
+  border-top: 1px dashed var(--border);
 }
 
 /* ── GWAS Evidence ───────────────────────────────────────────── */
@@ -864,7 +863,7 @@ textarea.form-control { resize: vertical; }
   color: var(--text-3);
   margin-top: 1rem;
   padding-top: 0.5rem;
-  border-top: 1px dashed var(--border-1);
+  border-top: 1px dashed var(--border);
 }
 
 /* ── ClinVar Evidence Engine ─────────────────────────────────── */
@@ -896,7 +895,7 @@ textarea.form-control { resize: vertical; }
 }
 .cv-conflict-title {
   font-weight: 600;
-  color: var(--text-1);
+  color: var(--text);
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
@@ -915,7 +914,7 @@ textarea.form-control { resize: vertical; }
 .cv-conflict-item {
   display: flex;
   justify-content: space-between;
-  background: var(--bg-elevated);
+  background: var(--bg-card);
   padding: 0.4rem 0.6rem;
   border-radius: 4px;
   font-size: 0.8rem;
@@ -923,7 +922,7 @@ textarea.form-control { resize: vertical; }
 .cv-count {
   font-family: var(--font-mono);
   font-weight: 600;
-  color: var(--text-1);
+  color: var(--text);
 }
 
 /* ── Version 2.1.5 UI/UX Refactor Overrides ── */

@@ -413,16 +413,16 @@ def generate_frequency_comparison(pop_freqs: dict) -> dict | None:
     if sas is None or cau is None:
         return None
         
-    abs_diff = abs(sas - eur)
+    abs_diff = abs(sas - cau)
     
     # Avoid division by zero
-    if min(sas, eur) == 0:
-        if max(sas, eur) == 0:
+    if min(sas, cau) == 0:
+        if max(sas, cau) == 0:
             fold = 1.0
         else:
             fold = float('inf')
     else:
-        fold = max(sas, eur) / min(sas, eur)
+        fold = max(sas, cau) / min(sas, cau)
         
     return {
         "south_asian": sas,

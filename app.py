@@ -30,6 +30,7 @@ from flask_limiter.util import get_remote_address
 from variant_engine import (
     analyze_variant_cohort,
     generate_panel_recommendation,
+    generate_variant_comparison,
     annotate_snp,
     annotate_snp_from_rsid,
     analyze_cnv,
@@ -486,6 +487,6 @@ if __name__ == "__main__":
 
     app.run(
         debug=os.environ.get("FLASK_DEBUG", "0") == "1",
-        host="127.0.0.1",
+        host="0.0.0.0",
         port=int(os.environ.get("PORT", 5000))
     )

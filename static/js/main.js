@@ -436,7 +436,7 @@ function renderReportSummaryHTML(d) {
           <span class="meta-label">Population Focus</span>
           <span class="meta-val" style="font-size: 0.95rem; line-height: 1.5;">
             South Asian: <strong>${sas}</strong><br>
-            Caucasian/Caucasian: <strong>${cau}</strong>
+            Caucasian: <strong>${cau}</strong>
           </span>
         </div>
       </div>
