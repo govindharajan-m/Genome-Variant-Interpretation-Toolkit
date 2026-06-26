@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="page-header">
-  <div class="container">
+  <div class="gv-container">
     <div class="page-header-inner">
       <div>
         <div class="page-label">Copy Number Variant Analysis</div>
@@ -15,11 +15,11 @@
   </div>
 </div>
 
-<div class="container two-col-layout">
+<div class="gv-container two-col-layout">
 
   <!-- ── Input Panel ──────────────────────────────────────────────────────── -->
-  <div class="input-panel card">
-    <h2 class="card-title">CNV Input</h2>
+  <div class="input-panel gv-card">
+    <h2 class="gv-card-title">CNV Input</h2>
 
     <!-- Mode Tab Bar -->
     <div class="mode-tabs" role="tablist" aria-label="CNV input mode">
@@ -39,13 +39,13 @@
 
     <!-- ── rsID Panel ──────────────────────────────────────────────────── -->
     <div id="cnv-panel-rsid" class="mode-panel hidden" role="tabpanel">
-      <p class="card-subtitle">
+      <p class="gv-card-subtitle">
         Enter a dbSNP rsID. The CNV region will span the full genomic extent of
         the associated gene.
       </p>
       <div class="form-group">
         <label for="cnv-rsid-input">rsID</label>
-        <input type="text" id="cnv-rsid-input" class="form-control mono"
+        <input type="text" id="cnv-rsid-input" class="gv-form-control mono"
                placeholder="e.g. rs80357906"
                autocomplete="off" spellcheck="false" />
       </div>
@@ -59,12 +59,12 @@
 
     <!-- ── Gene Panel ───────────────────────────────────────────────────── -->
     <div id="cnv-panel-gene" class="mode-panel" role="tabpanel">
-      <p class="card-subtitle">
+      <p class="gv-card-subtitle">
         Enter a gene symbol to analyse the full gene body as a CNV region.
       </p>
       <div class="form-group">
         <label for="cnv-gene-input">Gene Symbol</label>
-        <input type="text" id="cnv-gene-input" class="form-control"
+        <input type="text" id="cnv-gene-input" class="gv-form-control"
                placeholder="e.g. BRCA1, CFTR, TP53"
                autocomplete="off" autocapitalize="characters" spellcheck="false" />
       </div>
@@ -80,12 +80,12 @@
 
     <!-- ── Coordinate Panel ─────────────────────────────────────────────── -->
     <div id="cnv-panel-coord" class="mode-panel hidden" role="tabpanel">
-      <p class="card-subtitle">
+      <p class="gv-card-subtitle">
         Specify the genomic coordinates and type of copy number event directly.
       </p>
       <div class="form-group">
         <label for="cnv-chromosome">Chromosome</label>
-        <select id="cnv-chromosome" class="form-control">
+        <select id="cnv-chromosome" class="gv-form-control">
           <option value="">Select Chr…</option>
           {% for c in ['1','2','3','4','5','6','7','8','9','10',
                        '11','12','13','14','15','16','17','18',
@@ -97,12 +97,12 @@
       <div class="form-row">
         <div class="form-group">
           <label for="cnv-start">Start Position</label>
-          <input type="number" id="cnv-start" class="form-control"
+          <input type="number" id="cnv-start" class="gv-form-control"
                  placeholder="e.g. 43044295" min="1" />
         </div>
         <div class="form-group">
           <label for="cnv-end">End Position</label>
-          <input type="number" id="cnv-end" class="form-control"
+          <input type="number" id="cnv-end" class="gv-form-control"
                  placeholder="e.g. 43125483" min="1" />
         </div>
       </div>
@@ -136,14 +136,14 @@
 
       <div class="form-group">
         <label for="cnv-copies">Copy Number <span style="font-weight:400; color:var(--text-secondary);">(optional)</span></label>
-        <input type="number" id="cnv-copies" class="form-control"
+        <input type="number" id="cnv-copies" class="gv-form-control"
                placeholder="e.g. 1 (het del), 0 (hom del), 3 (dup)"
                min="0" max="10" />
         <small class="form-hint">Normal = 2 · Het deletion = 1 · Hom deletion = 0 · Duplication = 3+</small>
       </div>
     </div>
 
-    <button type="button" class="btn btn-primary btn-full" id="cnvBtn">
+    <button type="button" class="gv-btn gv-btn-primary gv-btn-full" id="cnvBtn">
       <span id="cnvBtnText">Analyze CNV</span>
       <span id="cnvBtnSpinner" class="spinner hidden"></span>
     </button>
@@ -159,7 +159,7 @@
     <div id="cnvSummaryContainer"></div>
 
     <!-- 3. Variant Overview Card -->
-    <div class="card result-card">
+    <div class="gv-card result-card">
       <div id="variantOverviewAnchor" class="result-header">
         <div>
           <div class="result-label">CNV Overview</div>
@@ -177,7 +177,7 @@
         <div class="meta-item"><span class="meta-label">Size Class</span><span class="meta-val" id="cr-size-class">—</span></div>
       </div>
 
-      <h3 class="card-title" style="margin-top: 1.5rem;">Gene Dosage Effect</h3>
+      <h3 class="gv-card-title" style="margin-top: 1.5rem;">Gene Dosage Effect</h3>
       <div class="impact-row">
         <div class="impact-badge-wrap">
           <div id="cr-dosage-badge" class="impact-badge">—</div>
@@ -190,8 +190,8 @@
     </div>
 
     <!-- 4. Clinical Evidence Container -->
-    <div class="card result-card">
-      <h3 class="card-title">Clinical Interpretation Note</h3>
+    <div class="gv-card result-card">
+      <h3 class="gv-card-title">Clinical Interpretation Note</h3>
       <p id="cr-clinical-note" class="interpretation-text"></p>
       <div class="info-box">
         <strong>Note:</strong> CNV pathogenicity assessment requires integration with
@@ -289,7 +289,7 @@ document.querySelectorAll(".cnv-example-btn").forEach(btn => {
 
 // ── Main Submit Button ────────────────────────────────────────────────────────
 document.getElementById("cnvBtn").addEventListener("click", async () => {
-  const btn  = document.getElementById("cnvBtn");
+  const gv-btn  = document.getElementById("cnvBtn");
   const text = document.getElementById("cnvBtnText");
   const spin = document.getElementById("cnvBtnSpinner");
 
@@ -438,8 +438,8 @@ function renderCNVResult(d) {
     renderSignificanceExplanationHTML(d.significance_explanation, d.clinical_significance || "");
   if (d.interpretation_summary) {
     document.getElementById("cnvSummaryContainer").innerHTML = 
-      `<div class="card result-card info-card" style="border-left-color: var(--accent);">
-         <h3 class="card-title">Summary</h3>
+      `<div class="gv-card result-card info-card" style="border-left-color: var(--accent);">
+         <h3 class="gv-card-title">Summary</h3>
          <p style="font-size: 0.95rem; line-height: 1.6;">${d.interpretation_summary}</p>
        </div>`;
   } else {
@@ -487,8 +487,8 @@ function showCNVError(msg) {
 
   // Inject error banner
   const errorHtml = `
-    <div class="card result-card info-card" style="border-left-color: #e74c3c; background-color: rgba(231, 76, 60, 0.05);">
-      <h3 class="card-title" style="color: #e74c3c; display: flex; align-items: center; gap: 0.5rem;">
+    <div class="gv-card result-card info-card" style="border-left-color: #e74c3c; background-color: rgba(231, 76, 60, 0.05);">
+      <h3 class="gv-card-title" style="color: #e74c3c; display: flex; align-items: center; gap: 0.5rem;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"></circle>
           <line x1="12" y1="8" x2="12" y2="12"></line>

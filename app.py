@@ -228,8 +228,13 @@ def api_batch():
     # ── JSON payload ───────────────────────────────────────────────────────────
     if request.is_json:
         data  = request.get_json(force=True)
-        rsids = data.get("rsids", [])
-
+        if isinstance(data, dict):
+            rsids = data.get("rsids", [])
+        elif isinstance(data, list):
+            rsids = data
+        else:
+            rsids = []
+    
     # ── Form or file upload ────────────────────────────────────────────────────
     else:
         rsid_text = request.form.get("rsid_list", "")

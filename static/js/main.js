@@ -67,8 +67,8 @@ function impactClass(l) { return "impact-" + (l || "MODIFIER"); }
 function renderEvidenceHTML(evidence) {
   if (!evidence) return "";
   
-  let html = `<div class="card result-card" id="evidenceCard">
-    <h3 class="card-title">Evidence & References</h3>
+  let html = `<div class="gv-card result-card" id="evidenceCard">
+    <h3 class="gv-card-title">Evidence & References</h3>
     <div style="margin-bottom: 1rem; font-weight: bold; color: var(--text-primary);">
       Strength: ${evidence.evidence_strength} (${evidence.evidence_score}/100)
     </div>
@@ -169,7 +169,7 @@ function renderImpactExplanationHTML(impactExplanation, impactLevel) {
       .join("");
   }
 
-  return `<div class="card result-card impact-expl-card" id="impactExplanationCard">
+  return `<div class="gv-card result-card impact-expl-card" id="impactExplanationCard">
     <details class="impact-expl-details">
       <summary class="impact-expl-summary">
         <span class="impact-expl-summary-text">
@@ -223,7 +223,7 @@ function renderSignificanceExplanationHTML(sigExplanation, significance) {
       `</ul>`;
   }
 
-  return `<div class="card result-card sig-expl-card" id="significanceExplanationCard">
+  return `<div class="gv-card result-card sig-expl-card" id="significanceExplanationCard">
     <details class="sig-expl-details">
       <summary class="sig-expl-summary">
         <span class="sig-expl-summary-text">
@@ -299,8 +299,8 @@ function renderPopulationFrequenciesHTML(data) {
   }
 
   return `
-  <div class="card result-card" id="populationFrequenciesCard">
-    <h3 class="card-title">Population Frequencies</h3>
+  <div class="gv-card result-card" id="populationFrequenciesCard">
+    <h3 class="gv-card-title">Population Frequencies</h3>
     <p class="interpretation-text" style="margin-top: 0;">${interp}</p>
     <div class="pop-freq-grid">
       ${renderRow("Global", "global", true)}
@@ -321,8 +321,8 @@ function renderGWASHTML(data) {
 
   if (!topHit) {
     return `
-    <div class="card result-card" id="gwasCard">
-      <h3 class="card-title">GWAS Evidence</h3>
+    <div class="gv-card result-card" id="gwasCard">
+      <h3 class="gv-card-title">GWAS Evidence</h3>
       <div class="gwas-empty">No GWAS associations available.</div>
     </div>`;
   }
@@ -336,8 +336,8 @@ function renderGWASHTML(data) {
   const studyLink = topHit.pmid ? `<a href="https://pubmed.ncbi.nlm.nih.gov/${topHit.pmid}/" target="_blank">${topHit.study || topHit.pmid} ↗</a>` : (topHit.study || "—");
 
   return `
-  <div class="card result-card" id="gwasCard">
-    <h3 class="card-title">GWAS Evidence</h3>
+  <div class="gv-card result-card" id="gwasCard">
+    <h3 class="gv-card-title">GWAS Evidence</h3>
     <div class="gwas-meta-grid">
       <div class="gwas-meta-item">
         <span class="gwas-meta-label">Trait</span>
@@ -409,8 +409,8 @@ function renderReportSummaryHTML(d) {
   }
 
   return `
-    <div class="card result-card" style="border-left: 4px solid var(--primary-colour); background-color: var(--bg-secondary);">
-      <h2 class="card-title" style="margin-bottom: 12px; font-size: 1.25rem;">REPORT SUMMARY</h2>
+    <div class="gv-card result-card" style="border-left: 4px solid var(--primary-colour); background-color: var(--bg-secondary);">
+      <h2 class="gv-card-title" style="margin-bottom: 12px; font-size: 1.25rem;">REPORT SUMMARY</h2>
       <div class="result-meta-grid" style="row-gap: 1.2rem;">
         <div class="meta-item">
           <span class="meta-label">Variant</span>
@@ -454,8 +454,8 @@ function renderGeneContextHTML(data, relevance) {
   else if (relevance === "Moderate") relColor = "#27ae60";
 
   return `
-    <div class="card result-card" style="margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--border);">
-      <h3 class="card-title">Gene Context</h3>
+    <div class="gv-card result-card" style="margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+      <h3 class="gv-card-title">Gene Context</h3>
       <div class="result-meta-grid" style="margin-bottom: 1rem;">
         <div class="meta-item"><span class="meta-label">Gene Symbol</span><span class="meta-val mono" style="font-weight:bold; color:var(--primary-colour);">${data.symbol}</span></div>
         <div class="meta-item"><span class="meta-label">Full Name</span><span class="meta-val">${data.full_name || "—"}</span></div>
@@ -477,8 +477,8 @@ function renderDiseasesHTML(data) {
   if (!data || !data.available || !data.diseases.length) return "";
   const listItems = data.diseases.map(d => `<li>${d}</li>`).join("");
   return `
-    <div class="card result-card">
-      <h3 class="card-title">Associated Diseases</h3>
+    <div class="gv-card result-card">
+      <h3 class="gv-card-title">Associated Diseases</h3>
       <ul style="margin: 0; padding-left: 1.5rem; color: var(--text-primary); line-height: 1.6;">
         ${listItems}
       </ul>
@@ -490,8 +490,8 @@ function renderPathwaysHTML(data) {
   if (!data || !data.available || !data.pathways.length) return "";
   const listItems = data.pathways.map(p => `<li>${p}</li>`).join("");
   return `
-    <div class="card result-card">
-      <h3 class="card-title">Biological Pathways</h3>
+    <div class="gv-card result-card">
+      <h3 class="gv-card-title">Biological Pathways</h3>
       <ul style="margin: 0; padding-left: 1.5rem; color: var(--text-primary); line-height: 1.6;">
         ${listItems}
       </ul>
@@ -503,8 +503,8 @@ function renderPathwaysHTML(data) {
 // ── ClinVar Evidence HTML Generator ─────────────────────────────────────────
 function renderClinvarHTML(data) {
   if (!data) return `
-    <div class="card result-card" id="clinvarCard">
-      <h3 class="card-title">ClinVar Evidence</h3>
+    <div class="gv-card result-card" id="clinvarCard">
+      <h3 class="gv-card-title">ClinVar Evidence</h3>
       <div class="gwas-empty">No ClinVar annotation available.</div>
     </div>`;
 
@@ -554,10 +554,10 @@ function renderClinvarHTML(data) {
   }
 
   return `
-  <div class="card result-card" id="clinvarCard">
+  <div class="gv-card result-card" id="clinvarCard">
     <div class="result-header">
       <div>
-        <h3 class="card-title" style="margin-bottom: 0;">ClinVar Evidence</h3>
+        <h3 class="gv-card-title" style="margin-bottom: 0;">ClinVar Evidence</h3>
       </div>
       <div>
         <span class="status-badge badge-high">${data.confidence_level} Confidence</span>
@@ -598,9 +598,9 @@ function renderClinvarHTML(data) {
 function renderPubMedHTML(data) {
   if (!data || !data.available || data.paper_count === 0) {
     return `
-    <div class="card result-card" style="margin-top: 1rem;">
+    <div class="gv-card result-card" style="margin-top: 1rem;">
       <div class="result-header">
-        <h3 class="card-title" style="margin-bottom: 0;">Literature Evidence</h3>
+        <h3 class="gv-card-title" style="margin-bottom: 0;">Literature Evidence</h3>
       </div>
       <p style="margin-top: 1rem; color: var(--text-secondary);">No PubMed evidence available.</p>
     </div>
@@ -622,10 +622,10 @@ function renderPubMedHTML(data) {
   });
 
   return `
-  <div class="card result-card" style="margin-top: 1rem;">
+  <div class="gv-card result-card" style="margin-top: 1rem;">
     <div class="result-header" style="align-items: flex-start;">
       <div>
-        <h3 class="card-title" style="margin-bottom: 0;">Literature Evidence</h3>
+        <h3 class="gv-card-title" style="margin-bottom: 0;">Literature Evidence</h3>
         <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.25rem;">
           ${data.paper_count} Publication${data.paper_count > 1 ? 's' : ''} Found
         </div>
@@ -670,8 +670,8 @@ function renderEvidenceConfidenceHTML(d) {
     }
 
     return `
-    <div class="card result-card" id="evidenceConfidenceCard" style="margin-top: 1rem;">
-        <h3 class="card-title">Evidence Confidence</h3>
+    <div class="gv-card result-card" id="evidenceConfidenceCard" style="margin-top: 1rem;">
+        <h3 class="gv-card-title">Evidence Confidence</h3>
         <div style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem;">
             <span style="font-size: 2rem; font-weight: bold; color: var(--primary-colour);">${ev.score} <span style="font-size: 1rem; color: var(--text-secondary);">/ 100</span></span>
             <span class="status-badge badge-strong" style="font-size: 1rem; padding: 0.4rem 0.8rem; background: var(--bg-tertiary);">${ev.tier.toUpperCase()} CONFIDENCE</span>
@@ -710,8 +710,8 @@ function renderResearchRelevanceHTML(d) {
     }
 
     return `
-    <div class="card result-card" id="researchRelevanceCard" style="margin-top: 1rem;">
-        <h3 class="card-title">Research Relevance</h3>
+    <div class="gv-card result-card" id="researchRelevanceCard" style="margin-top: 1rem;">
+        <h3 class="gv-card-title">Research Relevance</h3>
         <div style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem;">
             <span class="status-badge badge-strong" style="font-size: 1rem; padding: 0.4rem 0.8rem; background: var(--bg-tertiary);">${rr.tier ? rr.tier.toUpperCase() : "UNKNOWN"}</span>
             <span style="font-size: 1rem; color: var(--text-secondary);">Research Score: <span style="font-weight: 600; color: var(--primary-colour);">${rr.score} / 100</span></span>
@@ -744,8 +744,8 @@ function renderACMGEvidenceHTML(d) {
     }
 
     return `
-    <div class="card result-card" id="acmgEvidenceCard" style="margin-top: 1rem; border-left: 4px solid #9b59b6;">
-        <h3 class="card-title">ACMG Evidence Mapping</h3>
+    <div class="gv-card result-card" id="acmgEvidenceCard" style="margin-top: 1rem; border-left: 4px solid #9b59b6;">
+        <h3 class="gv-card-title">ACMG Evidence Mapping</h3>
         
         <div style="background-color: var(--bg-secondary); padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; border-left: 3px solid #f39c12;">
             <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
@@ -796,8 +796,8 @@ function renderPharmacogenomicsHTML(d) {
     }
 
     return `
-    <div class="card result-card" id="pharmacogenomicsCard" style="margin-top: 1rem; border-left: 4px solid #16a085;">
-        <h3 class="card-title">Pharmacogenomics & Precision Medicine</h3>
+    <div class="gv-card result-card" id="pharmacogenomicsCard" style="margin-top: 1rem; border-left: 4px solid #16a085;">
+        <h3 class="gv-card-title">Pharmacogenomics & Precision Medicine</h3>
         
         <div style="background-color: var(--bg-secondary); padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; border-left: 3px solid #f39c12;">
             <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">

@@ -3,7 +3,8 @@
 {% block title %}Cohort Prioritization - Genome Variant Interpretation Toolkit{% endblock %}
 
 {% block content %}
-<div class="row" style="margin-top: 2rem; margin-bottom: 2rem;">
+<div class="gv-container">
+<div class="row" >
     <div class="col-12 text-center">
         <h2 style="font-weight: 700; color: var(--primary-colour); font-size: 2.2rem; letter-spacing: -0.5px;">Cohort Variant Prioritization Engine</h2>
         <p style="color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Submit a cohort of variants to instantly triage and rank candidates across all evidence axes.</p>
@@ -15,16 +16,16 @@
     </div>
 </div>
 
-<div class="row justify-content-center" style="margin-bottom: 2rem;">
+<div class="row justify-content-center" >
     <div class="col-md-10 col-lg-8">
-        <div class="card" style="padding: 1.5rem;">
+        <div class="gv-card" style="padding: 1.5rem;">
             <form id="cohortForm">
                 <div class="form-group mb-3">
                     <label for="rsidsInput" style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Enter Variant Cohort (rsIDs):</label>
-                    <textarea id="rsidsInput" class="form-control" rows="4" placeholder="rs429358, rs7412, rs334..." style="background: var(--bg-secondary); border: 2px solid var(--border-colour); color: var(--text-primary); font-family: monospace; padding: 1rem;" required></textarea>
+                    <textarea id="rsidsInput" class="gv-form-control" rows="4" placeholder="rs429358, rs7412, rs334..." style="background: var(--bg-secondary); border: 2px solid var(--border-colour); color: var(--text-primary); font-family: monospace; padding: 1rem;" required></textarea>
                 </div>
                 <div class="text-end">
-                    <button type="submit" class="btn btn-primary" style="padding: 0.8rem 2rem; font-size: 1.1rem; font-weight: 600; border-radius: 8px;">
+                    <button type="submit" class="gv-btn gv-btn-primary" style="padding: 0.8rem 2rem; font-size: 1.1rem; font-weight: 600; border-radius: 8px;">
                         Analyze Cohort <i class="fas fa-layer-group" style="margin-left: 0.5rem;"></i>
                     </button>
                 </div>
@@ -44,10 +45,10 @@
 
 <div id="resultsContainer" style="display: none;">
     <!-- Pathway Analysis -->
-    <div class="row" style="margin-bottom: 2rem; display: none;" id="pathwayAnalysisContainer">
+    <div class="row" style="display: none;" id="pathwayAnalysisContainer">
         <div class="col-12">
-            <div class="card result-card" style="border-left: 4px solid #8e44ad;">
-                <h3 class="card-title"><i class="fas fa-project-diagram"></i> Pathway & Biological Theme Analysis</h3>
+            <div class="gv-card result-card" style="border-left: 4px solid #8e44ad;">
+                <h3 class="gv-card-title"><i class="fas fa-project-diagram"></i> Pathway & Biological Theme Analysis</h3>
                 <div class="row" style="margin-top: 1rem;">
                     <div class="col-md-3 text-center mb-2">
                         <div style="background: rgba(142,68,173,0.1); padding: 1rem; border-radius: 8px; height: 100%;">
@@ -77,14 +78,14 @@
     </div>
 
     <!-- Cohort Summary Dashboard -->
-    <div class="row" style="margin-bottom: 2rem;">
+    <div class="row" >
         <div class="col-12">
-            <div class="card result-card" style="border-left: 4px solid var(--primary-colour);">
+            <div class="gv-card result-card" style="border-left: 4px solid var(--primary-colour);">
                 <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 1.5rem;">
-                    <h3 class="card-title" style="margin: 0;">Cohort Summary Dashboard</h3>
+                    <h3 class="gv-card-title" style="margin: 0;">Cohort Summary Dashboard</h3>
                     <div>
-                        <button id="exportCsvBtn" class="btn btn-sm btn-outline-primary" style="margin-right: 0.5rem;"><i class="fas fa-file-csv"></i> Export CSV</button>
-                        <button id="exportJsonBtn" class="btn btn-sm btn-outline-secondary"><i class="fas fa-file-code"></i> Export JSON</button>
+                        <button id="exportCsvBtn" class="gv-btn btn-sm btn-outline-primary" style="margin-right: 0.5rem;"><i class="fas fa-file-csv"></i> Export CSV</button>
+                        <button id="exportJsonBtn" class="gv-btn btn-sm btn-outline-secondary"><i class="fas fa-file-code"></i> Export JSON</button>
                     </div>
                 </div>
                 
@@ -152,8 +153,8 @@
     <!-- Ranked Table -->
     <div class="row">
         <div class="col-12">
-            <div class="card result-card">
-                <h3 class="card-title">Ranked Cohort Results</h3>
+            <div class="gv-card result-card">
+                <h3 class="gv-card-title">Ranked Cohort Results</h3>
                 <div class="table-responsive">
                     <table class="table table-hover" style="color: var(--text-primary); margin-top: 1rem;">
                         <thead>
@@ -178,6 +179,7 @@
     </div>
 </div>
 
+</div>
 <script>
 let currentCohortData = null;
 

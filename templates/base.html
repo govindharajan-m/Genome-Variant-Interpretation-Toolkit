@@ -12,7 +12,7 @@
 <body>
 
 <!-- ── Top Navigation Bar ─────────────────────────────────────────────────── -->
-<nav class="navbar">
+<nav class="gv-navbar">
   <div class="nav-inner">
     <a href="{{ url_for('home') }}" class="nav-brand">
       <span class="brand-name">GenomeVAP</span>
@@ -20,13 +20,13 @@
     </a>
 
     <ul class="nav-links">
-      <li><a href="{{ url_for('home') }}"                class="nav-link {% if request.endpoint == 'home' %}active{% endif %}">Home</a></li>
-      <li><a href="{{ url_for('single_variant_page') }}" class="nav-link {% if request.endpoint == 'single_variant_page' %}active{% endif %}">SNP Analysis</a></li>
-      <li><a href="{{ url_for('cnv_analysis_page') }}"   class="nav-link {% if request.endpoint == 'cnv_analysis_page' %}active{% endif %}">CNV Analysis</a></li>
-      <li><a href="{{ url_for('batch_analysis_page') }}" class="nav-link {% if request.endpoint == 'batch_analysis_page' %}active{% endif %}">Batch Analysis</a></li>
-      <li><a href="{{ url_for('panel_designer') }}"      class="nav-link {% if request.endpoint == 'panel_designer' %}active{% endif %}">Panel Designer</a></li>
-      <li><a href="{{ url_for('cohort_analysis') }}"     class="nav-link {% if request.endpoint == 'cohort_analysis' %}active{% endif %}">Cohort Analysis</a></li>
-      <li><a href="{{ url_for('comparative_analysis') }}" class="nav-link {% if request.endpoint == 'comparative_analysis' %}active{% endif %}">Comparative Analysis</a></li>
+      <li><a href="{{ url_for('home') }}"                class="gv-nav-link {% if request.endpoint == 'home' %}active{% endif %}">Home</a></li>
+      <li><a href="{{ url_for('single_variant_page') }}" class="gv-nav-link {% if request.endpoint == 'single_variant_page' %}active{% endif %}">SNP Analysis</a></li>
+      <li><a href="{{ url_for('cnv_analysis_page') }}"   class="gv-nav-link {% if request.endpoint == 'cnv_analysis_page' %}active{% endif %}">CNV Analysis</a></li>
+      <li><a href="{{ url_for('batch_analysis_page') }}" class="gv-nav-link {% if request.endpoint == 'batch_analysis_page' %}active{% endif %}">Batch Analysis</a></li>
+      <li><a href="{{ url_for('panel_designer') }}"      class="gv-nav-link {% if request.endpoint == 'panel_designer' %}active{% endif %}">Panel Designer</a></li>
+      <li><a href="{{ url_for('cohort_analysis') }}"     class="gv-nav-link {% if request.endpoint == 'cohort_analysis' %}active{% endif %}">Cohort Analysis</a></li>
+      <li><a href="{{ url_for('comparative_analysis') }}" class="gv-nav-link {% if request.endpoint == 'comparative_analysis' %}active{% endif %}">Comparative Analysis</a></li>
     </ul>
 
     <div class="nav-badge">

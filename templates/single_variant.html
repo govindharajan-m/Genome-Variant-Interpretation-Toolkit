@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="page-header">
-  <div class="container">
+  <div class="gv-container">
     <div class="page-header-inner">
       <div>
         <div class="page-label">Single Variant Analysis</div>
@@ -15,11 +15,11 @@
   </div>
 </div>
 
-<div class="container two-col-layout">
+<div class="gv-container two-col-layout">
 
   <!-- ── Input Panel ──────────────────────────────────────────────────────── -->
-  <div class="input-panel card">
-    <h2 class="card-title">Variant Input</h2>
+  <div class="input-panel gv-card">
+    <h2 class="gv-card-title">Variant Input</h2>
 
     <!-- Mode Tab Bar -->
     <div class="mode-tabs" role="tablist" aria-label="Input mode">
@@ -35,18 +35,18 @@
 
     <!-- ── rsID Panel ──────────────────────────────────────────────────── -->
     <div id="snp-panel-rsid" class="mode-panel" role="tabpanel">
-      <p class="card-subtitle">
+      <p class="gv-card-subtitle">
         Enter a dbSNP rsID for automatic coordinate resolution, ClinVar
         significance, and HGVS notation.
       </p>
       <form id="rsidForm">
         <div class="form-group">
           <label for="snp-rsid-input">rsID</label>
-          <input type="text" id="snp-rsid-input" class="form-control mono"
+          <input type="text" id="snp-rsid-input" class="gv-form-control mono"
                  placeholder="e.g. rs429358"
                  autocomplete="off" spellcheck="false" />
         </div>
-        <button type="submit" class="btn btn-primary btn-full" id="rsidBtn">
+        <button type="submit" class="gv-btn gv-btn-primary gv-btn-full" id="rsidBtn">
           <span id="rsidBtnText">Look Up rsID</span>
           <span id="rsidBtnSpinner" class="spinner hidden"></span>
         </button>
@@ -63,14 +63,14 @@
 
     <!-- ── Coordinate Panel ─────────────────────────────────────────────── -->
     <div id="snp-panel-coord" class="mode-panel hidden" role="tabpanel">
-      <p class="card-subtitle">
+      <p class="gv-card-subtitle">
         Provide the chromosomal location and nucleotide change in VCF-style format.
       </p>
       <form id="snpForm">
         <div class="form-row">
           <div class="form-group">
             <label for="chromosome">Chromosome</label>
-            <select id="chromosome" name="chromosome" class="form-control" required>
+            <select id="chromosome" name="chromosome" class="gv-form-control" required>
               <option value="">Select Chr…</option>
               {% for c in ['1','2','3','4','5','6','7','8','9','10',
                            '11','12','13','14','15','16','17','18',
@@ -81,7 +81,7 @@
           </div>
           <div class="form-group">
             <label for="position">Genomic Position (GRCh38)</label>
-            <input type="number" id="position" name="position" class="form-control"
+            <input type="number" id="position" name="position" class="gv-form-control"
                    placeholder="e.g. 7676154" min="1" required />
           </div>
         </div>
@@ -89,19 +89,19 @@
         <div class="form-row">
           <div class="form-group">
             <label for="ref">Reference Allele</label>
-            <input type="text" id="ref" name="ref" class="form-control mono"
+            <input type="text" id="ref" name="ref" class="gv-form-control mono"
                    placeholder="e.g. C" maxlength="10" required
                    pattern="[ACGTNacgtn]+" />
           </div>
           <div class="form-group">
             <label for="alt">Alternate Allele</label>
-            <input type="text" id="alt" name="alt" class="form-control mono"
+            <input type="text" id="alt" name="alt" class="gv-form-control mono"
                    placeholder="e.g. G" maxlength="10" required
                    pattern="[ACGTNacgtn]+" />
           </div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-full" id="analyzeBtn">
+        <button type="submit" class="gv-btn gv-btn-primary gv-btn-full" id="analyzeBtn">
           <span id="btnText">Analyze Variant</span>
           <span id="btnSpinner" class="spinner hidden"></span>
         </button>
@@ -146,7 +146,7 @@
     <div id="researchRelevanceContainer"></div>
 
     <!-- 3. Variant Overview Card -->
-    <div class="card result-card">
+    <div class="gv-card result-card">
       <div id="variantOverviewAnchor" class="result-header">
         <div>
           <div class="result-label">Variant Overview</div>
@@ -171,7 +171,7 @@
         <div class="meta-item"><span class="meta-label">Allele Freq</span><span class="meta-val mono" id="r-allele-freq">—</span></div>
       </div>
 
-      <h3 class="card-title" style="margin-top: 1.5rem;">Functional Impact Prediction</h3>
+      <h3 class="gv-card-title" style="margin-top: 1.5rem;">Functional Impact Prediction</h3>
       <div class="impact-row">
         <div class="impact-badge-wrap">
           <div id="r-impact-badge" class="impact-badge">—</div>
@@ -208,8 +208,8 @@
     <div id="pathwaysContainer"></div>
 
     <!-- No gene found note (hidden by default) -->
-    <div class="card result-card info-card hidden" id="noGeneCard">
-      <h3 class="card-title">📍 Intergenic Region</h3>
+    <div class="gv-card result-card info-card hidden" id="noGeneCard">
+      <h3 class="gv-card-title">📍 Intergenic Region</h3>
       <p>This position does not overlap any gene in our local annotation dataset.
          It may be located in an intergenic, intronic, or non-coding region.
          Use Ensembl's browser to explore the locus further.</p>
@@ -271,7 +271,7 @@ document.querySelectorAll(".rsid-example-btn").forEach(btn => {
 // ── rsID Form Submit ──────────────────────────────────────────────────────────
 document.getElementById("rsidForm").addEventListener("submit", async e => {
   e.preventDefault();
-  const btn  = document.getElementById("rsidBtn");
+  const gv-btn  = document.getElementById("rsidBtn");
   const text = document.getElementById("rsidBtnText");
   const spin = document.getElementById("rsidBtnSpinner");
 
@@ -315,7 +315,7 @@ document.getElementById("rsidForm").addEventListener("submit", async e => {
 // ── Coordinate Form Submit ────────────────────────────────────────────────────
 document.getElementById("snpForm").addEventListener("submit", async e => {
   e.preventDefault();
-  const btn  = document.getElementById("analyzeBtn");
+  const gv-btn  = document.getElementById("analyzeBtn");
   const text = document.getElementById("btnText");
   const spin = document.getElementById("btnSpinner");
 
@@ -463,8 +463,8 @@ function renderSNPResult(d) {
     document.getElementById("evidenceConfidenceContainer").innerHTML = renderEvidenceConfidenceHTML(d);
     document.getElementById("researchRelevanceContainer").innerHTML = renderResearchRelevanceHTML(d);
     document.getElementById("summaryContainer").innerHTML = 
-      `<div class="card result-card info-card" style="border-left-color: var(--accent);">
-         <h3 class="card-title">Summary</h3>
+      `<div class="gv-card result-card info-card" style="border-left-color: var(--accent);">
+         <h3 class="gv-card-title">Summary</h3>
          <p style="font-size: 0.95rem; line-height: 1.6;">${d.interpretation_summary}</p>
        </div>`;
   } else {
@@ -535,8 +535,8 @@ function showSNPError(msg) {
 
   // Inject error banner
   const errorHtml = `
-    <div class="card result-card info-card" style="border-left-color: #e74c3c; background-color: rgba(231, 76, 60, 0.05);">
-      <h3 class="card-title" style="color: #e74c3c; display: flex; align-items: center; gap: 0.5rem;">
+    <div class="gv-card result-card info-card" style="border-left-color: #e74c3c; background-color: rgba(231, 76, 60, 0.05);">
+      <h3 class="gv-card-title" style="color: #e74c3c; display: flex; align-items: center; gap: 0.5rem;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"></circle>
           <line x1="12" y1="8" x2="12" y2="12"></line>

@@ -23,6 +23,7 @@ from db_handler import (
     get_gene_info,
     map_position_to_gene,
     get_chromosome_info,
+    _load_panels,
     _fetch_live_pubmed,
     _fetch_live_gene_context,
     _fetch_gene_diseases,
