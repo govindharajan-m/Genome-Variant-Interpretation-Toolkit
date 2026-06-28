@@ -1,3 +1,18 @@
+
+function applyDynamicStyles(container) {
+    if (!container) return;
+    container.querySelectorAll('.dynamic-width-main').forEach(el => {
+        el.style.width = el.dataset.width + '%';
+    });
+    container.querySelectorAll('.dynamic-color-main').forEach(el => {
+        el.style.color = el.dataset.color;
+    });
+    container.querySelectorAll('.dynamic-color-border-main').forEach(el => {
+        el.style.color = el.dataset.color;
+        el.style.borderColor = el.dataset.color;
+    });
+}
+
 /**
  * main.js — GenomeVAP / Autoradiograph Terminal
  */
@@ -69,69 +84,69 @@ function renderEvidenceHTML(evidence) {
   
   let html = `<div class="gv-card result-card" id="evidenceCard">
     <h3 class="gv-card-title">Evidence & References</h3>
-    <div style="margin-bottom: 1rem; font-weight: bold; color: var(--text-primary);">
+    <div  class="gv-is-f02f8392">
       Strength: ${evidence.evidence_strength} (${evidence.evidence_score}/100)
     </div>
-    <div class="references-container" style="display: flex; flex-direction: column; gap: 1rem;">`;
+    <div class="references-container gv-is-f48bc238" >`;
 
   // dbSNP
   html += `<div class="ref-section">
-    <div style="font-weight: 600; margin-bottom: 0.25rem; color: var(--text-primary);">dbSNP</div>`;
+    <div  class="gv-is-abb5e6ff">dbSNP</div>`;
   if (evidence.dbsnp && evidence.dbsnp.id) {
-    html += `<a href="${evidence.dbsnp.url}" target="_blank" class="ext-link" style="color: var(--primary-colour); text-decoration: none;">${evidence.dbsnp.id}</a>`;
+    html += `<a href="${evidence.dbsnp.url}" target="_blank" class="ext-link gv-is-8bdc9af8" >${evidence.dbsnp.id}</a>`;
   } else {
-    html += `<div style="color: var(--text-secondary); font-size: 0.875rem;">No reference available</div>`;
+    html += `<div  class="gv-is-8c605559">No reference available</div>`;
   }
   html += `</div>`;
 
   // ClinVar
   html += `<div class="ref-section">
-    <div style="font-weight: 600; margin-bottom: 0.25rem; color: var(--text-primary);">ClinVar</div>`;
+    <div  class="gv-is-abb5e6ff">ClinVar</div>`;
   if (evidence.clinvar && evidence.clinvar.id) {
     html += `<div>
-      <a href="${evidence.clinvar.url}" target="_blank" class="ext-link" style="color: var(--primary-colour); text-decoration: none;">${evidence.clinvar.id}</a>
-      <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.25rem;">
+      <a href="${evidence.clinvar.url}" target="_blank" class="ext-link gv-is-8bdc9af8" >${evidence.clinvar.id}</a>
+      <div  class="gv-is-86c8856a">
         Classification: ${evidence.clinvar.classification} <br/>
         Review Status: ${evidence.clinvar.review_status}
       </div>
     </div>`;
   } else {
-    html += `<div style="color: var(--text-secondary); font-size: 0.875rem;">No reference available</div>`;
+    html += `<div  class="gv-is-8c605559">No reference available</div>`;
   }
   html += `</div>`;
 
   // GeneCards
   html += `<div class="ref-section">
-    <div style="font-weight: 600; margin-bottom: 0.25rem; color: var(--text-primary);">GeneCards</div>`;
+    <div  class="gv-is-abb5e6ff">GeneCards</div>`;
   if (evidence.genecards && evidence.genecards.id) {
-    html += `<a href="${evidence.genecards.url}" target="_blank" class="ext-link" style="color: var(--primary-colour); text-decoration: none;">${evidence.genecards.id}</a>`;
+    html += `<a href="${evidence.genecards.url}" target="_blank" class="ext-link gv-is-8bdc9af8" >${evidence.genecards.id}</a>`;
   } else {
-    html += `<div style="color: var(--text-secondary); font-size: 0.875rem;">No reference available</div>`;
+    html += `<div  class="gv-is-8c605559">No reference available</div>`;
   }
   html += `</div>`;
 
   // PubMed
   html += `<div class="ref-section">
-    <div style="font-weight: 600; margin-bottom: 0.25rem; color: var(--text-primary);">PubMed</div>`;
+    <div  class="gv-is-abb5e6ff">PubMed</div>`;
   if (evidence.pubmed && evidence.pubmed.length > 0) {
-    html += `<ul style="list-style-type: disc; margin: 0; padding-left: 1.5rem;">`;
+    html += `<ul  class="gv-is-4876c30e">`;
     for (const item of evidence.pubmed) {
-      html += `<li style="margin-bottom: 0.5rem; font-size: 0.875rem;">
-        <a href="${item.url}" target="_blank" class="ext-link" style="color: var(--primary-colour); text-decoration: none;">
+      html += `<li  class="gv-is-1ab54956">
+        <a href="${item.url}" target="_blank" class="ext-link gv-is-8bdc9af8" >
           ${item.id}
         </a>: ${item.title} (${item.year})
       </li>`;
     }
     html += `</ul>`;
   } else {
-    html += `<div style="color: var(--text-secondary); font-size: 0.875rem;">No reference available</div>`;
+    html += `<div  class="gv-is-8c605559">No reference available</div>`;
   }
   html += `</div>`;
 
   if (evidence.warnings && evidence.warnings.length > 0) {
-    html += `<div style="margin-top: 1rem; color: #e74c3c; font-size: 0.875rem;">
+    html += `<div  class="gv-is-2254dc92">
       <strong>Warnings:</strong>
-      <ul style="margin: 0; padding-left: 1.5rem;">`;
+      <ul  class="gv-is-705fef6d">`;
     for (const w of evidence.warnings) {
       html += `<li>${w}</li>`;
     }
@@ -174,7 +189,7 @@ function renderImpactExplanationHTML(impactExplanation, impactLevel) {
       <summary class="impact-expl-summary">
         <span class="impact-expl-summary-text">
           <span class="impact-expl-icon">?</span>
-          Impact Explanation — What does <span class="impact-expl-level" style="color: ${colour};">${level}</span> mean?
+          Impact Explanation — What does <span class="impact-expl-level" data-color="${colour}" class="dynamic-color-main">${level}</span> mean?
         </span>
         <span class="impact-expl-toggle">▸</span>
       </summary>
@@ -228,7 +243,7 @@ function renderSignificanceExplanationHTML(sigExplanation, significance) {
       <summary class="sig-expl-summary">
         <span class="sig-expl-summary-text">
           <span class="sig-expl-icon">⚕</span>
-          Clinical Significance Explanation — <span class="sig-expl-level" style="color: ${colour};">${sig}</span>
+          Clinical Significance Explanation — <span class="sig-expl-level" data-color="${colour}" class="dynamic-color-main">${sig}</span>
         </span>
         <span class="sig-expl-toggle">▸</span>
       </summary>
@@ -267,7 +282,7 @@ function renderPopulationFrequenciesHTML(data) {
     return `
       <div class="pop-freq-row">
         <span class="pop-freq-label">${label}</span>
-        <div class="pop-freq-bar-container"><div class="${barClass}" style="width: ${width}%;"></div></div>
+        <div class="pop-freq-bar-container"><div class="${barClass}" data-width="${width}" class="dynamic-width-main"></div></div>
         <span class="pop-freq-val">${textVal}</span>
       </div>
     `;
@@ -282,16 +297,16 @@ function renderPopulationFrequenciesHTML(data) {
   if (comp) {
     let foldText = comp.fold_difference === Infinity ? "Infinity" : comp.fold_difference.toFixed(1) + "×";
     comparisonHtml = `
-      <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 0.5rem; border-left: 3px solid var(--primary-colour);">
-        <h4 style="margin-top: 0; margin-bottom: 0.5rem; font-size: 0.95rem; color: var(--text-primary);">Population Comparison</h4>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+      <div  class="gv-is-33100548">
+        <h4  class="gv-is-2da9699f">Population Comparison</h4>
+        <div  class="gv-is-85f50244">
           <div>
-            <span style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Absolute Difference</span>
-            <span style="font-weight: 600; font-size: 1.1rem; color: var(--text-primary);">${(comp.absolute_difference * 100).toFixed(2)}%</span>
+            <span  class="gv-is-cc978932">Absolute Difference</span>
+            <span  class="gv-is-1c05c645">${(comp.absolute_difference * 100).toFixed(2)}%</span>
           </div>
           <div>
-            <span style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Fold Difference</span>
-            <span style="font-weight: 600; font-size: 1.1rem; color: var(--text-primary);">${foldText}</span>
+            <span  class="gv-is-cc978932">Fold Difference</span>
+            <span  class="gv-is-1c05c645">${foldText}</span>
           </div>
         </div>
       </div>
@@ -301,7 +316,7 @@ function renderPopulationFrequenciesHTML(data) {
   return `
   <div class="gv-card result-card" id="populationFrequenciesCard">
     <h3 class="gv-card-title">Population Frequencies</h3>
-    <p class="interpretation-text" style="margin-top: 0;">${interp}</p>
+    <p class="interpretation-text gv-is-88aa25c3" >${interp}</p>
     <div class="pop-freq-grid">
       ${renderRow("Global", "global", true)}
       ${renderRow("South Asian", "south_asian")}
@@ -409,32 +424,32 @@ function renderReportSummaryHTML(d) {
   }
 
   return `
-    <div class="gv-card result-card" style="border-left: 4px solid var(--primary-colour); background-color: var(--bg-secondary);">
-      <h2 class="gv-card-title" style="margin-bottom: 12px; font-size: 1.25rem;">REPORT SUMMARY</h2>
-      <div class="result-meta-grid" style="row-gap: 1.2rem;">
+    <div class="gv-card result-card gv-is-c16e9cc4" >
+      <h2 class="gv-card-title gv-is-fc945557" >REPORT SUMMARY</h2>
+      <div class="result-meta-grid gv-is-0ea97806" >
         <div class="meta-item">
           <span class="meta-label">Variant</span>
-          <span class="meta-val mono" style="font-size: 1.1rem; color: var(--text-primary); font-weight: bold;">${variant}</span>
+          <span class="meta-val mono gv-is-4876431c" >${variant}</span>
         </div>
         <div class="meta-item">
           <span class="meta-label">Gene</span>
-          <span class="meta-val mono" style="font-size: 1.1rem; color: var(--primary-colour); font-weight: bold;">${gene}</span>
+          <span class="meta-val mono gv-is-88f8535d" >${gene}</span>
         </div>
         <div class="meta-item">
           <span class="meta-label">Clinical Significance</span>
-          <span class="meta-val" style="font-size: 1.1rem; font-weight: 600;">${clinSig}</span>
+          <span class="meta-val gv-is-658fbd93" >${clinSig}</span>
         </div>
         <div class="meta-item">
           <span class="meta-label">Confidence</span>
-          <span class="meta-val" style="font-size: 1.1rem;">${clinConf}</span>
+          <span class="meta-val gv-is-e7ec96b3" >${clinConf}</span>
         </div>
         <div class="meta-item">
           <span class="meta-label">Research Relevance</span>
-          <span class="meta-val" style="font-size: 1.1rem; font-weight: 600;">${relevance}</span>
+          <span class="meta-val gv-is-658fbd93" >${relevance}</span>
         </div>
         <div class="meta-item">
           <span class="meta-label">Population Focus</span>
-          <span class="meta-val" style="font-size: 0.95rem; line-height: 1.5;">
+          <span class="meta-val gv-is-2a273aaf" >
             South Asian: <strong>${sas}</strong><br>
             Caucasian: <strong>${cau}</strong>
           </span>
@@ -454,19 +469,19 @@ function renderGeneContextHTML(data, relevance) {
   else if (relevance === "Moderate") relColor = "#27ae60";
 
   return `
-    <div class="gv-card result-card" style="margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+    <div class="gv-card result-card gv-is-ce7577fa" >
       <h3 class="gv-card-title">Gene Context</h3>
-      <div class="result-meta-grid" style="margin-bottom: 1rem;">
-        <div class="meta-item"><span class="meta-label">Gene Symbol</span><span class="meta-val mono" style="font-weight:bold; color:var(--primary-colour);">${data.symbol}</span></div>
+      <div class="result-meta-grid gv-is-4986ecf7" >
+        <div class="meta-item"><span class="meta-label">Gene Symbol</span><span class="meta-val mono gv-is-99b7110c" >${data.symbol}</span></div>
         <div class="meta-item"><span class="meta-label">Full Name</span><span class="meta-val">${data.full_name || "—"}</span></div>
         <div class="meta-item"><span class="meta-label">Chromosome</span><span class="meta-val mono">${data.location || "—"}</span></div>
         <div class="meta-item">
           <span class="meta-label">Research Relevance</span>
-          <span class="meta-val" style="font-weight:600; color:${relColor};">${relevance || "Low"}</span>
+          <span class="meta-val" data-color="${relColor}" class="fw-semibold dynamic-color-main">${relevance || "Low"}</span>
         </div>
       </div>
       <div class="gene-description">
-        <span style="font-weight: 600; font-size: 0.9rem; color: var(--text-secondary); display: block; margin-bottom: 0.25rem;">Function:</span>
+        <span  class="gv-is-6c1dca78">Function:</span>
         ${data.description || "No official description available."}
       </div>
     </div>
@@ -479,7 +494,7 @@ function renderDiseasesHTML(data) {
   return `
     <div class="gv-card result-card">
       <h3 class="gv-card-title">Associated Diseases</h3>
-      <ul style="margin: 0; padding-left: 1.5rem; color: var(--text-primary); line-height: 1.6;">
+      <ul  class="gv-is-f5823404">
         ${listItems}
       </ul>
     </div>
@@ -492,7 +507,7 @@ function renderPathwaysHTML(data) {
   return `
     <div class="gv-card result-card">
       <h3 class="gv-card-title">Biological Pathways</h3>
-      <ul style="margin: 0; padding-left: 1.5rem; color: var(--text-primary); line-height: 1.6;">
+      <ul  class="gv-is-f5823404">
         ${listItems}
       </ul>
     </div>
@@ -557,17 +572,17 @@ function renderClinvarHTML(data) {
   <div class="gv-card result-card" id="clinvarCard">
     <div class="result-header">
       <div>
-        <h3 class="gv-card-title" style="margin-bottom: 0;">ClinVar Evidence</h3>
+        <h3 class="gv-card-title gv-is-c42e0ec4" >ClinVar Evidence</h3>
       </div>
       <div>
         <span class="status-badge badge-high">${data.confidence_level} Confidence</span>
       </div>
     </div>
     
-    <div class="result-meta-grid" style="margin-top: 1rem;">
+    <div class="result-meta-grid gv-is-988c5fa7" >
       <div class="meta-item">
         <span class="meta-label">Clinical Significance</span>
-        <span class="status-badge badge-pathogenic" style="color: ${color}; border-color: ${color};">${data.clinical_significance || "—"}</span>
+        <span class="status-badge badge-pathogenic" data-color="${color}" class="dynamic-color-border-main">${data.clinical_significance || "—"}</span>
       </div>
       <div class="meta-item">
         <span class="meta-label">Condition</span>
@@ -580,7 +595,7 @@ function renderClinvarHTML(data) {
       <div class="meta-item">
         <span class="meta-label">Accession</span>
         <span class="meta-val mono">
-          <a href="https://www.ncbi.nlm.nih.gov/clinvar/variation/${data.variation_id}/" target="_blank" style="color: var(--accent); text-decoration: none;">
+          <a href="https://www.ncbi.nlm.nih.gov/clinvar/variation/${data.variation_id}/" target="_blank"  class="gv-is-bd04ff7a">
             ${data.accession || data.variation_id} ↗
           </a>
         </span>
@@ -598,11 +613,11 @@ function renderClinvarHTML(data) {
 function renderPubMedHTML(data) {
   if (!data || !data.available || data.paper_count === 0) {
     return `
-    <div class="gv-card result-card" style="margin-top: 1rem;">
+    <div class="gv-card result-card gv-is-988c5fa7" >
       <div class="result-header">
-        <h3 class="gv-card-title" style="margin-bottom: 0;">Literature Evidence</h3>
+        <h3 class="gv-card-title gv-is-c42e0ec4" >Literature Evidence</h3>
       </div>
-      <p style="margin-top: 1rem; color: var(--text-secondary);">No PubMed evidence available.</p>
+      <p  class="gv-is-a92a97b5">No PubMed evidence available.</p>
     </div>
     `;
   }
@@ -610,35 +625,35 @@ function renderPubMedHTML(data) {
   let papersHtml = "";
   data.papers.forEach((p, idx) => {
     papersHtml += `
-      <div style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-2); ${idx === data.papers.length - 1 ? 'border-bottom: none;' : ''}">
-        <div style="font-weight: 500; margin-bottom: 0.25rem;">
-          <a href="${p.url}" target="_blank" style="color: var(--accent); text-decoration: none;">${p.title}</a>
+      <div class="py-3 border-bottom ${idx === data.papers.length - 1 ? 'border-0' : ''}">
+        <div  class="gv-is-ce90cfed">
+          <a href="${p.url}" target="_blank"  class="gv-is-bd04ff7a">${p.title}</a>
         </div>
-        <div style="font-size: 0.85rem; color: var(--text-secondary);">
-          ${p.journal} (${p.year}) &bull; PMID: <a href="${p.url}" target="_blank" style="color: var(--text-secondary);">${p.pmid}</a> &bull; ${p.has_abstract ? "Abstract available" : "No abstract"}
+        <div  class="gv-is-2a56b75d">
+          ${p.journal} (${p.year}) &bull; PMID: <a href="${p.url}" target="_blank"  class="gv-is-35042dad">${p.pmid}</a> &bull; ${p.has_abstract ? "Abstract available" : "No abstract"}
         </div>
       </div>
     `;
   });
 
   return `
-  <div class="gv-card result-card" style="margin-top: 1rem;">
-    <div class="result-header" style="align-items: flex-start;">
+  <div class="gv-card result-card gv-is-988c5fa7" >
+    <div class="result-header gv-is-f12ec822" >
       <div>
-        <h3 class="gv-card-title" style="margin-bottom: 0;">Literature Evidence</h3>
-        <div style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.25rem;">
+        <h3 class="gv-card-title gv-is-c42e0ec4" >Literature Evidence</h3>
+        <div  class="gv-is-f5592882">
           ${data.paper_count} Publication${data.paper_count > 1 ? 's' : ''} Found
         </div>
       </div>
       <div>
-        <span class="type-badge" style="background: rgba(43, 144, 217, 0.1); color: var(--accent); border: 1px solid rgba(43, 144, 217, 0.2); font-size: 0.85rem; padding: 0.3rem 0.6rem;">
+        <span class="type-badge gv-is-dbfaeded" >
           ${data.evidence_level || "Unknown Evidence"}
         </span>
       </div>
     </div>
     
-    <div style="margin-top: 1rem;">
-      <h4 style="font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 0.5rem; border-bottom: 1px solid var(--border-2); padding-bottom: 0.25rem;">Top Publications</h4>
+    <div  class="gv-is-988c5fa7">
+      <h4  class="gv-is-4ca4740c">Top Publications</h4>
       ${papersHtml}
     </div>
   </div>
@@ -653,32 +668,32 @@ function renderEvidenceConfidenceHTML(d) {
     
     let factorsHtml = "";
     if (ev.contributing_factors && ev.contributing_factors.length > 0) {
-        factorsHtml = `<div style="margin-top: 1rem;"><h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Contributing Factors</h4><ul style="list-style-type: none; padding: 0; margin: 0;">`;
+        factorsHtml = `<div  class="gv-is-988c5fa7"><h4  class="gv-is-d01a63b0">Contributing Factors</h4><ul  class="gv-is-53d37219">`;
         ev.contributing_factors.forEach(f => {
-            factorsHtml += `<li style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.3rem;">✓ ${f}</li>`;
+            factorsHtml += `<li  class="gv-is-45c52d0b">✓ ${f}</li>`;
         });
         factorsHtml += `</ul></div>`;
     }
     
     let limitsHtml = "";
     if (ev.limitations && ev.limitations.length > 0) {
-        limitsHtml = `<div style="margin-top: 1rem;"><h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Limitations</h4><ul style="list-style-type: none; padding: 0; margin: 0;">`;
+        limitsHtml = `<div  class="gv-is-988c5fa7"><h4  class="gv-is-d01a63b0">Limitations</h4><ul  class="gv-is-53d37219">`;
         ev.limitations.forEach(l => {
-            limitsHtml += `<li style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.3rem;">• ${l}</li>`;
+            limitsHtml += `<li  class="gv-is-45c52d0b">• ${l}</li>`;
         });
         limitsHtml += `</ul></div>`;
     }
 
     return `
-    <div class="gv-card result-card" id="evidenceConfidenceCard" style="margin-top: 1rem;">
+    <div class="gv-card result-card gv-is-988c5fa7" id="evidenceConfidenceCard" >
         <h3 class="gv-card-title">Evidence Confidence</h3>
-        <div style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem;">
-            <span style="font-size: 2rem; font-weight: bold; color: var(--primary-colour);">${ev.score} <span style="font-size: 1rem; color: var(--text-secondary);">/ 100</span></span>
-            <span class="status-badge badge-strong" style="font-size: 1rem; padding: 0.4rem 0.8rem; background: var(--bg-tertiary);">${ev.tier.toUpperCase()} CONFIDENCE</span>
-            <span style="font-weight: 600; color: var(--text-primary);">${ev.strength}</span>
+        <div  class="gv-is-d879e68d">
+            <span  class="gv-is-2c86e56e">${ev.score} <span  class="gv-is-e8e28c62">/ 100</span></span>
+            <span class="status-badge badge-strong gv-is-6dde379e" >${ev.tier.toUpperCase()} CONFIDENCE</span>
+            <span  class="gv-is-3eca9ee6">${ev.strength}</span>
         </div>
-        <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">${ev.narrative}</p>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <p  class="gv-is-a35b62b4">${ev.narrative}</p>
+        <div  class="gv-is-85f50244">
             ${factorsHtml}
             ${limitsHtml}
         </div>
@@ -693,30 +708,30 @@ function renderResearchRelevanceHTML(d) {
     
     let reasonsHtml = "";
     if (rr.reasons && rr.reasons.length > 0) {
-        reasonsHtml = `<div style="margin-top: 1rem;"><h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Why This Variant Matters</h4><ul style="list-style-type: none; padding: 0; margin: 0;">`;
+        reasonsHtml = `<div  class="gv-is-988c5fa7"><h4  class="gv-is-d01a63b0">Why This Variant Matters</h4><ul  class="gv-is-53d37219">`;
         rr.reasons.forEach(r => {
-            reasonsHtml += `<li style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.3rem;">✓ ${r}</li>`;
+            reasonsHtml += `<li  class="gv-is-45c52d0b">✓ ${r}</li>`;
         });
         reasonsHtml += `</ul></div>`;
     }
     
     let appsHtml = "";
     if (rr.applications && rr.applications.length > 0) {
-        appsHtml = `<div style="margin-top: 1rem;"><h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Potential Applications</h4><ul style="list-style-type: none; padding: 0; margin: 0;">`;
+        appsHtml = `<div  class="gv-is-988c5fa7"><h4  class="gv-is-d01a63b0">Potential Applications</h4><ul  class="gv-is-53d37219">`;
         rr.applications.forEach(a => {
-            appsHtml += `<li style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.3rem;">• ${a}</li>`;
+            appsHtml += `<li  class="gv-is-45c52d0b">• ${a}</li>`;
         });
         appsHtml += `</ul></div>`;
     }
 
     return `
-    <div class="gv-card result-card" id="researchRelevanceCard" style="margin-top: 1rem;">
+    <div class="gv-card result-card gv-is-988c5fa7" id="researchRelevanceCard" >
         <h3 class="gv-card-title">Research Relevance</h3>
-        <div style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem;">
-            <span class="status-badge badge-strong" style="font-size: 1rem; padding: 0.4rem 0.8rem; background: var(--bg-tertiary);">${rr.tier ? rr.tier.toUpperCase() : "UNKNOWN"}</span>
-            <span style="font-size: 1rem; color: var(--text-secondary);">Research Score: <span style="font-weight: 600; color: var(--primary-colour);">${rr.score} / 100</span></span>
+        <div  class="gv-is-d879e68d">
+            <span class="status-badge badge-strong gv-is-6dde379e" >${rr.tier ? rr.tier.toUpperCase() : "UNKNOWN"}</span>
+            <span  class="gv-is-e8e28c62">Research Score: <span  class="gv-is-151d318d">${rr.score} / 100</span></span>
         </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div  class="gv-is-85f50244">
             ${reasonsHtml}
             ${appsHtml}
         </div>
@@ -731,36 +746,36 @@ function renderACMGEvidenceHTML(d) {
     
     let criteriaHtml = "";
     if (acmg.criteria && acmg.criteria.length > 0) {
-        criteriaHtml = `<div style="margin-top: 1rem;"><h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Mapped Criteria</h4><ul style="list-style-type: none; padding: 0; margin: 0;">`;
+        criteriaHtml = `<div  class="gv-is-988c5fa7"><h4  class="gv-is-d01a63b0">Mapped Criteria</h4><ul  class="gv-is-53d37219">`;
         acmg.criteria.forEach(c => {
             const codeColor = c.code.startsWith('P') ? '#e74c3c' : '#27ae60';
-            criteriaHtml += `<li style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.8rem;">
-                <span style="font-weight: 600; color: ${codeColor}; border: 1px solid ${codeColor}; padding: 0.1rem 0.3rem; border-radius: 3px; font-size: 0.8rem;">${c.code}</span>
-                <span style="font-weight: 600; margin-left: 0.3rem;">— ${c.strength}</span><br>
-                <span style="margin-left: 2rem; display: block; font-size: 0.9rem; margin-top: 0.2rem;">${c.reason}</span>
+            criteriaHtml += `<li  class="gv-is-67bc2d84">
+                <span data-color="${codeColor}" class="fw-semibold p-1 border rounded fs-6 dynamic-color-border-main">${c.code}</span>
+                <span  class="gv-is-483e98fe">— ${c.strength}</span><br>
+                <span  class="gv-is-6a80c0d9">${c.reason}</span>
             </li>`;
         });
         criteriaHtml += `</ul></div>`;
     }
 
     return `
-    <div class="gv-card result-card" id="acmgEvidenceCard" style="margin-top: 1rem; border-left: 4px solid #9b59b6;">
+    <div class="gv-card result-card gv-is-8736b06a" id="acmgEvidenceCard" >
         <h3 class="gv-card-title">ACMG Evidence Mapping</h3>
         
-        <div style="background-color: var(--bg-secondary); padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; border-left: 3px solid #f39c12;">
-            <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
+        <div  class="gv-is-426244aa">
+            <p  class="gv-is-bd646787">
                 <strong>Research Use Only:</strong> This module maps potentially relevant ACMG evidence categories based on available platform data. It is not a clinical ACMG classifier and must not be used for diagnosis, treatment decisions, or patient management.
             </p>
         </div>
 
-        <div style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem;">
-            <span class="status-badge badge-strong" style="font-size: 1.1rem; padding: 0.4rem 0.8rem; background: var(--bg-tertiary);">${acmg.classification.toUpperCase()}</span>
-            <span style="font-size: 0.9rem; color: var(--text-secondary);">Mapping Confidence: <strong style="color: var(--text-primary);">${acmg.mapping_confidence}</strong></span>
+        <div  class="gv-is-d879e68d">
+            <span class="status-badge badge-strong gv-is-76e36d82" >${acmg.classification.toUpperCase()}</span>
+            <span  class="gv-is-7af58241">Mapping Confidence: <strong  class="gv-is-b25d56ee">${acmg.mapping_confidence}</strong></span>
         </div>
         
-        <div style="display: flex; gap: 2rem; margin-bottom: 1rem;">
-            <span style="font-size: 0.9rem; color: var(--text-secondary);">Pathogenic Triggers: <strong style="color: var(--text-primary);">${acmg.pathogenic_evidence_count}</strong></span>
-            <span style="font-size: 0.9rem; color: var(--text-secondary);">Benign Triggers: <strong style="color: var(--text-primary);">${acmg.benign_evidence_count}</strong></span>
+        <div  class="gv-is-d30b3ae3">
+            <span  class="gv-is-7af58241">Pathogenic Triggers: <strong  class="gv-is-b25d56ee">${acmg.pathogenic_evidence_count}</strong></span>
+            <span  class="gv-is-7af58241">Benign Triggers: <strong  class="gv-is-b25d56ee">${acmg.benign_evidence_count}</strong></span>
         </div>
         
         ${criteriaHtml}
@@ -775,46 +790,59 @@ function renderPharmacogenomicsHTML(d) {
     
     let appsHtml = "";
     if (pgx.applications && pgx.applications.length > 0) {
-        appsHtml = `<div style="margin-top: 1rem;"><h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Applications</h4><ul style="list-style-type: none; padding: 0; margin: 0;">`;
+        appsHtml = `<div  class="gv-is-988c5fa7"><h4  class="gv-is-d01a63b0">Applications</h4><ul  class="gv-is-53d37219">`;
         pgx.applications.forEach(a => {
-            appsHtml += `<li style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.3rem;">✓ ${a}</li>`;
+            appsHtml += `<li  class="gv-is-45c52d0b">✓ ${a}</li>`;
         });
         appsHtml += `</ul></div>`;
     }
 
     let interactionsHtml = "";
     if (pgx.interactions && pgx.interactions.length > 0) {
-        interactionsHtml = `<div style="margin-top: 1rem;"><h4 style="font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--text-primary);">Drug Relevance</h4><ul style="list-style-type: none; padding: 0; margin: 0;">`;
+        interactionsHtml = `<div  class="gv-is-988c5fa7"><h4  class="gv-is-d01a63b0">Drug Relevance</h4><ul  class="gv-is-53d37219">`;
         pgx.interactions.forEach(i => {
-            interactionsHtml += `<li style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.8rem; background: var(--bg-secondary); padding: 0.8rem; border-radius: 4px; border-left: 3px solid #16a085;">
-                <span style="font-weight: bold; color: var(--primary-colour); font-size: 1.05rem;">${i.drug}</span>
-                <span class="status-badge badge-strong" style="font-size: 0.75rem; margin-left: 0.5rem;">${i.evidence_level} Evidence</span><br>
-                <span style="display: block; margin-top: 0.4rem; font-size: 0.9rem;">${i.association}</span>
+            interactionsHtml += `<li  class="gv-is-6f252a73">
+                <span  class="gv-is-02744940">${i.drug}</span>
+                <span class="status-badge badge-strong gv-is-981c6fb5" >${i.evidence_level} Evidence</span><br>
+                <span  class="gv-is-94101951">${i.association}</span>
             </li>`;
         });
         interactionsHtml += `</ul></div>`;
     }
 
     return `
-    <div class="gv-card result-card" id="pharmacogenomicsCard" style="margin-top: 1rem; border-left: 4px solid #16a085;">
+    <div class="gv-card result-card gv-is-a3f8cbd5" id="pharmacogenomicsCard" >
         <h3 class="gv-card-title">Pharmacogenomics & Precision Medicine</h3>
         
-        <div style="background-color: var(--bg-secondary); padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; border-left: 3px solid #f39c12;">
-            <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
+        <div  class="gv-is-426244aa">
+            <p  class="gv-is-bd646787">
                 <strong>Research Use Only:</strong> This module identifies potential pharmacogenomic and precision medicine relevance based on curated databases (e.g., PharmGKB, CPIC). It must not be used to recommend medications, suggest doses, or provide treatment advice.
             </p>
         </div>
 
-        <div style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1rem;">
-            <span class="status-badge badge-strong" style="font-size: 1.1rem; padding: 0.4rem 0.8rem; background: var(--bg-tertiary);">${pgx.tier.toUpperCase()} TIER</span>
-            <span style="font-size: 0.9rem; color: var(--text-secondary);">Relevance Score: <strong style="color: var(--text-primary);">${pgx.score}</strong>/100</span>
+        <div  class="gv-is-d879e68d">
+            <span class="status-badge badge-strong gv-is-76e36d82" >${pgx.tier.toUpperCase()} TIER</span>
+            <span  class="gv-is-7af58241">Relevance Score: <strong  class="gv-is-b25d56ee">${pgx.score}</strong>/100</span>
         </div>
         
         ${interactionsHtml}
         ${appsHtml}
         
-        <div style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-secondary);">
+        <div  class="gv-is-dd0946a7">
             <strong>Evidence Source:</strong> Curated mappings derived from authoritative pharmacogenomic resources (PharmGKB / CPIC / FDA).
         </div>
     </div>`;
 }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    applyDynamicStyles(document.body);
+    const observer = new MutationObserver(mutations => {
+        mutations.forEach(m => {
+            if (m.addedNodes.length) {
+                applyDynamicStyles(document.body);
+            }
+        });
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+});

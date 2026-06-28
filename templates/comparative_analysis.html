@@ -6,22 +6,22 @@
 <div class="gv-container">
 <div class="row" >
     <div class="col-12 text-center">
-        <h2 style="font-weight: 700; color: var(--primary-colour); font-size: 2.2rem; letter-spacing: -0.5px;">Comparative Variant Analysis Engine</h2>
-        <p style="color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Submit multiple variants simultaneously to receive a structured side-by-side comparison across all evidence axes.</p>
+        <h2  class="gv-is-3f1f00da">Comparative Variant Analysis Engine</h2>
+        <p  class="gv-is-83e2471b">Submit multiple variants simultaneously to receive a structured side-by-side comparison across all evidence axes.</p>
     </div>
 </div>
 
 <div class="row justify-content-center" >
     <div class="col-md-10 col-lg-8">
-        <div class="gv-card" style="padding: 1.5rem;">
+        <div class="gv-card gv-is-aa0da8a6" >
             <form id="compareForm">
                 <div class="form-group mb-3">
-                    <label for="rsidsInput" style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Enter Variants to Compare (rsIDs):</label>
-                    <textarea id="rsidsInput" class="gv-form-control" rows="3" placeholder="rs429358, rs7412, rs334..." style="background: var(--bg-secondary); border: 2px solid var(--border-colour); color: var(--text-primary); font-family: monospace; padding: 1rem;" required></textarea>
+                    <label for="rsidsInput"  class="gv-is-d2bc6f30">Enter Variants to Compare (rsIDs):</label>
+                    <textarea id="rsidsInput" class="gv-form-control gv-is-3fcd62df" rows="3" placeholder="rs429358, rs7412, rs334..." required></textarea>
                 </div>
                 <div class="text-end">
-                    <button type="submit" class="gv-btn gv-btn-primary" style="padding: 0.8rem 2rem; font-size: 1.1rem; font-weight: 600; border-radius: 8px;">
-                        Compare Variants <i class="fas fa-balance-scale" style="margin-left: 0.5rem;"></i>
+                    <button type="submit" class="gv-btn gv-btn-primary gv-is-79dce390" >
+                        Compare Variants <i class="fas fa-balance-scale gv-is-60006981" ></i>
                     </button>
                 </div>
             </form>
@@ -29,45 +29,45 @@
     </div>
 </div>
 
-<div id="loadingIndicator" class="text-center" style="display: none; margin: 3rem 0;">
-    <div class="spinner-border" role="status" style="width: 3rem; height: 3rem; color: var(--primary-colour);">
+<div id="loadingIndicator" class="text-center gv-is-31f68177" >
+    <div class="spinner-border gv-is-4e7203e3" role="status" >
         <span class="visually-hidden">Loading...</span>
     </div>
-    <p style="margin-top: 1rem; color: var(--text-secondary); font-size: 1.1rem;">Generating comparison matrix...</p>
+    <p  class="gv-is-d7eeba87">Generating comparison matrix...</p>
 </div>
 
-<div id="errorContainer" class="alert alert-danger" style="display: none; max-width: 800px; margin: 0 auto 2rem;"></div>
+<div id="errorContainer" class="alert alert-danger gv-is-1f0c656b" ></div>
 
-<div id="resultsContainer" style="display: none;">
+<div id="resultsContainer"  class="gv-is-224b51a7">
     
     <!-- Pathway Analysis -->
-    <div class="row" style="display: none;" id="pathwayAnalysisContainer">
+    <div class="row gv-is-224b51a7" id="pathwayAnalysisContainer">
         <div class="col-12">
-            <div class="gv-card result-card" style="border-left: 4px solid #8e44ad;">
+            <div class="gv-card result-card gv-is-bd7c6452" >
                 <h3 class="gv-card-title"><i class="fas fa-project-diagram"></i> Pathway & Biological Theme Analysis</h3>
-                <div class="row" style="margin-top: 1rem;">
+                <div class="row gv-is-988c5fa7" >
                     <div class="col-md-3 text-center mb-2">
-                        <div style="background: rgba(142,68,173,0.1); padding: 1rem; border-radius: 8px; height: 100%;">
-                            <div style="font-size: 0.8rem; color: #8e44ad; text-transform: uppercase;">Top Gene</div>
-                            <div id="pathTopGene" style="font-size: 1.2rem; font-weight: 700; color: #8e44ad; word-break: break-word;">--</div>
+                        <div  class="gv-is-3d21e457">
+                            <div  class="gv-is-caceffa2">Top Gene</div>
+                            <div id="pathTopGene"  class="gv-is-465a1710">--</div>
                         </div>
                     </div>
                     <div class="col-md-3 text-center mb-2">
-                        <div style="background: rgba(41,128,185,0.1); padding: 1rem; border-radius: 8px; height: 100%;">
-                            <div style="font-size: 0.8rem; color: #2980b9; text-transform: uppercase;">Dominant Pathway</div>
-                            <div id="pathTopPathway" style="font-size: 1.2rem; font-weight: 700; color: #2980b9; word-break: break-word;">--</div>
+                        <div  class="gv-is-5bff564a">
+                            <div  class="gv-is-74429feb">Dominant Pathway</div>
+                            <div id="pathTopPathway"  class="gv-is-e1ca8cc1">--</div>
                         </div>
                     </div>
                     <div class="col-md-6 mb-2">
-                        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; height: 100%;">
-                            <div style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase;">Shared Diseases</div>
-                            <div id="pathSharedDiseases" style="font-weight: 600; color: var(--text-primary); margin-top: 0.5rem;">--</div>
+                        <div  class="gv-is-f6c2507b">
+                            <div  class="gv-is-b7c164e3">Shared Diseases</div>
+                            <div id="pathSharedDiseases"  class="gv-is-bc89e3d6">--</div>
                         </div>
                     </div>
                 </div>
-                <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; border-left: 3px solid #27ae60;">
-                    <h5 style="font-size: 1rem; color: #27ae60; margin-bottom: 0.5rem;"><i class="fas fa-lightbulb"></i> Pathway Insights</h5>
-                    <div id="pathwayInsightsText" style="color: var(--text-secondary); font-size: 0.95rem;">--</div>
+                <div  class="gv-is-82f7348e">
+                    <h5  class="gv-is-4ad40cfa"><i class="fas fa-lightbulb"></i> Pathway Insights</h5>
+                    <div id="pathwayInsightsText"  class="gv-is-e6604cab">--</div>
                 </div>
             </div>
         </div>
@@ -76,51 +76,51 @@
     <!-- Comparative Summary -->
     <div class="row" >
         <div class="col-12">
-            <div class="gv-card result-card" style="border-left: 4px solid var(--primary-colour);">
-                <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 1.5rem;">
-                    <h3 class="gv-card-title" style="margin: 0;">Comparative Summary</h3>
+            <div class="gv-card result-card gv-is-62b42ec9" >
+                <div class="d-flex justify-content-between align-items-center gv-is-d3297f95" >
+                    <h3 class="gv-card-title gv-is-e2b74ba6" >Comparative Summary</h3>
                     <div>
-                        <button id="exportCsvBtn" class="gv-btn btn-sm btn-outline-primary" style="margin-right: 0.5rem;"><i class="fas fa-file-csv"></i> Export CSV</button>
+                        <button id="exportCsvBtn" class="gv-btn btn-sm btn-outline-primary gv-is-1e5c8846" ><i class="fas fa-file-csv"></i> Export CSV</button>
                         <button id="exportJsonBtn" class="gv-btn btn-sm btn-outline-secondary"><i class="fas fa-file-code"></i> Export JSON</button>
                     </div>
                 </div>
                 
                 <div class="row mb-3">
                     <div class="col-md-2 col-sm-4 mb-2">
-                        <div style="background: rgba(231, 76, 60, 0.1); padding: 1rem; border-radius: 8px; text-align: center; height: 100%;">
-                            <div style="font-size: 0.8rem; color: #c0392b; text-transform: uppercase;">Top Overall</div>
-                            <div id="sumTopOverall" style="font-size: 1.2rem; font-weight: 700; color: #c0392b; word-break: break-all;">--</div>
+                        <div  class="gv-is-4705f0d7">
+                            <div  class="gv-is-a69a5e40">Top Overall</div>
+                            <div id="sumTopOverall"  class="gv-is-a1975958">--</div>
                         </div>
                     </div>
                     <div class="col-md-2 col-sm-4 mb-2">
-                        <div style="background: rgba(41, 128, 185, 0.1); padding: 1rem; border-radius: 8px; text-align: center; height: 100%;">
-                            <div style="font-size: 0.8rem; color: #2980b9; text-transform: uppercase;">Most Clinical</div>
-                            <div id="sumMostClinical" style="font-size: 1.2rem; font-weight: 700; color: #2980b9; word-break: break-all;">--</div>
+                        <div  class="gv-is-9ecb5c97">
+                            <div  class="gv-is-74429feb">Most Clinical</div>
+                            <div id="sumMostClinical"  class="gv-is-c513901e">--</div>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-4 mb-2">
-                        <div style="background: rgba(142, 68, 173, 0.1); padding: 1rem; border-radius: 8px; text-align: center; height: 100%;">
-                            <div style="font-size: 0.8rem; color: #8e44ad; text-transform: uppercase;">Most Research-Relevant</div>
-                            <div id="sumMostResearch" style="font-size: 1.2rem; font-weight: 700; color: #8e44ad; word-break: break-all;">--</div>
+                        <div  class="gv-is-ffce7df0">
+                            <div  class="gv-is-caceffa2">Most Research-Relevant</div>
+                            <div id="sumMostResearch"  class="gv-is-f5bf33d2">--</div>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6 mb-2">
-                        <div style="background: rgba(39, 174, 96, 0.1); padding: 1rem; border-radius: 8px; text-align: center; height: 100%;">
-                            <div style="font-size: 0.8rem; color: #27ae60; text-transform: uppercase;">Precision Medicine</div>
-                            <div id="sumMostPgx" style="font-size: 1.2rem; font-weight: 700; color: #27ae60; word-break: break-all;">--</div>
+                        <div  class="gv-is-956b9a55">
+                            <div  class="gv-is-174d0b71">Precision Medicine</div>
+                            <div id="sumMostPgx"  class="gv-is-77cb4bdb">--</div>
                         </div>
                     </div>
                     <div class="col-md-2 col-sm-6 mb-2">
-                        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center; height: 100%;">
-                            <div style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase;">Most Studied</div>
-                            <div id="sumMostStudied" style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); word-break: break-all;">--</div>
+                        <div  class="gv-is-62f52eda">
+                            <div  class="gv-is-b7c164e3">Most Studied</div>
+                            <div id="sumMostStudied"  class="gv-is-77c4dda6">--</div>
                         </div>
                     </div>
                 </div>
 
-                <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; border-left: 3px solid #3498db;">
-                    <h5 style="font-size: 1rem; color: var(--primary-colour); margin-bottom: 0.5rem;"><i class="fas fa-lightbulb"></i> Comparative Insights</h5>
-                    <ul id="insightsList" style="margin: 0; padding-left: 1.2rem; color: var(--text-secondary); font-size: 0.95rem;">
+                <div  class="gv-is-816584f5">
+                    <h5  class="gv-is-f575a145"><i class="fas fa-lightbulb"></i> Comparative Insights</h5>
+                    <ul id="insightsList"  class="gv-is-5742072c">
                         <!-- JS injected -->
                     </ul>
                 </div>
@@ -134,7 +134,7 @@
             <div class="gv-card result-card">
                 <h3 class="gv-card-title">Comparative Matrix</h3>
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover" style="color: var(--text-primary); margin-top: 1rem;">
+                    <table class="table table-bordered table-hover gv-is-ae2ca982" >
                         <thead id="compareThead">
                             <!-- JS injected -->
                         </thead>
@@ -149,213 +149,9 @@
 </div>
 
 </div>
-<script>
-let currentComparisonData = null;
 
-document.getElementById('compareForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const rsids = document.getElementById('rsidsInput').value.trim();
-    if (!rsids) return;
+{% endblock %}
 
-    document.getElementById('resultsContainer').style.display = 'none';
-    document.getElementById('errorContainer').style.display = 'none';
-    document.getElementById('loadingIndicator').style.display = 'block';
-
-    try {
-        const formData = new FormData();
-        formData.append('rsids', rsids);
-        
-        const response = await fetch('/api/compare', {
-            method: 'POST',
-            body: formData
-        });
-        
-        const data = await response.json();
-        
-        document.getElementById('loadingIndicator').style.display = 'none';
-        
-        if (!response.ok || data.error) {
-            document.getElementById('errorContainer').textContent = data.error || 'An error occurred while comparing variants.';
-            document.getElementById('errorContainer').style.display = 'block';
-            return;
-        }
-        
-        currentComparisonData = data;
-        renderComparisonResults(data);
-        document.getElementById('resultsContainer').style.display = 'block';
-        
-    } catch (err) {
-        document.getElementById('loadingIndicator').style.display = 'none';
-        document.getElementById('errorContainer').textContent = 'Network or server error.';
-        document.getElementById('errorContainer').style.display = 'block';
-    }
-});
-
-function createBadge(text, colorClass) {
-    const b = document.createElement('span');
-    b.className = "badge " + colorClass;
-    b.style.display = "block";
-    b.style.marginTop = "0.3rem";
-    b.textContent = text;
-    return b;
-}
-
-function renderComparisonResults(data) {
-    const summary = data.summary;
-    const variants = data.variants;
-    const p_analysis = data.pathway_analysis;
-
-    if (p_analysis) {
-        document.getElementById('pathwayAnalysisContainer').style.display = 'flex';
-        document.getElementById('pathTopGene').textContent = p_analysis.top_gene || 'None';
-        document.getElementById('pathTopPathway').textContent = p_analysis.top_pathway || 'None';
-        document.getElementById('pathSharedDiseases').textContent = (p_analysis.shared_diseases && p_analysis.shared_diseases.length > 0) ? p_analysis.shared_diseases.join(', ') : 'No shared diseases';
-        document.getElementById('pathwayInsightsText').textContent = p_analysis.summary || 'No pathway insights identified.';
-    }
-
-    // Update Summary Boxes
-    const setSummaryText = (id, arr) => {
-        const el = document.getElementById(id);
-        el.textContent = (arr && arr.length > 0) ? arr.join(", ") : "None";
-    };
-    
-    setSummaryText('sumTopOverall', summary.top_overall);
-    setSummaryText('sumMostClinical', summary.most_clinical);
-    setSummaryText('sumMostResearch', summary.most_research);
-    setSummaryText('sumMostPgx', summary.most_pgx);
-    setSummaryText('sumMostStudied', summary.most_studied);
-
-    // Update Insights
-    const ul = document.getElementById('insightsList');
-    ul.innerHTML = '';
-    if (summary.insights && summary.insights.length > 0) {
-        summary.insights.forEach(ins => {
-            const li = document.createElement('li');
-            li.style.marginBottom = "0.3rem";
-            li.textContent = ins;
-            ul.appendChild(li);
-        });
-    } else {
-        const li = document.createElement('li');
-        li.textContent = "No prominent deterministic insights identified.";
-        ul.appendChild(li);
-    }
-
-    // Build Table Header
-    const thead = document.getElementById('compareThead');
-    thead.innerHTML = '';
-    const trHead = document.createElement('tr');
-    trHead.style.borderBottom = "2px solid var(--border-colour)";
-    
-    const thMetric = document.createElement('th');
-    thMetric.style.width = "20%";
-    thMetric.textContent = "Metric";
-    trHead.appendChild(thMetric);
-    
-    variants.forEach(v => {
-        const th = document.createElement('th');
-        th.style.textAlign = "center";
-        th.style.fontSize = "1.2rem";
-        th.style.color = "var(--primary-colour)";
-        th.textContent = v.variant_id;
-        trHead.appendChild(th);
-    });
-    thead.appendChild(trHead);
-
-    // Build Table Body Rows
-    const tbody = document.getElementById('compareTbody');
-    tbody.innerHTML = '';
-    
-    const rowsDef = [
-        { label: "Gene", key: "gene" },
-        { label: "Clinical Significance", key: "clinical_significance" },
-        { label: "Evidence Confidence", key: "evidence_confidence", highlightKey: "Best Clinical Evidence" },
-        { label: "Research Relevance", key: "research_relevance", highlightKey: "Best Research Evidence" },
-        { label: "Variant Priority", key: "variant_priority", highlightKey: "Highest Overall Priority" },
-        { label: "ACMG Status", key: "acmg_status" },
-        { label: "Pharmacogenomics", key: "pharmacogenomics", highlightKey: "Strongest Precision Medicine" },
-        { label: "Discovery Score", key: "discovery_score" },
-        { label: "Cohort Score", key: "cohort_score" },
-        { label: "Literature Tier", key: "literature_tier", highlightKey: "Most Studied Variant" },
-        { label: "PubMed Count", key: "pubmed_count" },
-        { label: "Comparative Strength", key: "_strength" }
-    ];
-
-    rowsDef.forEach(r => {
-        const tr = document.createElement('tr');
-        
-        const tdLabel = document.createElement('td');
-        tdLabel.style.fontWeight = "bold";
-        tdLabel.style.backgroundColor = "var(--bg-secondary)";
-        tdLabel.textContent = r.label;
-        tr.appendChild(tdLabel);
-        
-        variants.forEach(v => {
-            const td = document.createElement('td');
-            td.style.textAlign = "center";
-            td.style.verticalAlign = "middle";
-            
-            if (r.key === "_strength") {
-                const s = v.strength_matrix;
-                if (s) {
-                    td.innerHTML = `<span style="color:var(--text-secondary); font-size:0.85rem;">Strongest: <strong style="color:#27ae60;">${s.strongest}</strong><br>Weakest: <strong style="color:#c0392b;">${s.weakest}</strong></span>`;
-                } else {
-                    td.textContent = "N/A";
-                }
-            } else {
-                const val = v[r.key];
-                td.textContent = val !== null && val !== undefined ? val : "N/A";
-                
-                // Add badge if this variant won this metric
-                if (r.highlightKey && v.badges && v.badges.includes(r.highlightKey)) {
-                    td.appendChild(createBadge(r.highlightKey, "bg-warning text-dark"));
-                }
-            }
-            tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-    });
-}
-
-// Export CSV (Vertical Format: Rows=Variants, Cols=Metrics)
-document.getElementById('exportCsvBtn').addEventListener('click', () => {
-    if (!currentComparisonData) return;
-    
-    let csvContent = "data:text/csv;charset=utf-8,Variant,Gene,Evidence Confidence,Research Relevance,Variant Priority,Discovery Score,Cohort Score,ACMG Status,PGx Tier\n";
-    currentComparisonData.variants.forEach(v => {
-        let s_vid = sanitizeCSVValue(v.variant_id);
-        let s_gene = sanitizeCSVValue(v.gene);
-        let s_ec = sanitizeCSVValue(v.evidence_confidence);
-        let s_rr = sanitizeCSVValue(v.research_relevance);
-        let s_vp = sanitizeCSVValue(v.variant_priority);
-        let s_ds = sanitizeCSVValue(v.discovery_score);
-        let s_cs = sanitizeCSVValue(v.cohort_score);
-        let s_acmg = sanitizeCSVValue(v.acmg_status);
-        let s_pgx = sanitizeCSVValue(v.pharmacogenomics);
-        
-        csvContent += `${s_vid},${s_gene},${s_ec},${s_rr},${s_vp},${s_ds},${s_cs},"${s_acmg}",${s_pgx}\n`;
-    });
-    
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Comparative_Analysis.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-});
-
-// Export JSON
-document.getElementById('exportJsonBtn').addEventListener('click', () => {
-    if (!currentComparisonData) return;
-    
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentComparisonData, null, 2));
-    const link = document.createElement("a");
-    link.setAttribute("href", dataStr);
-    link.setAttribute("download", `Comparative_Analysis.json`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-});
-</script>
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/comparative_analysis.js') }}"></script>
 {% endblock %}

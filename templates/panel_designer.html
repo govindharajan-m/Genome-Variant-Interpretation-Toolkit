@@ -6,10 +6,10 @@
 <div class="gv-container">
 <div class="row" >
     <div class="col-12 text-center">
-        <h2 style="font-weight: 700; color: var(--primary-colour); font-size: 2.2rem; letter-spacing: -0.5px;">Disease Panel Designer</h2>
-        <p style="color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Research and design candidate gene panels for complex diseases using literature, pharmacogenomic, and pathway evidence.</p>
-        <div style="background-color: var(--bg-secondary); padding: 0.8rem; border-radius: 6px; margin: 1.5rem auto 0; max-width: 700px; border-left: 3px solid #f39c12; text-align: left;">
-            <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
+        <h2  class="gv-is-3f1f00da">Disease Panel Designer</h2>
+        <p  class="gv-is-83e2471b">Research and design candidate gene panels for complex diseases using literature, pharmacogenomic, and pathway evidence.</p>
+        <div  class="gv-is-af1f2127">
+            <p  class="gv-is-bd646787">
                 <strong>Research Use Only:</strong> This module algorithmically recommends candidate genes for educational and research exploration. It must not be used to recommend clinical testing panels, patient screening, or infer diagnostic relationships.
             </p>
         </div>
@@ -18,73 +18,73 @@
 
 <div class="row justify-content-center" >
     <div class="col-md-8 col-lg-6">
-        <div class="gv-card" style="padding: 1.5rem;">
+        <div class="gv-card gv-is-aa0da8a6" >
             <form id="panelForm" class="d-flex align-items-center">
-                <div style="position: relative; flex-grow: 1; display: flex; align-items: center; background: var(--bg-secondary); border: 2px solid var(--border-colour); border-radius: 8px; padding: 0.2rem 0.5rem; transition: all 0.3s ease;">
-                    <i class="fas fa-dna" style="color: var(--text-secondary); margin-left: 0.5rem; font-size: 1.2rem;"></i>
-                    <input type="text" id="diseaseInput" class="gv-form-control" placeholder="e.g., Alzheimer's Disease, Breast Cancer..." style="border: none; background: transparent; box-shadow: none; font-size: 1.1rem; padding: 0.8rem; color: var(--text-primary);" required>
+                <div  class="gv-is-6b692d47">
+                    <i class="fas fa-dna gv-is-276ad1b7" ></i>
+                    <input type="text" id="diseaseInput" class="gv-form-control gv-is-732ce5d4" placeholder="e.g., Alzheimer's Disease, Breast Cancer..." required>
                 </div>
-                <button type="submit" class="gv-btn gv-btn-primary" style="margin-left: 1rem; padding: 0.8rem 2rem; font-size: 1.1rem; font-weight: 600; border-radius: 8px;">
-                    Generate Panel <i class="fas fa-magic" style="margin-left: 0.5rem;"></i>
+                <button type="submit" class="gv-btn gv-btn-primary gv-is-7c064539" >
+                    Generate Panel <i class="fas fa-magic gv-is-60006981" ></i>
                 </button>
             </form>
         </div>
     </div>
 </div>
 
-<div id="loadingIndicator" class="text-center" style="display: none; margin: 3rem 0;">
-    <div class="spinner-border" role="status" style="width: 3rem; height: 3rem; color: var(--primary-colour);">
+<div id="loadingIndicator" class="text-center gv-is-31f68177" >
+    <div class="spinner-border gv-is-4e7203e3" role="status" >
         <span class="visually-hidden">Loading...</span>
     </div>
-    <p style="margin-top: 1rem; color: var(--text-secondary); font-size: 1.1rem;">Synthesizing literature and evidence layers...</p>
+    <p  class="gv-is-d7eeba87">Synthesizing literature and evidence layers...</p>
 </div>
 
-<div id="errorContainer" class="alert alert-danger" style="display: none; max-width: 600px; margin: 0 auto 2rem;"></div>
+<div id="errorContainer" class="alert alert-danger gv-is-9e9eb48f" ></div>
 
-<div id="resultsContainer" style="display: none;">
+<div id="resultsContainer"  class="gv-is-224b51a7">
     <!-- Panel Summary -->
     <div class="row" >
         <div class="col-12">
-            <div class="gv-card result-card" style="border-left: 4px solid var(--primary-colour);">
-                <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 1.5rem;">
-                    <h3 class="gv-card-title" style="margin: 0;">Disease Panel Summary</h3>
+            <div class="gv-card result-card gv-is-62b42ec9" >
+                <div class="d-flex justify-content-between align-items-center gv-is-d3297f95" >
+                    <h3 class="gv-card-title gv-is-e2b74ba6" >Disease Panel Summary</h3>
                     <div>
-                        <button id="exportCsvBtn" class="gv-btn btn-sm btn-outline-primary" style="margin-right: 0.5rem;"><i class="fas fa-file-csv"></i> Export CSV</button>
+                        <button id="exportCsvBtn" class="gv-btn btn-sm btn-outline-primary gv-is-1e5c8846" ><i class="fas fa-file-csv"></i> Export CSV</button>
                         <button id="exportJsonBtn" class="gv-btn btn-sm btn-outline-secondary"><i class="fas fa-file-code"></i> Export JSON</button>
                     </div>
                 </div>
                 
                 <div class="row">
                     <div class="col-md-3 col-sm-6 mb-3">
-                        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center;">
-                            <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;">Disease</div>
-                            <div id="summaryDisease" style="font-size: 1.2rem; font-weight: 700; color: var(--primary-colour);">--</div>
+                        <div  class="gv-is-83773f78">
+                            <div  class="gv-is-381ef310">Disease</div>
+                            <div id="summaryDisease"  class="gv-is-29247070">--</div>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6 mb-3">
-                        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center;">
-                            <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;">Candidate Genes</div>
-                            <div id="summaryGeneCount" style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">--</div>
+                        <div  class="gv-is-83773f78">
+                            <div  class="gv-is-381ef310">Candidate Genes</div>
+                            <div id="summaryGeneCount"  class="gv-is-9a273ba1">--</div>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6 mb-3">
-                        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center;">
-                            <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;">Critical Priority</div>
-                            <div id="summaryCritical" style="font-size: 1.5rem; font-weight: 700; color: #e74c3c;">--</div>
+                        <div  class="gv-is-83773f78">
+                            <div  class="gv-is-381ef310">Critical Priority</div>
+                            <div id="summaryCritical"  class="gv-is-384769e2">--</div>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6 mb-3">
-                        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center;">
-                            <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;">Total Literature</div>
-                            <div id="summaryLit" style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">--</div>
+                        <div  class="gv-is-83773f78">
+                            <div  class="gv-is-381ef310">Total Literature</div>
+                            <div id="summaryLit"  class="gv-is-9a273ba1">--</div>
                         </div>
                     </div>
                 </div>
                 <div class="row mt-2">
                     <div class="col-12">
-                         <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center;">
-                            <span style="font-size: 0.9rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-right: 1rem;">Most Supported Gene:</span>
-                            <span id="summaryTopGene" style="font-size: 1.2rem; font-weight: 700; color: #9b59b6;">--</span>
+                         <div  class="gv-is-83773f78">
+                            <span  class="gv-is-6e9c9912">Most Supported Gene:</span>
+                            <span id="summaryTopGene"  class="gv-is-33ca65f7">--</span>
                         </div>
                     </div>
                 </div>
@@ -98,9 +98,9 @@
             <div class="gv-card result-card">
                 <h3 class="gv-card-title">Candidate Genes & Evidence Ranking</h3>
                 <div class="table-responsive">
-                    <table class="table" style="color: var(--text-primary); margin-top: 1rem;">
+                    <table class="table gv-is-ae2ca982" >
                         <thead>
-                            <tr style="border-bottom: 2px solid var(--border-colour);">
+                            <tr  class="gv-is-322e8161">
                                 <th>Gene</th>
                                 <th>Priority</th>
                                 <th>Panel Score</th>
@@ -119,295 +119,9 @@
 </div>
 
 </div>
-<script>
-let currentPanelData = null;
 
-document.getElementById('panelForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const disease = document.getElementById('diseaseInput').value.trim();
-    if (!disease) return;
+{% endblock %}
 
-    document.getElementById('resultsContainer').style.display = 'none';
-    document.getElementById('errorContainer').style.display = 'none';
-    document.getElementById('loadingIndicator').style.display = 'block';
-
-    try {
-        const formData = new FormData();
-        formData.append('disease', disease);
-        
-        const response = await fetch('/api/panel', {
-            method: 'POST',
-            body: formData
-        });
-        
-        const data = await response.json();
-        
-        document.getElementById('loadingIndicator').style.display = 'none';
-        
-        if (!response.ok || data.error) {
-            document.getElementById('errorContainer').textContent = data.error || 'An error occurred while generating the panel.';
-            document.getElementById('errorContainer').style.display = 'block';
-            return;
-        }
-        
-        currentPanelData = data;
-        renderPanelResults(data);
-        document.getElementById('resultsContainer').style.display = 'block';
-        
-    } catch (err) {
-        document.getElementById('loadingIndicator').style.display = 'none';
-        document.getElementById('errorContainer').textContent = 'Network or server error.';
-        document.getElementById('errorContainer').style.display = 'block';
-    }
-});
-
-function toggleVariantView(geneId) {
-    const el = document.getElementById('variants-' + geneId);
-    if (el.style.display === 'none') {
-        el.style.display = 'table-row';
-    } else {
-        el.style.display = 'none';
-    }
-}
-
-function renderPanelResults(data) {
-    // Summary
-    const summary = data.summary;
-    document.getElementById('summaryDisease').textContent = summary.disease_name;
-    document.getElementById('summaryGeneCount').textContent = summary.genes_evaluated;
-    document.getElementById('summaryCritical').textContent = summary.critical_priority_variants;
-    document.getElementById('summaryLit').textContent = data.total_literature.toLocaleString() + "+ papers";
-    document.getElementById('summaryTopGene').textContent = summary.top_variant;
-
-    // Table
-    const tbody = document.getElementById('geneTableBody');
-    while(tbody.firstChild) tbody.removeChild(tbody.firstChild);
-    
-    data.recommended_genes.forEach((g, idx) => {
-        const geneId = 'gene-' + idx;
-        const tr = document.createElement('tr');
-        tr.style.borderBottom = "2px solid var(--border-colour)";
-        
-        let prioColor = "var(--bg-tertiary)";
-        let tierLabel = 'Moderate';
-        if (g.panel_score >= 80) { prioColor = "rgba(231, 76, 60, 0.2)"; tierLabel = 'Critical'; }
-        else if (g.panel_score >= 50) { prioColor = "rgba(230, 126, 34, 0.2)"; tierLabel = 'High'; }
-        else if (g.panel_score >= 25) { prioColor = "rgba(241, 196, 15, 0.2)"; tierLabel = 'Moderate'; }
-        
-        const td1 = document.createElement('td');
-        td1.style.fontWeight = "bold"; td1.style.color = "var(--primary-colour)"; td1.style.fontSize = "1.1rem"; td1.style.verticalAlign = "middle";
-        td1.textContent = g.gene + " ";
-        const divVar = document.createElement('div');
-        divVar.style.cssText = "font-size: 0.85rem; color: #3498db; margin-top: 0.4rem; cursor: pointer; text-decoration: underline; display: inline-block;";
-        divVar.onclick = () => toggleVariantView(geneId);
-        divVar.innerHTML = `<i class="fas fa-chevron-down"></i> ${g.variant_count} Candidate Variants`;
-        td1.appendChild(divVar);
-        tr.appendChild(td1);
-        
-        const td2 = document.createElement('td');
-        td2.style.verticalAlign = "middle";
-        const spanBadge = document.createElement('span');
-        spanBadge.className = "status-badge";
-        spanBadge.style.background = prioColor;
-        spanBadge.style.border = "1px solid currentColor";
-        spanBadge.setAttribute("aria-label", `Priority: ${tierLabel}`);
-        spanBadge.textContent = tierLabel;
-        td2.appendChild(spanBadge);
-        tr.appendChild(td2);
-        
-        const td3 = document.createElement('td');
-        td3.style.fontWeight = "600"; td3.style.fontSize = "1.1rem"; td3.style.verticalAlign = "middle";
-        td3.textContent = g.panel_score;
-        tr.appendChild(td3);
-        
-        const td4 = document.createElement('td');
-        td4.style.verticalAlign = "middle"; td4.style.color = "var(--text-secondary)";
-        td4.textContent = g.paper_count.toLocaleString();
-        tr.appendChild(td4);
-        
-        const td5 = document.createElement('td');
-        td5.style.verticalAlign = "middle"; td5.style.color = "var(--text-secondary)";
-        g.reason.split('
-').forEach(r => {
-            const spanR = document.createElement('span');
-            spanR.style.cssText = "display:block; margin-bottom:0.2rem; font-size:0.9rem;";
-            spanR.textContent = r;
-            td5.appendChild(spanR);
-        });
-        tr.appendChild(td5);
-        
-        tbody.appendChild(tr);
-        
-        // Nested Variants
-        if (g.variants && g.variants.length > 0) {
-            const trVariants = document.createElement('tr');
-            trVariants.id = 'variants-' + geneId;
-            trVariants.style.display = 'none';
-            trVariants.style.backgroundColor = 'var(--bg-secondary)';
-            
-            const tdNested = document.createElement('td');
-            tdNested.colSpan = 5;
-            tdNested.style.cssText = "padding: 1.5rem; border-bottom: 2px solid var(--border-colour);";
-            
-            const h5 = document.createElement('h5');
-            h5.style.cssText = "margin-bottom: 1rem; color: var(--primary-colour);";
-            h5.textContent = `Candidate Variants: ${g.gene}`;
-            tdNested.appendChild(h5);
-            
-            const tableWrap = document.createElement('div');
-            tableWrap.className = "table-responsive";
-            
-            const innerTable = document.createElement('table');
-            innerTable.className = "table table-sm";
-            innerTable.style.cssText = "background: transparent; margin: 0;";
-            innerTable.innerHTML = `
-                <thead>
-                    <tr style="border-bottom: 1px solid rgba(0,0,0,0.1);">
-                        <th>Variant</th>
-                        <th>Discovery Score</th>
-                        <th>Discovery Tier</th>
-                        <th>Discovery Driver</th>
-                        <th>Evidence Conf.</th>
-                        <th>Research Rel.</th>
-                        <th>ACMG Status</th>
-                    </tr>
-                </thead>
-            `;
-            const innerTbody = document.createElement('tbody');
-            
-            g.variants.forEach(v => {
-                const trV1 = document.createElement('tr');
-                
-                const tdV1 = document.createElement('td');
-                tdV1.style.fontWeight = "bold"; tdV1.style.color = "var(--primary-colour)";
-                tdV1.textContent = v.variant_id;
-                trV1.appendChild(tdV1);
-                
-                const tdV2 = document.createElement('td');
-                tdV2.style.fontWeight = "bold";
-                tdV2.textContent = v.discovery_score + "/100";
-                trV1.appendChild(tdV2);
-                
-                const tdV3 = document.createElement('td');
-                const spanV3 = document.createElement('span');
-                spanV3.className = "status-badge badge-strong";
-                spanV3.setAttribute("aria-label", `Tier: ${v.discovery_tier}`);
-                spanV3.textContent = v.discovery_tier;
-                tdV3.appendChild(spanV3);
-                trV1.appendChild(tdV3);
-                
-                const tdV4 = document.createElement('td');
-                tdV4.style.fontStyle = "italic";
-                tdV4.textContent = v.discovery_driver;
-                trV1.appendChild(tdV4);
-                
-                const tdV5 = document.createElement('td');
-                tdV5.textContent = v.evidence_confidence + "/100";
-                trV1.appendChild(tdV5);
-                
-                const tdV6 = document.createElement('td');
-                tdV6.textContent = v.research_relevance + "/100";
-                trV1.appendChild(tdV6);
-                
-                const tdV7 = document.createElement('td');
-                tdV7.textContent = v.acmg_status;
-                trV1.appendChild(tdV7);
-                
-                innerTbody.appendChild(trV1);
-                
-                const trV2 = document.createElement('tr');
-                const tdV2_1 = document.createElement('td');
-                tdV2_1.colSpan = 7;
-                tdV2_1.style.cssText = "border-bottom: 1px dashed var(--border-colour); padding-bottom: 1rem; padding-top: 0.5rem;";
-                
-                const divRea = document.createElement('div');
-                divRea.style.cssText = "font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;";
-                divRea.innerHTML = "<strong>Why Recommended?</strong><br>";
-                v.discovery_reasons.forEach(r => {
-                    const tNode = document.createTextNode("✓ " + r);
-                    const br = document.createElement('br');
-                    divRea.appendChild(tNode);
-                    divRea.appendChild(br);
-                });
-                tdV2_1.appendChild(divRea);
-                
-                const divFlag = document.createElement('div');
-                divFlag.innerHTML = `<strong style="font-size: 0.85rem; color: var(--text-secondary);">Research Flags:</strong> `;
-                if(v.research_flags && v.research_flags.length > 0) {
-                    v.research_flags.forEach(f => {
-                        const spanF = document.createElement('span');
-                        spanF.className = "badge bg-secondary";
-                        spanF.style.marginRight = "0.3rem";
-                        spanF.textContent = f;
-                        divFlag.appendChild(spanF);
-                    });
-                } else {
-                    const spanNone = document.createElement('span');
-                    spanNone.style.cssText = "font-style: italic; color: var(--text-secondary); font-size: 0.8rem;";
-                    spanNone.textContent = "None";
-                    divFlag.appendChild(spanNone);
-                }
-                tdV2_1.appendChild(divFlag);
-                
-                trV2.appendChild(tdV2_1);
-                innerTbody.appendChild(trV2);
-            });
-            
-            innerTable.appendChild(innerTbody);
-            tableWrap.appendChild(innerTable);
-            tdNested.appendChild(tableWrap);
-            trVariants.appendChild(tdNested);
-            tbody.appendChild(trVariants);
-        }
-    });
-}
-
-// Export CSV
-document.getElementById('exportCsvBtn').addEventListener('click', () => {
-    if (!currentPanelData) return;
-    
-    let csvContent = "data:text/csv;charset=utf-8,Gene,Variant,Discovery Score,Discovery Tier,Discovery Driver,Evidence Confidence,Research Relevance,ACMG Status
-";
-    currentPanelData.recommended_genes.forEach(g => {
-        if (g.variants && g.variants.length > 0) {
-            g.variants.forEach(v => {
-                let s_gene = sanitizeCSVValue(g.gene);
-                let s_vid = sanitizeCSVValue(v.variant_id);
-                let s_d_score = sanitizeCSVValue(v.discovery_score);
-                let s_d_tier = sanitizeCSVValue(v.discovery_tier);
-                let s_d_driver = sanitizeCSVValue(v.discovery_driver);
-                let s_ec = sanitizeCSVValue(v.evidence_confidence);
-                let s_rr = sanitizeCSVValue(v.research_relevance);
-                let s_acmg = sanitizeCSVValue(v.acmg_status);
-                csvContent += `${s_gene},${s_vid},${s_d_score},${s_d_tier},"${s_d_driver}",${s_ec},${s_rr},"${s_acmg}"
-`;
-            });
-        } else {
-            let s_gene = sanitizeCSVValue(g.gene);
-            csvContent += `${s_gene},None,0,Low,None,0,0,N/A
-`;
-        }
-    });
-const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `${currentPanelData.disease.replace(/\s+/g, '_')}_Variant_Panel.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-});
-
-// Export JSON
-document.getElementById('exportJsonBtn').addEventListener('click', () => {
-    if (!currentPanelData) return;
-    
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentPanelData, null, 2));
-    const link = document.createElement("a");
-    link.setAttribute("href", dataStr);
-    link.setAttribute("download", `${currentPanelData.disease.replace(/\s+/g, '_')}_Variant_Panel.json`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-});
-</script>
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/panel_designer.js') }}"></script>
 {% endblock %}

@@ -6,10 +6,10 @@
 <div class="gv-container">
 <div class="row" >
     <div class="col-12 text-center">
-        <h2 style="font-weight: 700; color: var(--primary-colour); font-size: 2.2rem; letter-spacing: -0.5px;">Cohort Variant Prioritization Engine</h2>
-        <p style="color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Submit a cohort of variants to instantly triage and rank candidates across all evidence axes.</p>
-        <div style="background-color: var(--bg-secondary); padding: 0.8rem; border-radius: 6px; margin: 1.5rem auto 0; max-width: 700px; border-left: 3px solid #f39c12; text-align: left;">
-            <p style="margin: 0; font-size: 0.9rem; color: var(--text-secondary);">
+        <h2  class="gv-is-3f1f00da">Cohort Variant Prioritization Engine</h2>
+        <p  class="gv-is-83e2471b">Submit a cohort of variants to instantly triage and rank candidates across all evidence axes.</p>
+        <div  class="gv-is-af1f2127">
+            <p  class="gv-is-bd646787">
                 <strong>Research Use Only:</strong> This module algorithmically ranks cohorts for educational and research exploration. It must not be used for diagnostic triage.
             </p>
         </div>
@@ -18,15 +18,15 @@
 
 <div class="row justify-content-center" >
     <div class="col-md-10 col-lg-8">
-        <div class="gv-card" style="padding: 1.5rem;">
+        <div class="gv-card gv-is-aa0da8a6" >
             <form id="cohortForm">
                 <div class="form-group mb-3">
-                    <label for="rsidsInput" style="font-weight: 600; margin-bottom: 0.5rem; color: var(--text-primary);">Enter Variant Cohort (rsIDs):</label>
-                    <textarea id="rsidsInput" class="gv-form-control" rows="4" placeholder="rs429358, rs7412, rs334..." style="background: var(--bg-secondary); border: 2px solid var(--border-colour); color: var(--text-primary); font-family: monospace; padding: 1rem;" required></textarea>
+                    <label for="rsidsInput"  class="gv-is-d2bc6f30">Enter Variant Cohort (rsIDs):</label>
+                    <textarea id="rsidsInput" class="gv-form-control gv-is-3fcd62df" rows="4" placeholder="rs429358, rs7412, rs334..." required></textarea>
                 </div>
                 <div class="text-end">
-                    <button type="submit" class="gv-btn gv-btn-primary" style="padding: 0.8rem 2rem; font-size: 1.1rem; font-weight: 600; border-radius: 8px;">
-                        Analyze Cohort <i class="fas fa-layer-group" style="margin-left: 0.5rem;"></i>
+                    <button type="submit" class="gv-btn gv-btn-primary gv-is-79dce390" >
+                        Analyze Cohort <i class="fas fa-layer-group gv-is-60006981" ></i>
                     </button>
                 </div>
             </form>
@@ -34,44 +34,44 @@
     </div>
 </div>
 
-<div id="loadingIndicator" class="text-center" style="display: none; margin: 3rem 0;">
-    <div class="spinner-border" role="status" style="width: 3rem; height: 3rem; color: var(--primary-colour);">
+<div id="loadingIndicator" class="text-center gv-is-31f68177" >
+    <div class="spinner-border gv-is-4e7203e3" role="status" >
         <span class="visually-hidden">Loading...</span>
     </div>
-    <p style="margin-top: 1rem; color: var(--text-secondary); font-size: 1.1rem;">Prioritizing cohort evidence...</p>
+    <p  class="gv-is-d7eeba87">Prioritizing cohort evidence...</p>
 </div>
 
-<div id="errorContainer" class="alert alert-danger" style="display: none; max-width: 800px; margin: 0 auto 2rem;"></div>
+<div id="errorContainer" class="alert alert-danger gv-is-1f0c656b" ></div>
 
-<div id="resultsContainer" style="display: none;">
+<div id="resultsContainer"  class="gv-is-224b51a7">
     <!-- Pathway Analysis -->
-    <div class="row" style="display: none;" id="pathwayAnalysisContainer">
+    <div class="row gv-is-224b51a7" id="pathwayAnalysisContainer">
         <div class="col-12">
-            <div class="gv-card result-card" style="border-left: 4px solid #8e44ad;">
+            <div class="gv-card result-card gv-is-bd7c6452" >
                 <h3 class="gv-card-title"><i class="fas fa-project-diagram"></i> Pathway & Biological Theme Analysis</h3>
-                <div class="row" style="margin-top: 1rem;">
+                <div class="row gv-is-988c5fa7" >
                     <div class="col-md-3 text-center mb-2">
-                        <div style="background: rgba(142,68,173,0.1); padding: 1rem; border-radius: 8px; height: 100%;">
-                            <div style="font-size: 0.8rem; color: #8e44ad; text-transform: uppercase;">Top Gene</div>
-                            <div id="pathTopGene" style="font-size: 1.2rem; font-weight: 700; color: #8e44ad; word-break: break-word;">--</div>
+                        <div  class="gv-is-3d21e457">
+                            <div  class="gv-is-caceffa2">Top Gene</div>
+                            <div id="pathTopGene"  class="gv-is-465a1710">--</div>
                         </div>
                     </div>
                     <div class="col-md-3 text-center mb-2">
-                        <div style="background: rgba(41,128,185,0.1); padding: 1rem; border-radius: 8px; height: 100%;">
-                            <div style="font-size: 0.8rem; color: #2980b9; text-transform: uppercase;">Dominant Pathway</div>
-                            <div id="pathTopPathway" style="font-size: 1.2rem; font-weight: 700; color: #2980b9; word-break: break-word;">--</div>
+                        <div  class="gv-is-5bff564a">
+                            <div  class="gv-is-74429feb">Dominant Pathway</div>
+                            <div id="pathTopPathway"  class="gv-is-e1ca8cc1">--</div>
                         </div>
                     </div>
                     <div class="col-md-6 mb-2">
-                        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; height: 100%;">
-                            <div style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase;">Shared Diseases</div>
-                            <div id="pathSharedDiseases" style="font-weight: 600; color: var(--text-primary); margin-top: 0.5rem;">--</div>
+                        <div  class="gv-is-f6c2507b">
+                            <div  class="gv-is-b7c164e3">Shared Diseases</div>
+                            <div id="pathSharedDiseases"  class="gv-is-bc89e3d6">--</div>
                         </div>
                     </div>
                 </div>
-                <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; border-left: 3px solid #27ae60;">
-                    <h5 style="font-size: 1rem; color: #27ae60; margin-bottom: 0.5rem;"><i class="fas fa-lightbulb"></i> Pathway Insights</h5>
-                    <div id="pathwayInsightsText" style="color: var(--text-secondary); font-size: 0.95rem;">--</div>
+                <div  class="gv-is-82f7348e">
+                    <h5  class="gv-is-4ad40cfa"><i class="fas fa-lightbulb"></i> Pathway Insights</h5>
+                    <div id="pathwayInsightsText"  class="gv-is-e6604cab">--</div>
                 </div>
             </div>
         </div>
@@ -80,44 +80,44 @@
     <!-- Cohort Summary Dashboard -->
     <div class="row" >
         <div class="col-12">
-            <div class="gv-card result-card" style="border-left: 4px solid var(--primary-colour);">
-                <div class="d-flex justify-content-between align-items-center" style="margin-bottom: 1.5rem;">
-                    <h3 class="gv-card-title" style="margin: 0;">Cohort Summary Dashboard</h3>
+            <div class="gv-card result-card gv-is-62b42ec9" >
+                <div class="d-flex justify-content-between align-items-center gv-is-d3297f95" >
+                    <h3 class="gv-card-title gv-is-e2b74ba6" >Cohort Summary Dashboard</h3>
                     <div>
-                        <button id="exportCsvBtn" class="gv-btn btn-sm btn-outline-primary" style="margin-right: 0.5rem;"><i class="fas fa-file-csv"></i> Export CSV</button>
+                        <button id="exportCsvBtn" class="gv-btn btn-sm btn-outline-primary gv-is-1e5c8846" ><i class="fas fa-file-csv"></i> Export CSV</button>
                         <button id="exportJsonBtn" class="gv-btn btn-sm btn-outline-secondary"><i class="fas fa-file-code"></i> Export JSON</button>
                     </div>
                 </div>
                 
                 <div class="row mb-3">
                     <div class="col-md-2 col-sm-4 mb-2">
-                        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center; height: 100%;">
-                            <div style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase;">Total Variants</div>
-                            <div id="summaryTotal" style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">--</div>
+                        <div  class="gv-is-62f52eda">
+                            <div  class="gv-is-b7c164e3">Total Variants</div>
+                            <div id="summaryTotal"  class="gv-is-9a273ba1">--</div>
                         </div>
                     </div>
                     <div class="col-md-2 col-sm-4 mb-2">
-                        <div style="background: rgba(231, 76, 60, 0.1); padding: 1rem; border-radius: 8px; text-align: center; height: 100%;">
-                            <div style="font-size: 0.8rem; color: #c0392b; text-transform: uppercase;">Critical</div>
-                            <div id="summaryCritical" style="font-size: 1.5rem; font-weight: 700; color: #c0392b;">--</div>
+                        <div  class="gv-is-4705f0d7">
+                            <div  class="gv-is-a69a5e40">Critical</div>
+                            <div id="summaryCritical"  class="gv-is-99d07939">--</div>
                         </div>
                     </div>
                     <div class="col-md-2 col-sm-4 mb-2">
-                        <div style="background: rgba(230, 126, 34, 0.1); padding: 1rem; border-radius: 8px; text-align: center; height: 100%;">
-                            <div style="font-size: 0.8rem; color: #d35400; text-transform: uppercase;">High</div>
-                            <div id="summaryHigh" style="font-size: 1.5rem; font-weight: 700; color: #d35400;">--</div>
+                        <div  class="gv-is-446c44c5">
+                            <div  class="gv-is-bd3b03bb">High</div>
+                            <div id="summaryHigh"  class="gv-is-9e8f1165">--</div>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6 mb-2">
-                        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center; height: 100%;">
-                            <div style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase;">Avg Evid. Confidence</div>
-                            <div id="summaryAvgEC" style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">--</div>
+                        <div  class="gv-is-62f52eda">
+                            <div  class="gv-is-b7c164e3">Avg Evid. Confidence</div>
+                            <div id="summaryAvgEC"  class="gv-is-9a273ba1">--</div>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6 mb-2">
-                        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center; height: 100%;">
-                            <div style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase;">Avg Res. Relevance</div>
-                            <div id="summaryAvgRR" style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">--</div>
+                        <div  class="gv-is-62f52eda">
+                            <div  class="gv-is-b7c164e3">Avg Res. Relevance</div>
+                            <div id="summaryAvgRR"  class="gv-is-9a273ba1">--</div>
                         </div>
                     </div>
                 </div>
@@ -125,24 +125,24 @@
                 <!-- Visual Highlights -->
                 <div class="row">
                     <div class="col-md-4 mb-2">
-                        <div style="background: var(--bg-tertiary); border: 1px solid var(--border-colour); padding: 1rem; border-radius: 8px;">
-                            <i class="fas fa-crown" style="color: #f1c40f; margin-right: 0.5rem;"></i>
-                            <span style="font-size: 0.9rem; color: var(--text-secondary);">Top Candidate Variant</span>
-                            <div id="hlTopVariant" style="font-size: 1.2rem; font-weight: bold; color: var(--text-primary); margin-top: 0.5rem;">--</div>
+                        <div  class="gv-is-699b7332">
+                            <i class="fas fa-crown gv-is-a43768e1" ></i>
+                            <span  class="gv-is-7af58241">Top Candidate Variant</span>
+                            <div id="hlTopVariant"  class="gv-is-81802ad4">--</div>
                         </div>
                     </div>
                     <div class="col-md-4 mb-2">
-                        <div style="background: var(--bg-tertiary); border: 1px solid var(--border-colour); padding: 1rem; border-radius: 8px;">
-                            <i class="fas fa-dna" style="color: #3498db; margin-right: 0.5rem;"></i>
-                            <span style="font-size: 0.9rem; color: var(--text-secondary);">Top Gene Representation</span>
-                            <div id="hlTopGene" style="font-size: 1.2rem; font-weight: bold; color: var(--text-primary); margin-top: 0.5rem;">--</div>
+                        <div  class="gv-is-699b7332">
+                            <i class="fas fa-dna gv-is-79da6df1" ></i>
+                            <span  class="gv-is-7af58241">Top Gene Representation</span>
+                            <div id="hlTopGene"  class="gv-is-81802ad4">--</div>
                         </div>
                     </div>
                     <div class="col-md-4 mb-2">
-                        <div style="background: var(--bg-tertiary); border: 1px solid var(--border-colour); padding: 1rem; border-radius: 8px;">
-                            <i class="fas fa-pills" style="color: #9b59b6; margin-right: 0.5rem;"></i>
-                            <span style="font-size: 0.9rem; color: var(--text-secondary);">Most PGx Relevant</span>
-                            <div id="hlTopPgx" style="font-size: 1.2rem; font-weight: bold; color: var(--text-primary); margin-top: 0.5rem;">--</div>
+                        <div  class="gv-is-699b7332">
+                            <i class="fas fa-pills gv-is-0024d8c0" ></i>
+                            <span  class="gv-is-7af58241">Most PGx Relevant</span>
+                            <div id="hlTopPgx"  class="gv-is-81802ad4">--</div>
                         </div>
                     </div>
                 </div>
@@ -156,9 +156,9 @@
             <div class="gv-card result-card">
                 <h3 class="gv-card-title">Ranked Cohort Results</h3>
                 <div class="table-responsive">
-                    <table class="table table-hover" style="color: var(--text-primary); margin-top: 1rem;">
+                    <table class="table table-hover gv-is-ae2ca982" >
                         <thead>
-                            <tr style="border-bottom: 2px solid var(--border-colour);">
+                            <tr  class="gv-is-322e8161">
                                 <th>Rank</th>
                                 <th>Variant</th>
                                 <th>Gene</th>
@@ -180,141 +180,9 @@
 </div>
 
 </div>
-<script>
-let currentCohortData = null;
 
-document.getElementById('cohortForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const rsids = document.getElementById('rsidsInput').value.trim();
-    if (!rsids) return;
+{% endblock %}
 
-    document.getElementById('resultsContainer').style.display = 'none';
-    document.getElementById('errorContainer').style.display = 'none';
-    document.getElementById('loadingIndicator').style.display = 'block';
-
-    try {
-        const formData = new FormData();
-        formData.append('rsids', rsids);
-        
-        const response = await fetch('/api/cohort', {
-            method: 'POST',
-            body: formData
-        });
-        
-        const data = await response.json();
-        
-        document.getElementById('loadingIndicator').style.display = 'none';
-        
-        if (!response.ok || data.error) {
-            document.getElementById('errorContainer').textContent = data.error || 'An error occurred while analyzing cohort.';
-            document.getElementById('errorContainer').style.display = 'block';
-            return;
-        }
-        
-        currentCohortData = data;
-        renderCohortResults(data);
-        document.getElementById('resultsContainer').style.display = 'block';
-        
-    } catch (err) {
-        document.getElementById('loadingIndicator').style.display = 'none';
-        document.getElementById('errorContainer').textContent = 'Network or server error.';
-        document.getElementById('errorContainer').style.display = 'block';
-    }
-});
-
-function renderCohortResults(data) {
-    const p_analysis = data.pathway_analysis;
-    if (p_analysis) {
-        document.getElementById('pathwayAnalysisContainer').style.display = 'flex';
-        document.getElementById('pathTopGene').textContent = p_analysis.top_gene || 'None';
-        document.getElementById('pathTopPathway').textContent = p_analysis.top_pathway || 'None';
-        document.getElementById('pathSharedDiseases').textContent = (p_analysis.shared_diseases && p_analysis.shared_diseases.length > 0) ? p_analysis.shared_diseases.join(', ') : 'No shared diseases';
-        document.getElementById('pathwayInsightsText').textContent = p_analysis.summary || 'No pathway insights identified.';
-    }
-
-    // Summary Updates
-    const summary = data.summary;
-    document.getElementById('summaryTotal').textContent = summary.total_variants;
-    document.getElementById('hlTopGene').textContent = summary.top_gene_representation;
-    document.getElementById('summaryCritical').textContent = summary.critical_variants;
-    document.getElementById('summaryHigh').textContent = summary.high_variants;
-    document.getElementById('summaryAvgEC').textContent = summary.average_evidence_confidence;
-    document.getElementById('summaryAvgRR').textContent = summary.average_research_relevance;
-
-    // Table Updates
-    const tbody = document.getElementById('cohortTableBody');
-    while(tbody.firstChild) tbody.removeChild(tbody.firstChild);
-    
-    data.variants.forEach((v, idx) => {
-        const tr = document.createElement('tr');
-        
-        let prioColor = "var(--bg-tertiary)";
-        if (v.cohort_score >= 80) prioColor = "rgba(231, 76, 60, 0.2)";
-        else if (v.cohort_score >= 50) prioColor = "rgba(230, 126, 34, 0.2)";
-        else if (v.cohort_score >= 25) prioColor = "rgba(241, 196, 15, 0.2)";
-        
-        const td1 = document.createElement('td'); td1.style.fontWeight = "bold"; td1.style.verticalAlign = "middle"; td1.textContent = "#" + (idx+1); tr.appendChild(td1);
-        const td2 = document.createElement('td'); td2.style.fontWeight = "bold"; td2.style.color = "var(--primary-colour)"; td2.style.fontSize = "1.1rem"; td2.style.verticalAlign = "middle"; td2.textContent = v.variant_id; tr.appendChild(td2);
-        const td3 = document.createElement('td'); td3.style.verticalAlign = "middle"; td3.textContent = v.gene; tr.appendChild(td3);
-        
-        const td4 = document.createElement('td'); td4.style.verticalAlign = "middle";
-        const spanBadge = document.createElement('span');
-        spanBadge.className = "status-badge";
-        spanBadge.style.background = prioColor;
-        spanBadge.style.border = "1px solid currentColor";
-        spanBadge.setAttribute("aria-label", `Tier: ${v.cohort_tier}`);
-        spanBadge.textContent = v.cohort_tier;
-        td4.appendChild(spanBadge);
-        tr.appendChild(td4);
-        
-        const td5 = document.createElement('td'); td5.style.fontWeight = "600"; td5.style.fontSize = "1.1rem"; td5.style.verticalAlign = "middle"; td5.textContent = v.cohort_score; tr.appendChild(td5);
-        const td6 = document.createElement('td'); td6.style.verticalAlign = "middle"; td6.textContent = v.evidence_confidence; tr.appendChild(td6);
-        const td7 = document.createElement('td'); td7.style.verticalAlign = "middle"; td7.textContent = v.research_relevance; tr.appendChild(td7);
-        const td8 = document.createElement('td'); td8.style.verticalAlign = "middle"; td8.textContent = v.acmg_status; tr.appendChild(td8);
-        const td9 = document.createElement('td'); td9.style.fontStyle = "italic"; td9.style.color = "var(--text-secondary)"; td9.style.verticalAlign = "middle"; td9.textContent = v.discovery_driver; tr.appendChild(td9);
-        
-        tbody.appendChild(tr);
-    });
-}
-
-// Export CSV
-document.getElementById('exportCsvBtn').addEventListener('click', () => {
-    if (!currentCohortData) return;
-    
-    let csvContent = "data:text/csv;charset=utf-8,Rank,Variant,Gene,Cohort Score,Priority Tier,Evidence Confidence,Research Relevance,ACMG Status
-";
-    currentCohortData.variants.forEach((v, i) => {
-        let s_rank = sanitizeCSVValue(i+1);
-        let s_vid = sanitizeCSVValue(v.variant_id);
-        let s_gene = sanitizeCSVValue(v.gene);
-        let s_score = sanitizeCSVValue(v.cohort_score);
-        let s_tier = sanitizeCSVValue(v.cohort_tier);
-        let s_ec = sanitizeCSVValue(v.evidence_confidence);
-        let s_rr = sanitizeCSVValue(v.research_relevance);
-        let s_acmg = sanitizeCSVValue(v.acmg_status);
-        csvContent += `${s_rank},${s_vid},${s_gene},${s_score},${s_tier},${s_ec},${s_rr},"${s_acmg}"
-`;
-    });
-const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Cohort_Prioritization.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-});
-
-// Export JSON
-document.getElementById('exportJsonBtn').addEventListener('click', () => {
-    if (!currentCohortData) return;
-    
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentCohortData, null, 2));
-    const link = document.createElement("a");
-    link.setAttribute("href", dataStr);
-    link.setAttribute("download", `Cohort_Prioritization.json`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-});
-</script>
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/cohort_analysis.js') }}"></script>
 {% endblock %}
