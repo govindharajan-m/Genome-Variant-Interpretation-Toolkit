@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", () => {
 // ── Mode Tab Switching ────────────────────────────────────────────────────────
 const cnvTabs = document.querySelectorAll(".mode-tab");
 cnvTabs.forEach(tab => {
@@ -51,7 +52,7 @@ document.querySelectorAll(".cnv-example-btn").forEach(btn => {
 
 // ── Main Submit Button ────────────────────────────────────────────────────────
 document.getElementById("cnvBtn").addEventListener("click", async () => {
-  const gv-btn  = document.getElementById("cnvBtn");
+  const btn  = document.getElementById("cnvBtn");
   const text = document.getElementById("cnvBtnText");
   const spin = document.getElementById("cnvBtnSpinner");
 
@@ -269,3 +270,4 @@ function showCNVError(msg) {
   panel.scrollIntoView({behavior: "smooth"});
 }
 
+});

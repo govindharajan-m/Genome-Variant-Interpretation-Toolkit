@@ -1,10 +1,9 @@
 
 
-// Timestamp injector
-const tsEl = document.getElementById('dynamicReportTimestampValue');
-if (tsEl) tsEl.textContent = new Date().toISOString().replace('T', ' ').substring(0, 16);
-
 document.addEventListener('DOMContentLoaded', () => {
+    // Timestamp injector
+    const tsEl = document.getElementById('dynamicReportTimestampValue');
+    if (tsEl) tsEl.textContent = new Date().toISOString().replace('T', ' ').substring(0, 16);
     // We can't access {{ report.sig_colour }} inside JS because Jinja doesn't parse JS files.
     // We should pass it via a meta tag or hidden input.
     const metaSigColour = document.querySelector('meta[name="sig-colour"]');

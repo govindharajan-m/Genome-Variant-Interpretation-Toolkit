@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", () => {
 let currentPanelData = null;
 
 document.getElementById('panelForm').addEventListener('submit', async (e) => {
@@ -105,8 +106,7 @@ function renderPanelResults(data) {
         
         const td5 = document.createElement('td');
         td5.style.verticalAlign = "middle"; td5.style.color = "var(--text-secondary)";
-        g.reason.split('
-').forEach(r => {
+        g.reason.split('\n').forEach(r => {
             const spanR = document.createElement('span');
             spanR.style.cssText = "display:block; margin-bottom:0.2rem; font-size:0.9rem;";
             spanR.textContent = r;
@@ -244,8 +244,7 @@ function renderPanelResults(data) {
 document.getElementById('exportCsvBtn').addEventListener('click', () => {
     if (!currentPanelData) return;
     
-    let csvContent = "data:text/csv;charset=utf-8,Gene,Variant,Discovery Score,Discovery Tier,Discovery Driver,Evidence Confidence,Research Relevance,ACMG Status
-";
+    let csvContent = "data:text/csv;charset=utf-8,Gene,Variant,Discovery Score,Discovery Tier,Discovery Driver,Evidence Confidence,Research Relevance,ACMG Status\n";
     currentPanelData.recommended_genes.forEach(g => {
         if (g.variants && g.variants.length > 0) {
             g.variants.forEach(v => {
@@ -257,13 +256,11 @@ document.getElementById('exportCsvBtn').addEventListener('click', () => {
                 let s_ec = sanitizeCSVValue(v.evidence_confidence);
                 let s_rr = sanitizeCSVValue(v.research_relevance);
                 let s_acmg = sanitizeCSVValue(v.acmg_status);
-                csvContent += `${s_gene},${s_vid},${s_d_score},${s_d_tier},"${s_d_driver}",${s_ec},${s_rr},"${s_acmg}"
-`;
+                csvContent += `${s_gene},${s_vid},${s_d_score},${s_d_tier},"${s_d_driver}",${s_ec},${s_rr},"${s_acmg}"\n`;
             });
         } else {
             let s_gene = sanitizeCSVValue(g.gene);
-            csvContent += `${s_gene},None,0,Low,None,0,0,N/A
-`;
+            csvContent += `${s_gene},None,0,Low,None,0,0,N/A\n`;
         }
     });
 const encodedUri = encodeURI(csvContent);
@@ -288,3 +285,4 @@ document.getElementById('exportJsonBtn').addEventListener('click', () => {
     document.body.removeChild(link);
 });
 
+});

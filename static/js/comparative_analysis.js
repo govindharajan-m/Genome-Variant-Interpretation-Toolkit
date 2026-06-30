@@ -1,3 +1,4 @@
+document.addEventListener('DOMContentLoaded', () => {
 let currentComparisonData = null;
 
 document.getElementById('compareForm').addEventListener('submit', async (e) => {
@@ -206,3 +207,4 @@ document.getElementById('exportJsonBtn').addEventListener('click', () => {
     document.body.removeChild(link);
 });
 
+});

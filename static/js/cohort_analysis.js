@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", () => {
 let currentCohortData = null;
 
 document.getElementById('cohortForm').addEventListener('submit', async (e) => {
@@ -98,8 +99,7 @@ function renderCohortResults(data) {
 document.getElementById('exportCsvBtn').addEventListener('click', () => {
     if (!currentCohortData) return;
     
-    let csvContent = "data:text/csv;charset=utf-8,Rank,Variant,Gene,Cohort Score,Priority Tier,Evidence Confidence,Research Relevance,ACMG Status
-";
+    let csvContent = "data:text/csv;charset=utf-8,Rank,Variant,Gene,Cohort Score,Priority Tier,Evidence Confidence,Research Relevance,ACMG Status\n";
     currentCohortData.variants.forEach((v, i) => {
         let s_rank = sanitizeCSVValue(i+1);
         let s_vid = sanitizeCSVValue(v.variant_id);
@@ -109,8 +109,7 @@ document.getElementById('exportCsvBtn').addEventListener('click', () => {
         let s_ec = sanitizeCSVValue(v.evidence_confidence);
         let s_rr = sanitizeCSVValue(v.research_relevance);
         let s_acmg = sanitizeCSVValue(v.acmg_status);
-        csvContent += `${s_rank},${s_vid},${s_gene},${s_score},${s_tier},${s_ec},${s_rr},"${s_acmg}"
-`;
+        csvContent += `${s_rank},${s_vid},${s_gene},${s_score},${s_tier},${s_ec},${s_rr},"${s_acmg}"\n`;
     });
 const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
@@ -132,5 +131,6 @@ document.getElementById('exportJsonBtn').addEventListener('click', () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+});
 });
 

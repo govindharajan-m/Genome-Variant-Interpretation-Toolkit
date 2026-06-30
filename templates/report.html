@@ -1,7 +1,9 @@
 {% extends "base.html" %}
-{% block title %}Report: {{ rsid }}<script src="{{ url_for('static', filename='js/report.js') }}"></script>
-{% endblock %}
+{% block title %}Report: {{ rsid }}{% endblock %}
 
+{% block head %}
+<meta name="sig-colour" content="{{ report.sig_colour }}">
+{% endblock %}
 {% block content %}
 <div class="page-header">
   <div class="gv-container">

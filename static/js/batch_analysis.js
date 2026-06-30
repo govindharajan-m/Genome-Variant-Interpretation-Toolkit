@@ -1,4 +1,5 @@
-// ── Tab switching ────────────────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  // ── Tab switching ────────────────────────────────────────────────────────────
   document.querySelectorAll(".batch-tab").forEach(tab => {
     tab.addEventListener("click", () => {
       document.querySelectorAll(".batch-tab").forEach(t => t.classList.remove("active"));
@@ -37,12 +38,13 @@
   });
 
   // ── Demo loaders ─────────────────────────────────────────────────────────────
-  const ALL_RSIDS = {{ known_rsids | tojson }};
   const PATHOGENIC = ["rs334", "rs113993960", "rs1800562", "rs113488022", "rs28897743", "rs80357906"];
 
-  document.getElementById("loadAll").addEventListener("click", () => {
+  const loadAllBtn = document.getElementById("loadAll");
+  loadAllBtn.addEventListener("click", () => {
     document.querySelector(".batch-tab[data-target='textInput']").click();
-    document.getElementById("rsidText").value = ALL_RSIDS.join(", ");
+    const allRsids = loadAllBtn.dataset.rsids;
+    document.getElementById("rsidText").value = allRsids;
   });
   document.getElementById("loadPathogenic").addEventListener("click", () => {
     document.querySelector(".batch-tab[data-target='textInput']").click();
@@ -53,7 +55,7 @@
   let lastResults = [];
 
   document.getElementById("batchBtn").addEventListener("click", async () => {
-    const gv-btn = document.getElementById("batchBtn");
+    const btn = document.getElementById("batchBtn");
     const text = document.getElementById("batchBtnText");
     const spin = document.getElementById("batchBtnSpinner");
     text.textContent = "Processing…";
@@ -174,7 +176,7 @@
 
   // ── CSV Download ──────────────────────────────────────────────────────────────
   document.getElementById("downloadCsvBtn").addEventListener("click", async () => {
-    if (!lastResults.length) return;
+    if (!lastResults.length) { alert("No results to download."); return; }
     const res = await fetch("/download/csv", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -187,12 +189,10 @@
     a.click(); URL.revokeObjectURL(url);
   });
 
-
-document.addEventListener('DOMContentLoaded', () => {
-    const browseFileBtn = document.getElementById('browseFileBtn');
-    if (browseFileBtn) {
-        browseFileBtn.addEventListener('click', () => {
-            document.getElementById('rsidFile').click();
-        });
-    }
+  const browseFileBtn = document.getElementById('browseFileBtn');
+  if (browseFileBtn) {
+      browseFileBtn.addEventListener('click', () => {
+          document.getElementById('rsidFile').click();
+      });
+  }
 });
