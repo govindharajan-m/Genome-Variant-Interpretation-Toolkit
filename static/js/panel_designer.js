@@ -100,12 +100,12 @@ function renderPanelResults(data) {
         tr.appendChild(td3);
         
         const td4 = document.createElement('td');
-        td4.style.verticalAlign = "middle"; td4.style.color = "var(--text-secondary)";
+        td4.style.verticalAlign = "middle"; td4.style.color = "var(--text-primary)";
         td4.textContent = g.paper_count.toLocaleString();
         tr.appendChild(td4);
         
         const td5 = document.createElement('td');
-        td5.style.verticalAlign = "middle"; td5.style.color = "var(--text-secondary)";
+        td5.style.verticalAlign = "middle"; td5.style.color = "var(--text-primary)";
         g.reason.split('\n').forEach(r => {
             const spanR = document.createElement('span');
             spanR.style.cssText = "display:block; margin-bottom:0.2rem; font-size:0.9rem;";

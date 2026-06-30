@@ -136,6 +136,7 @@ function renderComparisonResults(data) {
         const tdLabel = document.createElement('td');
         tdLabel.style.fontWeight = "bold";
         tdLabel.style.backgroundColor = "var(--bg-secondary)";
+        tdLabel.style.color = "var(--text)";
         tdLabel.textContent = r.label;
         tr.appendChild(tdLabel);
         

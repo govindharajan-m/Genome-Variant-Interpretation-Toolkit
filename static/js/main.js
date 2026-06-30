@@ -282,7 +282,7 @@ function renderPopulationFrequenciesHTML(data) {
     return `
       <div class="pop-freq-row">
         <span class="pop-freq-label">${label}</span>
-        <div class="pop-freq-bar-container"><div class="${barClass}" data-width="${width}" class="dynamic-width-main"></div></div>
+        <div class="pop-freq-bar-container"><div class="${barClass}" style="width: ${width}%;"></div></div>
         <span class="pop-freq-val">${textVal}</span>
       </div>
     `;
