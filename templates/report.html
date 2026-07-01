@@ -334,17 +334,17 @@
         <div class="pop-freq-grid">
           <div class="pop-freq-row">
             <span class="pop-freq-label">Global</span>
-            <div class="pop-freq-bar-container"><div class="pop-freq-bar global" data-width="{% if report.population_frequencies.global %}{{ [report.population_frequencies.global * 100, 100]|min }}{% else %}0{% endif %}" class="dynamic-width"></div></div>
+            <div class="pop-freq-bar-container"><div class="pop-freq-bar global" style="width: {% if report.population_frequencies.global %}{{ [report.population_frequencies.global * 100, 100]|min }}{% else %}0{% endif %}%;"></div></div>
             <span class="pop-freq-val">{% if report.population_frequencies.global %}{{ "%.2f"|format(report.population_frequencies.global * 100) }}%{% else %}—{% endif %}</span>
           </div>
           <div class="pop-freq-row">
             <span class="pop-freq-label">South Asian</span>
-            <div class="pop-freq-bar-container"><div class="pop-freq-bar" data-width="{% if report.population_frequencies.south_asian %}{{ [report.population_frequencies.south_asian * 100, 100]|min }}{% else %}0{% endif %}" class="dynamic-width"></div></div>
+            <div class="pop-freq-bar-container"><div class="pop-freq-bar" style="width: {% if report.population_frequencies.south_asian %}{{ [report.population_frequencies.south_asian * 100, 100]|min }}{% else %}0{% endif %}%;"></div></div>
             <span class="pop-freq-val">{% if report.population_frequencies.south_asian %}{{ "%.2f"|format(report.population_frequencies.south_asian * 100) }}%{% else %}—{% endif %}</span>
           </div>
           <div class="pop-freq-row">
             <span class="pop-freq-label">Caucasian</span>
-            <div class="pop-freq-bar-container"><div class="pop-freq-bar" data-width="{% if report.population_frequencies.caucasian %}{{ [report.population_frequencies.caucasian * 100, 100]|min }}{% else %}0{% endif %}" class="dynamic-width"></div></div>
+            <div class="pop-freq-bar-container"><div class="pop-freq-bar" style="width: {% if report.population_frequencies.caucasian %}{{ [report.population_frequencies.caucasian * 100, 100]|min }}{% else %}0{% endif %}%;"></div></div>
             <span class="pop-freq-val">{% if report.population_frequencies.caucasian %}{{ "%.2f"|format(report.population_frequencies.caucasian * 100) }}%{% else %}—{% endif %}</span>
           </div>
         </div>
