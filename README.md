@@ -74,9 +74,6 @@ pip install -r requirements.txt
 ```bash
 python app.py
 ```
-
-Open **http://localhost:5000** in your browser.
-
 ---
 
 ## Demo Variants (included in mock dataset)
