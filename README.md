@@ -1,3 +1,8 @@
+#THIS REPO IS A PUBLISHED PAPER 
+# view at: https://juniperpublishers.com/ctbeb/CTBEB.MS.ID.556139.php
+
+
+
 # GenomeVAP — Complete Project Handover Walkthrough
 
 > **Platform**: Genome Variation Analysis Platform (GenomeVAP)  
