@@ -4,7 +4,7 @@
 
 
 
-# GenomeVAP — Complete Project Handover Walkthrough
+# GenomeVAP — Complete Project Walkthrough
 
 > **Platform**: Genome Variation Analysis Platform (GenomeVAP)  
 > **Live URL**: [https://genome-variant-interpretation-toolkit-1.onrender.com/](https://genome-variant-interpretation-toolkit-1.onrender.com/)  
